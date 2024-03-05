@@ -1,33 +1,5 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "Explore my projects\n        See my hands-on experience across various concepts and applications.\n      \n    \n  \n    \n      \n      \n        View my resume\n        For a full background on my education and career.\n        CV\n      \n    \n  \n    \n      \n      \n        Get in touch\n        Discuss potential collaborations and opportunities.\n      \n    \n  \n\n\n\n\n\n\nTesting\ncontent here\n\n\nAbout this blog\nfdsfsdf\n\n\n\ntesting\ncontent here"
-  },
-  {
-    "objectID": "projects.html",
-    "href": "projects.html",
-    "title": "Projects",
-    "section": "",
-    "text": "Projects\nHere are some of the projects I’ve worked on:\n\nProject 1\nProject 2 … and so on."
-  },
-  {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Git Explained",
-    "section": "",
-    "text": "For a while, I couldn’t quite fully grasp Git and its features that make it the most widely used version control system. Frequently I would find myself watching YouTube videos on key concepts and commands whenever I needed to use Git for my projects, only to completely forget everything, weeks later. And this is why I decided to take the time to learn deeply about Git, consolidate my knowledge with this guide and have it serve as a future reference."
-  },
-  {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "How to use Git",
-    "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!"
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Stan Karzhev",
@@ -35,60 +7,11 @@
     "text": "How to use Git\n\n\n\n\n\n\nDevelopment\n\n\n\n\n\n\n\n\n\nNov 23, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nGit Explained\n\n\n\n\n\n\ncode\n\n\n\nA brief introductory guide on the popular version control system, Git.\n\n\n\n\n\nNov 5, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "posts/post-with-code/index.html#sub-heading-here-does-it-show",
-    "href": "posts/post-with-code/index.html#sub-heading-here-does-it-show",
-    "title": "Git Explained",
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
     "section": "",
-    "text": "or nahhhhh\n\n\nor yeahhhh"
-  },
-  {
-    "objectID": "posts/post-with-code/index.html#git-is-fast",
-    "href": "posts/post-with-code/index.html#git-is-fast",
-    "title": "Git Explained",
-    "section": "Git is fast",
-    "text": "Git is fast\nOne of the features of Git that make it fast is that each user has a full local history of a repository and can create commits and inspect the file history without an internet connection. Additionally, most operations are performed locally, which makes Git a faster VCS alternative than centralised systems that require constant communication with a remote server."
-  },
-  {
-    "objectID": "posts/post-with-code/index.html#git-is-distributed",
-    "href": "posts/post-with-code/index.html#git-is-distributed",
-    "title": "Git Explained",
-    "section": "Git is distributed",
-    "text": "Git is distributed\nAs mentioned earlier, when working in a team each member gets a full copy of the repository when they clone it, along with a full history of the commits so far. This means that in the event of a crash there is no single point of failure with Git, as every user has a copy of the main server (unless there is only a single copy of the repository).\nIn terms of development, a distributed system makes it easier to scale an engineering team. For instance with a centralised VCS, if a developer breaks the branch which contains the production code, other developers won’t be able to commit their changes until this is resolved. However, with Git this isn’t an issue, as everyone can continue working in their local repositories."
-  },
-  {
-    "objectID": "posts/post-with-code/index.html#gits-branching-model",
-    "href": "posts/post-with-code/index.html#gits-branching-model",
-    "title": "Git Explained",
-    "section": "Git’s branching model",
-    "text": "Git’s branching model\nOne of the unique aspects of Git that distinguish it from other SCM tools is its branching capabilities. Think of a branch as an isolated environment for experimenting with a new feature, fixing a bug or testing out an idea. If we are satisfied we can go ahead and merge it with the master branch. A local branch exists on the local user’s machine; the main branch typically contains the production code.\n\nIMAGE HERE OF GIT BRANCHING\nImage caption: Example of a Git repository, each circle represents a commit.\nUsers are encouraged to utilise multiple local branches that can be independent of each other for the reasons stated above (disposable experimentation, working on new features and trying out new ideas).\nAdditionally, it is not necessary to push all your local branches to the remote repository, you can decide which ones to share. Ultimately, this gives users the freedom to try out new ideas and alleviates the worry of having to plan when they are going to share them with the rest of the team. Another important thing to mention is that the creation, merging and deletion of branches is extremely fast (takes seconds) and easy."
-  },
-  {
-    "objectID": "posts/post-with-code/index.html#any-workflow",
-    "href": "posts/post-with-code/index.html#any-workflow",
-    "title": "Git Explained",
-    "section": "Any workflow",
-    "text": "Any workflow\nA workflow is a recommendation for how to utilise Git for all members to accomplish work productively and consistently. Git’s distributed nature and intuitive branching system make it possible for an almost endless number of workflows to be implemented with relative ease. As Git is focused on flexibility there is no standardised process for how to interact with Git."
-  },
-  {
-    "objectID": "posts/test/index.html",
-    "href": "posts/test/index.html",
-    "title": "TESTING",
-    "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
-  },
-  {
-    "objectID": "index.html#background",
-    "href": "index.html#background",
-    "title": "Stan Karzhev",
-    "section": "",
-    "text": "Git is a distributed VCS (version control system) that tracks changes made to files and directories, enabling users to record project changes and go back to a specific version of tracked files at any given time. Since Git is mainly used via the command line interface, knowledge of relevant commands is crucial for using Git effectively.\nThere are two scenarios that we will walk through:\n\nUsing Git with a local repository to track changes made to an existing project on your local machine.\nDeveloping an existing remote project which exists outside of your local machine."
-  },
-  {
-    "objectID": "posts/welcome/index.html#background",
-    "href": "posts/welcome/index.html#background",
-    "title": "How to use Git",
-    "section": "Background",
-    "text": "Background\nGit is a distributed VCS (version control system) that tracks changes made to files and directories, enabling users to record project changes and go back to a specific version of tracked files at any given time. Since Git is mainly used via the command line interface, knowledge of relevant commands is crucial for using Git effectively.\nThere are two scenarios that we will walk through:\n\nUsing Git with a local repository to track changes made to an existing project on your local machine.\nDeveloping an existing remote project which exists outside of your local machine."
+    "text": "Projects\nHere are some of the projects I’ve worked on:\n\nProject 1\nProject 2 … and so on."
   },
   {
     "objectID": "posts/git-explained/index.html",
@@ -236,5 +159,12 @@
     "title": "How to use Git",
     "section": "Merging a Branch",
     "text": "Merging a Branch\nIf you’re satisfied with the changes made on an individual branch you can merge with another branch by using:\ngit merge &lt;branch_name&gt; For example, you may have implemented a bug fix and want to merge this with the stable branch of your code (usually the master branch). branch_name is the branch you want to integrate into the current one you are on."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Explore my projects\n        See my hands-on experience across various concepts and applications.\n      \n    \n  \n    \n      \n      \n        View my resume\n        For a full background on my education and career.\n        CV\n      \n    \n  \n    \n      \n      \n        Get in touch\n        Discuss potential collaborations and opportunities.\n      \n    \n  \n\n\n\n\n\n\nTesting\ncontent here\n\n\nAbout this blog\nfdsfsdf\n\n\n\ntesting\ncontent here"
   }
 ]
