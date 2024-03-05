@@ -1,0 +1,18 @@
+
+/* Increase font size and weight of navbar links */
+.navbar a {
+  font-size: 1.2em; /* Adjust the size as needed */
+  font-weight: bold; /* This makes the text bolder */
+}
+
+/* Change hover color */
+.navbar a:hover {
+  color: red; /* Change to your preferred hover color */
+  background-color: #f8f9fa; /* Optional: change background color on hover */
+}
+
+.navbar-brand {
+  font-size: 2.5em; /* Adjust the size as needed */
+  font-weight: bold; /* This makes the text bolder */
+  color: purple;
+}

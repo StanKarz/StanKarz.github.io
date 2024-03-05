@@ -1,0 +1,71 @@
+/* css styles */
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+#quarto-header {
+  font-size: 1.05rem;
+  color: black;
+}
+
+#quarto-header :hover {
+  color: grey;
+}
+
+#quarto-header .navbar-title {
+  font-size: 2rem; /* Adjust the font size as needed */
+  font-weight: 450;
+  color: black;
+}
+
+
+navbar-title :hover {
+  color: grey;
+}
+
+
+#quarto-header nav.navbar {
+  /* The values are x-offset, y-offset, blur-radius, and color of the shadow */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.nav-link{
+  color: black;
+}
+
+.quarto-title-banner page-columns page-full {
+  background-color: blue;
+}
+
+.quarto-title column-body {
+  background-color: black;
+}
+
+.quarto-title-block {
+  background-color:white;
+}
+/* 
+.default {
+  background-color: blue;
+} */
+
+/* .page-columns page-full{
+  background-color: blue;
+} */
+
+.quarto-title-banner.page-columns.page-full {
+  background-color: white; /* Replace with the new color you want to use */
+}
+
+body {
+  background-color: white;
+}
+
+.menu-text {
+  color: black;
+}

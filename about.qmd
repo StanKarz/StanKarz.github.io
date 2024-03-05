@@ -1,0 +1,33 @@
+---
+title: "About"
+# image: profile.jpg
+# about:
+#   template: marquee
+format:
+  html:
+      include-before-body: "footer.html"
+      css: test.css
+
+---
+
+
+
+- - - 
+
+# Testing 
+
+content here
+
+
+# About this blog
+
+fdsfsdf
+
+- - - 
+
+# testing 
+
+content here
+
+- - - 
+

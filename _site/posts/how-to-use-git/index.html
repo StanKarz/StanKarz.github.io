@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Stan Karzhev">
+<meta name="dcterms.date" content="2023-11-23">
+
+<title>Stan Karzhev - How to use Git</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Stan Karzhev</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://linkedin.com"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">How to use Git</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Development</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Stan Karzhev </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 23, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a>
+  <ul class="collapse">
+  <li><a href="#screenshot-here" id="toc-screenshot-here" class="nav-link" data-scroll-target="#screenshot-here">Screenshot here</a></li>
+  <li><a href="#configuration" id="toc-configuration" class="nav-link" data-scroll-target="#configuration">Configuration</a></li>
+  </ul></li>
+  <li><a href="#git-repositories" id="toc-git-repositories" class="nav-link" data-scroll-target="#git-repositories">Git Repositories</a>
+  <ul class="collapse">
+  <li><a href="#initialising-a-new-git-repository" id="toc-initialising-a-new-git-repository" class="nav-link" data-scroll-target="#initialising-a-new-git-repository">Initialising a new Git Repository</a></li>
+  </ul></li>
+  <li><a href="#three-states-of-git" id="toc-three-states-of-git" class="nav-link" data-scroll-target="#three-states-of-git">Three states of Git</a>
+  <ul class="collapse">
+  <li><a href="#image-here" id="toc-image-here" class="nav-link" data-scroll-target="#image-here">Image here</a></li>
+  <li><a href="#working-directory" id="toc-working-directory" class="nav-link" data-scroll-target="#working-directory">Working Directory</a></li>
+  <li><a href="#staging-area" id="toc-staging-area" class="nav-link" data-scroll-target="#staging-area">Staging Area</a>
+  <ul class="collapse">
+  <li><a href="#repository" id="toc-repository" class="nav-link" data-scroll-target="#repository">Repository</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#staging-committing" id="toc-staging-committing" class="nav-link" data-scroll-target="#staging-committing">Staging &amp; Committing</a>
+  <ul class="collapse">
+  <li><a href="#staging-files" id="toc-staging-files" class="nav-link" data-scroll-target="#staging-files">Staging files</a>
+  <ul class="collapse">
+  <li><a href="#example-screenshot" id="toc-example-screenshot" class="nav-link" data-scroll-target="#example-screenshot">Example screenshot</a></li>
+  <li><a href="#screenshot-here-1" id="toc-screenshot-here-1" class="nav-link" data-scroll-target="#screenshot-here-1">Screenshot here</a></li>
+  </ul></li>
+  <li><a href="#unstaging-files" id="toc-unstaging-files" class="nav-link" data-scroll-target="#unstaging-files">Unstaging Files</a></li>
+  <li><a href="#making-commits" id="toc-making-commits" class="nav-link" data-scroll-target="#making-commits">Making Commits</a></li>
+  <li><a href="#commit-message" id="toc-commit-message" class="nav-link" data-scroll-target="#commit-message">Commit Message</a></li>
+  <li><a href="#commit-history" id="toc-commit-history" class="nav-link" data-scroll-target="#commit-history">Commit History</a></li>
+  <li><a href="#reverting-to-a-previous-commit" id="toc-reverting-to-a-previous-commit" class="nav-link" data-scroll-target="#reverting-to-a-previous-commit">Reverting to a previous commit</a></li>
+  </ul></li>
+  <li><a href="#ignoring-files" id="toc-ignoring-files" class="nav-link" data-scroll-target="#ignoring-files">Ignoring Files</a></li>
+  <li><a href="#branches" id="toc-branches" class="nav-link" data-scroll-target="#branches">Branches</a>
+  <ul class="collapse">
+  <li><a href="#creating-a-new-branch" id="toc-creating-a-new-branch" class="nav-link" data-scroll-target="#creating-a-new-branch">Creating a new branch</a></li>
+  <li><a href="#switching-between-branches" id="toc-switching-between-branches" class="nav-link" data-scroll-target="#switching-between-branches">Switching between branches</a></li>
+  <li><a href="#deleting-a-branch" id="toc-deleting-a-branch" class="nav-link" data-scroll-target="#deleting-a-branch">Deleting a branch</a></li>
+  <li><a href="#merging-a-branch" id="toc-merging-a-branch" class="nav-link" data-scroll-target="#merging-a-branch">Merging a Branch</a></li>
+  </ul></li>
+  <li><a href="#working-with-a-remote-repo" id="toc-working-with-a-remote-repo" class="nav-link" data-scroll-target="#working-with-a-remote-repo">Working with a remote repo</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>This is the first post in a Quarto blog. Welcome!</p>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p>Git is a distributed VCS (version control system) that tracks changes made to files and directories, enabling users to record project changes and go back to a specific version of tracked files at any given time. Since Git is mainly used via the command line interface, knowledge of relevant commands is crucial for using Git effectively.</p>
+<p>There are two scenarios that we will walk through:</p>
+<ul>
+<li>Using Git with a local repository to track changes made to an existing project on your local machine.</li>
+<li>Developing an existing remote project which exists outside of your local machine.</li>
+</ul>
+</section>
+<section id="setup" class="level1">
+<h1>Setup</h1>
+<p>To use Git, ensure you first have it installed on your computer. You can download Git here [link here]. To verify Git has been installed successfully, open the system terminal and run the following command:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If the installation has been successful you should see an output similar to this:</p>
+<section id="screenshot-here" class="level3">
+<h3 class="anchored" data-anchor-id="screenshot-here">Screenshot here</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Some callouts here about how mac and linux machines come with terminal etc… not really important.</p>
+</div>
+</div>
+</section>
+<section id="configuration" class="level2">
+<h2 class="anchored" data-anchor-id="configuration">Configuration</h2>
+<p>Local configuration variables are important, as they provide a way to identify who is making what changes to the project code. This is especially useful if you’re working with other developers. To specify your Git configuration settings, use the following commands:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">"John Doe"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">"johndoe@example.com"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="git-repositories" class="level1">
+<h1>Git Repositories</h1>
+<p>Before going further we need to distinguish between the two major types of repositories, local and remote.</p>
+<p><strong>Local Repository</strong> – An isolated environment stored on your local computer where you can work on the local version of the project. <strong>Remote Repository</strong> - Typically stored on a remote server outside of your local repository, remote repositories are especially useful when working in teams as they allow you to view the changes other developers are making, integrate them with your local version of the project and also share your code with others.</p>
+<section id="initialising-a-new-git-repository" class="level2">
+<h2 class="anchored" data-anchor-id="initialising-a-new-git-repository">Initialising a new Git Repository</h2>
+<p>Running the command:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Will create a hidden <code>.git</code> directory for your project, this is where Git stores all internal tracking for the current repository.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Before initialising a new Git repository ensure that you have navigated to the main folder that contains your project files.</p>
+</div>
+</div>
+<p>After initialising a new Git repository, you can use the command:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-a</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To show all the hidden files and directories including the newly created .git directory, you should see a .git file.</p>
+</section>
+</section>
+<section id="three-states-of-git" class="level1">
+<h1>Three states of Git</h1>
+<section id="image-here" class="level3">
+<h3 class="anchored" data-anchor-id="image-here">Image here</h3>
+<p>With Git there are three important states, the working directory, the staging area and the repository you are committing to. It’s important to distinguish between each of these and the purpose they serve.</p>
+</section>
+<section id="working-directory" class="level2">
+<h2 class="anchored" data-anchor-id="working-directory">Working Directory</h2>
+<p>The working directory consists of files you are currently working on, this is where untracked and modified files reside.</p>
+</section>
+<section id="staging-area" class="level2">
+<h2 class="anchored" data-anchor-id="staging-area">Staging Area</h2>
+<p>You can think of the staging area as a rough draft space where you organise and select all the files you want to be part of the next commit. For example, if you’ve made several changes across multiple files and you want to make multiple commits then you can stage the individual files and commit them in small chunks. This would make your commits more detailed and allow you to be more specific about what changes were made to the project.</p>
+<section id="repository" class="level3">
+<h3 class="anchored" data-anchor-id="repository">Repository</h3>
+<p>Once you are satisfied with the changes you’ve made you can go ahead and commit the staged files to your repository.</p>
+</section>
+</section>
+</section>
+<section id="staging-committing" class="level1">
+<h1>Staging &amp; Committing</h1>
+<section id="staging-files" class="level2">
+<h2 class="anchored" data-anchor-id="staging-files">Staging files</h2>
+<p>We can view the files in our working directory that have been modified or are being tracked by using:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This command returns the current branch you are on (master branch). Untracked files are in red, tracked files appear in green.</p>
+<section id="example-screenshot" class="level3">
+<h3 class="anchored" data-anchor-id="example-screenshot">Example screenshot</h3>
+<p>To add a file to the staging area use the command:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add fileName</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To add multiple files to the staging area you can specify the names of all the files with a space between each file name:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add fileName1 fileName2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Or you could stage all the files and directories in your project folder by using:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Once you have added the relevant files to the staging area, you can use git status again to ensure the correct files are in the staging area.</p>
+</section>
+<section id="screenshot-here-1" class="level3">
+<h3 class="anchored" data-anchor-id="screenshot-here-1">Screenshot here</h3>
+<p>Now we can see which file or files have been added to the staging area and the changes are ready to be committed.</p>
+</section>
+</section>
+<section id="unstaging-files" class="level2">
+<h2 class="anchored" data-anchor-id="unstaging-files">Unstaging Files</h2>
+<p>To remove a file from the staging area, use the following command.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> reset fileName</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Alternatively, you can use <code>git reset</code> to remove all files from the staging area.</p>
+</section>
+<section id="making-commits" class="level2">
+<h2 class="anchored" data-anchor-id="making-commits">Making Commits</h2>
+<p>In Git, commits are considered checkpoints or snapshots of your project at the current state, essentially you are saving the current version of your code with every commit that you make. You can create as many commits as you need and can go back and forth between different versions of the project. Commits are typically created at different logical points, such as after adding a new feature or a bug-fix implementation.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Before you can commit a file you need to place it in the staging area first.</p>
+</div>
+</div>
+<p>To commit a file use the command <code>git commit -m "commit messge"</code></p>
+</section>
+<section id="commit-message" class="level2">
+<h2 class="anchored" data-anchor-id="commit-message">Commit Message</h2>
+<p>(Message that this is optional) The commit message should be a descriptive summary of the changes that you are committing to the repository. After you’ve made a commit you will see a summary displayed, similar to the one below.</p>
+</section>
+<section id="commit-history" class="level2">
+<h2 class="anchored" data-anchor-id="commit-history">Commit History</h2>
+<p>To view all the commits made for a project you can use: <code>git log</code></p>
+<p>This will return details for each commit including the unique generated hash, author, date &amp; time the commit was made, along with the commit message.</p>
+<p>[Example here]</p>
+</section>
+<section id="reverting-to-a-previous-commit" class="level2">
+<h2 class="anchored" data-anchor-id="reverting-to-a-previous-commit">Reverting to a previous commit</h2>
+<p>The commit hash can be used to go back to a previous version of the project by using the command: <code>git checkout &lt;commit_hash&gt;</code></p>
+<p>Where commit_hash is the hash of a previous commit that you want to revert to. As mentioned above the commit hash of all the commits can be retrieved by using git log.</p>
+<p>You can return to the latest version of the project files by using the command: <code>git checkout main</code></p>
+</section>
+</section>
+<section id="ignoring-files" class="level1">
+<h1>Ignoring Files</h1>
+<p>You may have files in your project folder which you don’t want other people to see or you don’t need to track e.g.&nbsp;personal preferences specific to your machine or operating system. To ignore these files i.e.&nbsp;prevent them from being added to the staging area and tracking them, you will need to create a .gitignore file. This file will contain all the files and directories you want Git to ignore when making a commit</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Each filename or directory should be on a separate line in the .gitignore file</p>
+</div>
+</div>
+</section>
+<section id="branches" class="level1">
+<h1>Branches</h1>
+<p>A Git branch can be considered an isolated environment for experimenting with a new feature, fixing a bug or testing out ideas. The default branch which typically contains the production code is called the master or main branch. Therefore, branches allow you to work away from the main branch and encapsulate your changes. This helps to avoid breaking the production code and makes it easy to experiment with new ideas. If you are satisfied with the code developed in a branch you can merge it with the master branch for the rest of the team to see.</p>
+<section id="creating-a-new-branch" class="level2">
+<h2 class="anchored" data-anchor-id="creating-a-new-branch">Creating a new branch</h2>
+<p>To create a new branch, use the command: <code>git branch &lt;new_branch&gt;</code></p>
+<p>It’s good practice to create a development branch for adding new features and experimenting with code, once everything is working as expected you can merge it with the master branch.</p>
+</section>
+<section id="switching-between-branches" class="level2">
+<h2 class="anchored" data-anchor-id="switching-between-branches">Switching between branches</h2>
+<p>Creating a new branch does not automatically switch to that branch, to do this you will need to use the command: <code>git checkout &lt;branch_name</code></p>
+<p>The commits made on one branch will be independent of changes made on all other branches unless you decide to merge these changes later on. You can create a new branch and switch to it simultaneously by using git checkout with the -b flag: <code>git checkout -b &lt;new_beanch&gt;</code></p>
+<p>To return to the main branch, run: <code>git checkout main</code></p>
+</section>
+<section id="deleting-a-branch" class="level2">
+<h2 class="anchored" data-anchor-id="deleting-a-branch">Deleting a branch</h2>
+<p>If you’re satisfied with the changes made on an individual branch you can merge with another branch by using:</p>
+<p><code>git branch -d &lt;branch_name&gt;</code></p>
+</section>
+<section id="merging-a-branch" class="level2">
+<h2 class="anchored" data-anchor-id="merging-a-branch">Merging a Branch</h2>
+<p>If you’re satisfied with the changes made on an individual branch you can merge with another branch by using:</p>
+<p><code>git merge &lt;branch_name&gt;</code> For example, you may have implemented a bug fix and want to merge this with the stable branch of your code (usually the master branch). branch_name is the branch you want to integrate into the current one you are on.</p>
+</section>
+</section>
+<section id="working-with-a-remote-repo" class="level1">
+<h1>Working with a remote repo</h1>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

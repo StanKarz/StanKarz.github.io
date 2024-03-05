@@ -1,0 +1,22 @@
+project:
+  type: website
+
+website:
+  title: "Stan Karzhev"
+  navbar:
+    background: "#E1E0E0"
+    right:
+      - about.qmd
+      - projects.qmd
+
+      - icon: github
+        href: https://github.com/
+      - icon: linkedin
+        href: https://linkedin.com
+format:
+  html:
+    theme: cosmos
+    css: styles.css
+
+
+

@@ -1,0 +1,12 @@
+{
+  "hash": "200bc3ffd4fa6e4b1f7507b68d33445b",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\nformat:\n  html:\n    theme: cosmos\n    # include-in-header: custom.css\nlisting:\n  contents: posts\n  sort: \"date desc\"\n  type: default\n  categories: true\n  sort-ui: false\n  filter-ui: false\npage-layout: full\n\n# title-block-banner: true\nexecute: \n  freeze: auto\n---\n\n```{css, echo=FALSE}\n.title {\n  font-size: 100px;\n  font-style: italic;\n  color: blue;\n  font-family: Arial;\n  font-variant: small-caps;\n}\n```\n\n\n# Blog\n\n- - - \n\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

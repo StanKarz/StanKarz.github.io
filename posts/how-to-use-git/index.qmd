@@ -1,0 +1,214 @@
+---
+title: "How to use Git"
+author: "Stan Karzhev"
+date: "2023-11-23"
+image: "git.jpg"
+toc: true
+categories: [Development]
+---
+
+This is the first post in a Quarto blog. Welcome!
+
+
+## Background
+
+Git is a distributed VCS (version control system) that tracks changes made to files and directories, enabling users to record project changes and go back to a specific version of tracked files at any given time. Since Git is mainly used via the command line interface, knowledge of relevant commands is crucial for using Git effectively.
+
+There are two scenarios that we will walk through:
+
+*    Using Git with a local repository to track   changes made to an existing project on your local machine.
+*    Developing an existing remote project which exists outside of your local machine.
+
+# Setup
+
+To use Git, ensure you first have it installed on your computer. You can download Git here [link here]. To verify Git has been installed successfully, open the system terminal and run the following command:
+
+```bash
+git --version
+```
+
+If the installation has been successful you should see an output similar to this:
+
+### Screenshot here
+
+:::{.callout-note}
+Some callouts here about how mac and linux machines come with terminal etc... not really important.
+:::
+
+## Configuration 
+Local configuration variables are important, as they provide a way to identify who is making what changes to the project code. This is especially useful if you’re working with other developers. To specify your Git configuration settings, use the following commands:
+
+
+```bash
+git config --global user.name "John Doe"
+git config --global user.email "johndoe@example.com"
+```
+
+# Git Repositories
+
+Before going further we need to distinguish between the two major types of repositories, local and remote.
+
+**Local Repository** – An isolated environment stored on your local computer where you can work on the local version of the project.
+**Remote Repository** - Typically stored on a remote server outside of your local repository, remote repositories are especially useful when working in teams as they allow you to view the changes other developers are making, integrate them with your local version of the project and also share your code with others.
+
+## Initialising a new Git Repository
+
+Running the command:
+
+```bash
+git init
+```
+
+Will create a hidden `.git` directory for your project, this is where Git stores all internal tracking for the current repository. 
+
+:::{.callout-note}
+Before initialising a new Git repository ensure that you have navigated to the main folder that contains your project files.
+:::
+
+After initialising a new Git repository, you can use the command:
+```bash 
+ls -a
+```
+
+To show all the hidden files and directories including the newly created .git directory, you should see a .git file.
+
+# Three states of Git
+
+### Image here
+
+With Git there are three important states, the working directory, the staging area and the repository you are committing to. It’s important to distinguish between each of these and the purpose they serve.
+
+## Working Directory
+The working directory consists of files you are currently working on, this is where untracked and modified files reside.
+
+## Staging Area
+You can think of the staging area as a rough draft space where you organise and select all the files you want to be part of the next commit. For example, if you’ve made several changes across multiple files and you want to make multiple commits then you can stage the individual files and commit them in small chunks. This would make your commits more detailed and allow you to be more specific about what changes were made to the project.
+
+### Repository
+Once you are satisfied with the changes you’ve made you can go ahead and commit the staged files to your repository.
+
+# Staging & Committing
+
+## Staging files
+We can view the files in our working directory that have been modified or are being tracked by using:
+```bash
+git status
+```
+This command returns the current branch you are on (master branch). Untracked files are in red, tracked files appear in green.
+
+### Example screenshot
+
+To add a file to the staging area use the command:
+
+```bash
+git add fileName
+```
+
+To add multiple files to the staging area you can specify the names of all the files with a space between each file name:
+
+```bash
+git add fileName1 fileName2
+```
+
+Or you could stage all the files and directories in your project folder by using:
+
+```bash
+git add .
+```
+
+Once you have added the relevant files to the staging area, you can use git status again to ensure the correct files are in the staging area.
+
+### Screenshot here
+
+Now we can see which file or files have been added to the staging area and the changes are ready to be committed. 
+
+## Unstaging Files
+
+To remove a file from the staging area, use the following command.
+
+```bash
+git reset fileName
+```
+ 
+Alternatively, you can use `git reset` to remove all files from the staging area.
+
+## Making Commits
+In Git, commits are considered checkpoints or snapshots of your project at the current state, essentially you are saving the current version of your code with every commit that you make. You can create as many commits as you need and can go back and forth between different versions of the project. Commits are typically created at different logical points, such as after adding a new feature or a bug-fix implementation. 
+
+:::{.callout-note}
+Before you can commit a file you need to place it in the staging area first.
+:::
+
+To commit a file use the command `git commit -m "commit messge"`
+
+## Commit Message 
+(Message that this is optional)
+The commit message should be a descriptive summary of the changes that you are committing to the repository. After you’ve made a commit you will see a summary displayed, similar to the one below.
+
+## Commit History
+To view all the commits made for a project you can use: `git log`
+
+This will return details for each commit including the unique generated hash, author, date & time the commit was made, along with the commit message.
+
+[Example here]
+
+## Reverting to a previous commit
+The commit hash can be used to go back to a previous version of the project by using the command: `git checkout <commit_hash>`
+
+
+Where commit_hash is the hash of a previous commit that you want to revert to. As mentioned above the commit hash of all the commits can be retrieved by using git log.
+
+You can return to the latest version of the project files by using the command: `git checkout main`
+
+# Ignoring Files
+You may have files in your project folder which you don’t want other people to see or you don’t need to track e.g. personal preferences specific to your machine or operating system. To ignore these files i.e. prevent them from being added to the staging area and tracking them, you will need to create a .gitignore file. This file will contain all the files and directories you want Git to ignore when making a commit
+
+:::{.callout-note}
+Each filename or directory should be on a separate line in the .gitignore file
+:::
+
+# Branches
+A Git branch can be considered an isolated environment for experimenting with a new feature, fixing a bug or testing out ideas. The default branch which typically contains the production code is called the master or main branch. Therefore, branches allow you to work away from the main branch and encapsulate your changes. This helps to avoid breaking the production code and makes it easy to experiment with new ideas. If you are satisfied with the code developed in a branch you can merge it with the master branch for the rest of the team to see.
+
+## Creating a new branch
+To create a new branch, use the command: `git branch <new_branch>`
+
+It’s good practice to create a development branch for adding new features and experimenting with code, once everything is working as expected you can merge it with the master branch.
+
+## Switching between branches
+Creating a new branch does not automatically switch to that branch, to do this you will need to use the command: `git checkout <branch_name`
+
+The commits made on one branch will be independent of changes made on all other branches unless you decide to merge these changes later on. You can create a new branch and switch to it simultaneously by using git checkout with the -b flag: `git checkout -b <new_beanch>`
+
+To return to the main branch, run: `git checkout main`
+
+## Deleting a branch
+If you’re satisfied with the changes made on an individual branch you can merge with another branch by using:  
+
+`git branch -d <branch_name>`
+
+## Merging a Branch
+If you’re satisfied with the changes made on an individual branch you can merge with another branch by using: 
+
+`git merge <branch_name>`
+For example, you may have implemented a bug fix and want to merge this with the stable branch of your code (usually the master branch). branch_name is the branch you want to integrate into the current one you are on. 
+
+# Working with a remote repo
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
