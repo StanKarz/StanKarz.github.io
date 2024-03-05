@@ -1,10 +1,10 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Stan Karzhev",
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
     "section": "",
-    "text": "How to use Git\n\n\n\n\n\n\nDevelopment\n\n\n\n\n\n\n\n\n\nNov 23, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nGit Explained\n\n\n\n\n\n\ncode\n\n\n\nA brief introductory guide on the popular version control system, Git.\n\n\n\n\n\nNov 5, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\nNo matching items"
+    "text": "Explore my projects\n        See my hands-on experience across various concepts and applications.\n      \n    \n  \n    \n      \n      \n        View my resume\n        For a full background on my education and career.\n        CV\n      \n    \n  \n    \n      \n      \n        Get in touch\n        Discuss potential collaborations and opportunities.\n      \n    \n  \n\n\n\n\n\n\nTesting\ncontent here\n\n\nAbout this blog\nfdsfsdf\n\n\n\ntesting\ncontent here"
   },
   {
     "objectID": "projects.html",
@@ -161,10 +161,10 @@
     "text": "Merging a Branch\nIf you’re satisfied with the changes made on an individual branch you can merge with another branch by using:\ngit merge &lt;branch_name&gt; For example, you may have implemented a bug fix and want to merge this with the stable branch of your code (usually the master branch). branch_name is the branch you want to integrate into the current one you are on."
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Stan Karzhev",
     "section": "",
-    "text": "Explore my projects\n        See my hands-on experience across various concepts and applications.\n      \n    \n  \n    \n      \n      \n        View my resume\n        For a full background on my education and career.\n        CV\n      \n    \n  \n    \n      \n      \n        Get in touch\n        Discuss potential collaborations and opportunities.\n      \n    \n  \n\n\n\n\n\n\nTesting\ncontent here\n\n\nAbout this blog\nfdsfsdf\n\n\n\ntesting\ncontent here"
+    "text": "How to use Git\n\n\n\n\n\n\nDevelopment\n\n\n\n\n\n\n\n\n\nNov 23, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nGit Explained\n\n\n\n\n\n\ncode\n\n\n\nA brief introductory guide on the popular version control system, Git.\n\n\n\n\n\nNov 5, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\nNo matching items"
   }
 ]
