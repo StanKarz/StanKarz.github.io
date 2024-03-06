@@ -8,7 +8,7 @@
 
 <meta name="author" content="Stan Karzhev">
 <meta name="dcterms.date" content="2023-11-05">
-<meta name="description" content="A brief introductory guide on the popular version control system, Git.">
+<meta name="description" content="A brief introductory guide on what makes Git the most widely used version control system for modern development.">
 
 <title>Stan Karzhev - Git Explained</title>
 <style>
@@ -100,12 +100,12 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/StanKarz"> <i class="bi bi-github" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://linkedin.com"> <i class="bi bi-linkedin" role="img">
+    <a class="nav-link" href="https://www.linkedin.com/in/stanislav-karzhev-587808232/"> <i class="bi bi-linkedin" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -123,7 +123,7 @@ ul.task-list li input[type="checkbox"] {
       <h1 class="title">Git Explained</h1>
                   <div>
         <div class="description">
-          A brief introductory guide on the popular version control system, Git.
+          A brief introductory guide on what makes Git the most widely used version control system for modern development.
         </div>
       </div>
                           <div class="quarto-categories">
@@ -162,16 +162,25 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
-  <li><a href="#what-is-git" id="toc-what-is-git" class="nav-link" data-scroll-target="#what-is-git">What is Git</a></li>
-  <li><a href="#uses-of-git" id="toc-uses-of-git" class="nav-link" data-scroll-target="#uses-of-git">Uses of Git?</a></li>
-  <li><a href="#git-repositories" id="toc-git-repositories" class="nav-link" data-scroll-target="#git-repositories">Git Repositories</a></li>
-  <li><a href="#using-a-remote-repository-in-teams" id="toc-using-a-remote-repository-in-teams" class="nav-link" data-scroll-target="#using-a-remote-repository-in-teams">Using a remote repository in teams</a></li>
-  <li><a href="#unique-features-of-git" id="toc-unique-features-of-git" class="nav-link" data-scroll-target="#unique-features-of-git">Unique Features of Git</a>
+  <li><a href="#what-is-git" id="toc-what-is-git" class="nav-link" data-scroll-target="#what-is-git">What is Git</a>
   <ul class="collapse">
-  <li><a href="#git-is-fast" id="toc-git-is-fast" class="nav-link" data-scroll-target="#git-is-fast">Git is fast</a></li>
-  <li><a href="#git-is-distributed" id="toc-git-is-distributed" class="nav-link" data-scroll-target="#git-is-distributed">Git is distributed</a></li>
+  <li><a href="#understanding-version-control" id="toc-understanding-version-control" class="nav-link" data-scroll-target="#understanding-version-control">Understanding Version Control</a></li>
+  <li><a href="#the-power-of-git" id="toc-the-power-of-git" class="nav-link" data-scroll-target="#the-power-of-git">The Power of Git</a></li>
+  </ul></li>
+  <li><a href="#git-repositories" id="toc-git-repositories" class="nav-link" data-scroll-target="#git-repositories">Git Repositories</a>
+  <ul class="collapse">
+  <li><a href="#local-vs.-remote" id="toc-local-vs.-remote" class="nav-link" data-scroll-target="#local-vs.-remote">Local vs.&nbsp;Remote</a></li>
+  <li><a href="#collaborating-with-remote-repos" id="toc-collaborating-with-remote-repos" class="nav-link" data-scroll-target="#collaborating-with-remote-repos">Collaborating with Remote Repos</a></li>
+  <li><a href="#committing-and-pushing-changes" id="toc-committing-and-pushing-changes" class="nav-link" data-scroll-target="#committing-and-pushing-changes">Committing and Pushing Changes</a></li>
+  </ul></li>
+  <li><a href="#key-features-of-git" id="toc-key-features-of-git" class="nav-link" data-scroll-target="#key-features-of-git">Key Features of Git</a>
+  <ul class="collapse">
+  <li><a href="#fast" id="toc-fast" class="nav-link" data-scroll-target="#fast">Fast</a></li>
+  <li><a href="#distributed" id="toc-distributed" class="nav-link" data-scroll-target="#distributed">Distributed</a></li>
   <li><a href="#gits-branching-model" id="toc-gits-branching-model" class="nav-link" data-scroll-target="#gits-branching-model">Git’s branching model</a></li>
+  <li><a href="#staging" id="toc-staging" class="nav-link" data-scroll-target="#staging">Staging</a></li>
   <li><a href="#any-workflow" id="toc-any-workflow" class="nav-link" data-scroll-target="#any-workflow">Any workflow</a></li>
+  <li><a href="#data-integrity" id="toc-data-integrity" class="nav-link" data-scroll-target="#data-integrity">Data Integrity</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -186,45 +195,91 @@ ul.task-list li input[type="checkbox"] {
 <section id="background" class="level1">
 <h1>Background</h1>
 <hr>
-<p>For a while, I couldn’t quite fully grasp Git and its features that make it the most widely used version control system. Frequently I would find myself watching YouTube videos on key concepts and commands whenever I needed to use Git for my projects, only to completely forget everything, weeks later. And this is why I decided to take the time to learn deeply about Git, consolidate my knowledge with this guide and have it serve as a future reference.</p>
+<p>In today’s fast-paced software development world, Git is not just a tool; it’s a fundamental skill. Not only does it help teams track and coordinate complex projects but its distributed nature distinguishes it from other SCM (source code management) tools. It’s no surprise that Git powers the majority of modern software projects, playing a vital role in development workflows. This guide delves into the core features of Git along with concepts including staging, branching and merging.</p>
 </section>
 <section id="what-is-git" class="level1">
 <h1>What is Git</h1>
 <hr>
-<p>One of the first questions I had was “wait, so what is Git exactly?” And to answer that: Git is a distributed version control system, often abbreviated as VCS. But what does that mean? Essentially at its core, it’s a software tool which tracks changes to files such as applications, documents or websites. Without VCS we would have to store all the different copies and versions of a project in different folders. If you’ve ever tried this approach you’d likely agree that this can be a very slow and tedious process that doesn’t scale at all, especially if multiple people are working on the same project.</p>
-</section>
-<section id="uses-of-git" class="level1">
-<h1>Uses of Git?</h1>
+<p>At its simplest, Git is software that runs on your computer, recording and tracking every modification you make to your files. This is especially crucial for files containing code, as it enables developers to keep a detailed record of every change. But Git is much more than a simple tracker; as described by Wikipedia:</p>
+<blockquote class="blockquote">
+<p><strong>“Git is a distributed version control system that tracks changes in any set of computer files, usually used for coordinating work among programmers who are collaboratively developing source code during software development.”</strong></p>
+</blockquote>
+<p>This definition introduces the term “distributed version control system”. To break this down, A VCS (version control system) is a name given to a system responsible for recording changes made to files over time. Unlike traditional VCS, which rely on a central server to store all versions of a project, Git operates on a distributed model. Every developer’s computer holds a complete copy of the project history, enabling work to continue seamlessly even without a central server connection.</p>
+<section id="understanding-version-control" class="level3">
+<h3 class="anchored" data-anchor-id="understanding-version-control">Understanding Version Control</h3>
 <hr>
-<p>The most common use for Git is for source code management (SCM) in software development, as the name suggests it helps track modifications made to a codebase or repository.</p>
+<p>A VCS archives every modification made to a file or set of files over time. This allows anyone to revert to a previous version, compare changes, or analyse the evolution of a project. Git’s distributed nature not only enhances project security, since every participant has a full backup but also significantly improves collaboration and flexibility. Developers can work independently on different features or fixes and later “merge” their changes without the risk of losing work or interfering with the main codebase.</p>
+</section>
+<section id="the-power-of-git" class="level3">
+<h3 class="anchored" data-anchor-id="the-power-of-git">The Power of Git</h3>
+<hr>
+<p>With Git, every clone of a repository is not just a snapshot of your project at a given time; it’s a comprehensive backup of your project’s entire history. This aspect is fundamental for resilient project management and enables a wide array of workflows that can be tailored to the needs of any development team.</p>
+</section>
 </section>
 <section id="git-repositories" class="level1">
 <h1>Git Repositories</h1>
 <hr>
-<p>A Git repository is a collection of files of different versions, it tracks all changes made to files in a project to build a history over time. Initialising Git on a project results in the creation of a Git repository, this will be the <strong>.git</strong> folder. If you’re wondering what happens if you accidentally delete this folder and as you might (or might not) expect you will end up erasing your project’s entire history along with it.</p>
-<p>Git repositories (often shortened to repo) can be either local or remote. A local repo is stored on a local machine for direct use, enabling the user access to all the files and their commit history. Whereas, a remote repository is hosted on the internet or another network for indirect use.</p>
-</section>
-<section id="using-a-remote-repository-in-teams" class="level1">
-<h1>Using a remote repository in teams</h1>
+<p>At the heart of Git’s powerful version control capabilities is the concept of repositories, or “repos” for short. A Git repository is essentially a database of your project’s history, tracking changes to your files over time. This history is stored in a special directory called the <code>.git</code> folder, which is created when you initialise Git in your project.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>.git</code> folder contains more than just files; it houses the entire history of changes, branch information, and more.</p>
+</div>
+</div>
+<section id="local-vs.-remote" class="level3">
+<h3 class="anchored" data-anchor-id="local-vs.-remote">Local vs.&nbsp;Remote</h3>
 <hr>
-<p>A remote repository is particularly useful for a team working on a project, as a member of the team you will be able to clone the remote repo into your local repo, allowing you access to the most recent version of the project. You can proceed to make changes to the project in your local repo and once you’re satisfied you can share these changes with the rest of the team. This is done via the <code>git push</code> command which copies the changes from your local repository (the <strong>.git</strong> folder on your computer) to the remote repository (the <strong>.git</strong> folder on the remote computer). Now your changes will be visible to everyone who has access to the remote repository.</p>
-<p>Another thing to mention is that you can commit changes to your local repository even whilst disconnected from the internet (Git allows you to work offline), and no one else can view changes made in your local repo. Once you have a connection, you can push your changes to the remote Git repository for everyone on your team to see.</p>
+<p>A local repository resides on your personal computer, allowing you direct access to your files and their revision history. In contrast, a remote repository is stored on a server accessible over the internet or a network, facilitating collaboration with others. Platforms like GitHub, GitLab, and Bitbucket are popular choices for hosting remote repositories.</p>
 </section>
-<section id="unique-features-of-git" class="level1">
-<h1>Unique Features of Git</h1>
+<section id="collaborating-with-remote-repos" class="level3">
+<h3 class="anchored" data-anchor-id="collaborating-with-remote-repos">Collaborating with Remote Repos</h3>
 <hr>
-<section id="git-is-fast" class="level2">
-<h2 class="anchored" data-anchor-id="git-is-fast">Git is fast</h2>
+<p>Remote repositories enable teams to work together on a project. By cloning a remote repo to your local machine, you gain access to the most recent version of the project. Changes made locally can be shared with the team by pushing them to the remote repository, ensuring everyone stays in sync.</p>
+</section>
+<section id="committing-and-pushing-changes" class="level3">
+<h3 class="anchored" data-anchor-id="committing-and-pushing-changes">Committing and Pushing Changes</h3>
+<hr>
+<p>A commit represents a snapshot of your project at a moment in time, allowing you to track the evolution of your code and revert to previous states if necessary. With descriptive commit messages, you can create a readable history of the project development. Pushing commits to a remote repository shares your changes with the team, facilitating collaboration.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Git requires your local repo to be up to date with the remote repo before allowing you to push any changes, ensuring a conflict-free workflow. If your colleagues have pushed updates to the repo while you were working on it locally, Git will ask you to first “pull” these changes, integrating them with your work, before you can “push” your commits.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="key-features-of-git" class="level1">
+<h1>Key Features of Git</h1>
+<p>Git’s unique combination features sets it apart from other VCS. These features are designed to enhance efficiency, reliability and flexibility in the modern development process, making Git an indispensable tool. From its speed and distributed architecture to its sophisticated branching model and beyond, Git’s capabilities address the complex needs of today’s software projects. In this section, we delve into the specific features that contribute to Git’s standing as the preferred VCS for so many professionals. Each of these features not only solves practical problems faced in software development but also opens up new possibilities for how teams can work together on code.</p>
+<section id="fast" class="level3">
+<h3 class="anchored" data-anchor-id="fast">Fast</h3>
+<hr>
 <p>One of the features of Git that make it fast is that each user has a full local history of a repository and can create commits and inspect the file history without an internet connection. Additionally, most operations are performed locally, which makes Git a faster VCS alternative than centralised systems that require constant communication with a remote server.</p>
 </section>
-<section id="git-is-distributed" class="level2">
-<h2 class="anchored" data-anchor-id="git-is-distributed">Git is distributed</h2>
+<section id="distributed" class="level3">
+<h3 class="anchored" data-anchor-id="distributed">Distributed</h3>
+<hr>
 <p>As mentioned earlier, when working in a team each member gets a full copy of the repository when they clone it, along with a full history of the commits so far. This means that in the event of a crash there is no single point of failure with Git, as every user has a copy of the main server (unless there is only a single copy of the repository).</p>
 <p>In terms of development, a distributed system makes it easier to scale an engineering team. For instance with a centralised VCS, if a developer breaks the branch which contains the production code, other developers won’t be able to commit their changes until this is resolved. However, with Git this isn’t an issue, as everyone can continue working in their local repositories.</p>
 </section>
-<section id="gits-branching-model" class="level2">
-<h2 class="anchored" data-anchor-id="gits-branching-model">Git’s branching model</h2>
-<p>One of the unique aspects of Git that distinguish it from other SCM tools is its branching capabilities. Think of a branch as an isolated environment for experimenting with a new feature, fixing a bug or testing out an idea. If we are satisfied we can go ahead and merge it with the master branch. A local branch exists on the local user’s machine; the main branch typically contains the production code.</p>
+<section id="gits-branching-model" class="level3">
+<h3 class="anchored" data-anchor-id="gits-branching-model">Git’s branching model</h3>
+<hr>
+<p>One of the unique aspects of Git that distinguish it from other SCM tools is its branching capabilities. Think of a branch as an isolated environment for experimenting with a new feature, fixing a bug or testing out an idea. If we are satisfied we can go ahead and merge it with the main branch. A local branch exists on the local user’s machine; the main branch typically contains the production code.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="git-branch.png" class="img-fluid figure-img"></p>
@@ -232,11 +287,41 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 <p>Users are encouraged to utilise multiple local branches that can be independent of each other for the reasons stated above (disposable experimentation, working on new features and trying out new ideas).</p>
-<p>Additionally, it is not necessary to push all your local branches to the remote repository, you can decide which ones to share. Ultimately, this gives users the freedom to try out new ideas and alleviates the worry of having to plan when they are going to share them with the rest of the team. Another important thing to mention is that the creation, merging and deletion of branches is extremely fast (takes seconds) and easy.</p>
+<p>Additionally, it is not necessary to push all your local branches to the remote repository, you can decide which ones to share. Ultimately, this gives users the freedom to try out new ideas and alleviates the worry of having to plan when they are going to share them with the rest of the team.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Creation, merging and deletion of branches is extremely fast (takes seconds) and is a straightforward process.</p>
+</div>
+</div>
 </section>
-<section id="any-workflow" class="level2">
-<h2 class="anchored" data-anchor-id="any-workflow">Any workflow</h2>
+<section id="staging" class="level3">
+<h3 class="anchored" data-anchor-id="staging">Staging</h3>
+<hr>
+<p>Git’s “staging area” is a pre-commit holding area which allows you to review and format changes before making a commit. This gives developers the flexibility to selectively stage certain files without making a commit for all the modified files. This functionality extends to giving user’s the ability to stage and commit particular parts of files e.g.&nbsp;certain functions. This is particularly useful for keeping your project’s history organised and making sure each commit reflects a single logical change.</p>
+<p>When working with Git, files can be in either one of three states:</p>
+<ul>
+<li><strong>Modified:</strong> Changes have been made to the file but have not been staged.</li>
+<li><strong>Staged:</strong> A modified file in it’s current version has been prepared for the next commit snapshot.</li>
+<li><strong>Committed:</strong> The file has been stored in the local database.</li>
+</ul>
+</section>
+<section id="any-workflow" class="level3">
+<h3 class="anchored" data-anchor-id="any-workflow">Any workflow</h3>
+<hr>
 <p>A workflow is a recommendation for how to utilise Git for all members to accomplish work productively and consistently. Git’s distributed nature and intuitive branching system make it possible for an almost endless number of workflows to be implemented with relative ease. As Git is focused on flexibility there is no standardised process for how to interact with Git.</p>
+</section>
+<section id="data-integrity" class="level3">
+<h3 class="anchored" data-anchor-id="data-integrity">Data Integrity</h3>
+<hr>
+<p>Git ensures the integrity of code history through cryptographic hashes (SHA-1). Each commit is checksummed, guaranteeing the history’s integrity and immutability. Checksumming in Git involves generating a unique SHA-1 hash for each set of changes or commit. This hash acts as a fingerprint for that particular commit, encapsulating not only the changes made but also the context of those changes, including who made them, when they were made, and in relation to what other commits. This SHA-1 hash is a 40-character string composed of hexadecimal characters (0-9 and a-f) and represents a virtually unique identifier for that commit. This security feature is crucial for maintaining the reliability of a codebase, and is not commonly supported with centralised VCS.</p>
 
 
 </section>

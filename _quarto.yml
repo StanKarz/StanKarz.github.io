@@ -11,9 +11,9 @@ website:
       - projects.qmd
 
       - icon: github
-        href: https://github.com/
+        href: https://github.com/StanKarz
       - icon: linkedin
-        href: https://linkedin.com
+        href: https://www.linkedin.com/in/stanislav-karzhev-587808232/
 format:
   html:
     theme: cosmos
