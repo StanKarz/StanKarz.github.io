@@ -8,7 +8,7 @@ website:
     background: "#E1E0E0"
     right:
       - about.qmd
-      - projects.qmd
+      # - projects.qmd
 
       - icon: github
         href: https://github.com/StanKarz
