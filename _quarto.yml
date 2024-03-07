@@ -12,8 +12,10 @@ website:
 
       - icon: github
         href: https://github.com/StanKarz
+        target: _blank
       - icon: linkedin
         href: https://www.linkedin.com/in/stanislav-karzhev-587808232/
+        target: _blank
 format:
   html:
     theme: cosmos

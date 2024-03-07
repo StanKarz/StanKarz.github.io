@@ -3,7 +3,7 @@ title: "Git Explained"
 description: "A brief introductory guide on what makes Git the most widely used version control system for modern development."
 author: "Stan Karzhev"
 date: "2023-11-05"
-categories: [code]
+categories: [Development]
 image: "git.png"
 toc: true
 toc-title: "Contents"
@@ -68,6 +68,8 @@ A commit represents a snapshot of your project at a moment in time, allowing you
 :::
 
 # Key Features of Git
+- - - 
+
 Git's unique combination features sets it apart from other VCS. These features are designed to enhance efficiency, reliability and flexibility in the modern development process, making Git an indispensable tool.  From its speed and distributed architecture to its sophisticated branching model and beyond, Git's capabilities address the complex needs of today's software projects. In this section, we delve into the specific features that contribute to Git's standing as the preferred VCS for so many professionals. Each of these features not only solves practical problems faced in software development but also opens up new possibilities for how teams can work together on code.
 
 ### Fast

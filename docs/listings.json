@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/python-for data-science/index.html",
       "/posts/how-to-use-git/index.html",
       "/posts/git-explained/index.html"
     ]

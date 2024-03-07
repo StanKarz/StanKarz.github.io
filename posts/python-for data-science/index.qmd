@@ -1,0 +1,438 @@
+---
+title: "Useful Python Features for Data Science"
+description: "Features of Python that are useful in data science workflows with code examples."
+author: "Stan Karzhev"
+date: "2023-12-20"
+categories: [Code]
+image: "python-ds.png"
+toc: true
+toc-title: "Contents"
+toc-location: right
+html:
+    smooth-scroll: true
+    css: styles.css
+---
+
+# Background
+- - - 
+
+Python stands at the forefront of data science and machine learning, not just because of its simplicity but also due to its powerful suite of functions and methods. We will explore some of the most useful functions including `map()`, `filter()`, and `zip()`, along with the elegance of list and dictionary comprehensions, the power of iterators and generators and the versatility of decorators. We’ll delve into their syntax, provide simple examples, and demonstrate their practical application in data science and machine learning to harness Python’s capabilities for data-driven projects.
+
+::: {.callout-note}
+You can run the code below in a Jupyter Notebook via Binder <a href="https://mybinder.org/v2/gh/StanKarz/useful_python_features/fe5621373154d2a0f2208d563a3e6f870a6211a6?urlpath=lab%2Ftree%2Fuseful_python_features.ipynb" target="_blank">here</a>
+:::
+
+# `map()` & `filter()`
+- - - 
+
+The `map()` function takes two inputs, the function to apply and the iterable (e.g. list, set, dictionary, tuple, string) to apply it to, the returned result will be an iterator, in this case, a map object containing the new output. The input function can be any callable function including built-in functions, `lambda` functions, user-defined functions, classes and methods. Essentially, `map()` iterates over the iterable and applies the input function to each element in the iterable, just like a for loop might do.
+
+**syntax:** `map(function, iterable)`
+
+```python 
+## Simple example
+
+# Define a function to calculate the square of a number
+def square(x):
+    return x ** 2
+
+# Create a list of integers
+numbers = [1, 2, 3, 4, 5]
+
+# Apply the square function to each element in the map object and convert the result to a list
+squared_numbers = list(map(square, numbers))
+squared_numbers  # Output: [1, 4, 9, 16, 25]
+```
+
+::: {.callout-note}
+Objects returned by `map` and `filter` are iterators which means their values are not stored but generated as needed.
+:::
+
+In this example, we demonstrate the use of `map()` in a typical data processing scenario common in machine learning. The goal here is to normalise a list of height data. Normalisation, especially Z-score normalisation, is a crucial step in preparing data for many machine-learning algorithms. It involves scaling the data so that it has a mean of 0 and a standard deviation of 1. Therefore, all features contribute equally to the model's performance.
+
+```python
+## Example in Data Preprocessing 
+
+heights = [170, 155, 180, 190, 162]
+
+# Function to calculate the mean and standard deviation
+def calculate_mean_std(data):
+    mean = sum(data) / len(data)
+    std = (sum([(x - mean) ** 2 for x in data]) / len(data)) ** 0.5
+    return mean, std
+
+mean_height, std_height = calculate_mean_std(heights)
+
+# Define a function to normalise the data
+def normalize(x):
+    return (x - mean_height) / std_height
+
+normalized_heights = list(map(normalize, heights))
+normalized_heights # Output: [-0.112, -1.313, 0.688, 1.489, -0.752]
+```
+
+`filter()` is a function that selectively passes elements from an iterable through a test function. Like `map()`, it takes a function and an iterable as arguments. However, instead of transforming each element, `filter()` checks each element against the test function and returns only those for which the function evaluates to True. In simple terms, `filter()` sifts through an iterable, keeping only the elements that meet a specified condition.
+
+**syntax:** `filter(function, iterable)`
+
+In a machine learning context, we can use `filter()` for feature selection, data cleaning or removing outliers. For instance, we might want to filter out abnormal values which could be due to errors or outliers. These readings are crucial for training a ML model and removing them is a common preprocessing step.
+
+```python
+
+# Sample data: temperature readings in Fahrenheit
+sensor_readings = [102, 95, 101, 150, 99, 98, 200, 105]
+
+# Function to convert Fahrenheit readings to Celsius
+def fahrenheit_to_celsius(f):
+    return (f - 32) * 5 / 9
+
+# Function to check if the temperature is within the normal range
+def is_normal_temp(c):
+    return -5 <= c <= 40
+
+# First, convert all readings from Fahrenheit to Celsius using map
+celsius_readings = list(map(fahrenheit_to_celsius, sensor_readings))
+celsius_readings # Output: [38.8, 35.0, 38.3, 65.5, 37.2, 36.6, 93.3, 40.5]
+
+
+# Next, filter out abnormal readings using filter
+normal_celsius__readings = list(filter(is_normal_temp, celsius_readings))
+normal_celsius__readings # Output: [38.8, 35.0, 38.3, 37.2, 36.6]
+```
+
+Overall, `map()` & `filter()` provide both a more Pythonic and efficient way of handling data transformations and filtering. They are considered a more elegant alternative to traditional loops, aligning with Python’s emphasis on readability and simplicity.
+
+:::{.callout-note}
+Note: "Pythonic" refers to a coding style and practice that leverages Python's unique features to write code that is clear, concise and readable. For comprehensive guidelines on adhering to these conventions refer to the <a href="https://peps.python.org/pep-0008/" target="_blank">PEP 8 Style Guide</a>
+:::
+
+# `lambda functions`
+- - -
+
+`lambda()` functions, also known as anonymous functions are defined using the lambda keyword and are especially useful as one-off functions that don't need to be named or reused. They are typically used where functions are required for a short period within a larger expression and are best used sparingly, in situations where they enhance readability and conciseness.
+
+**syntax:** `lambda parameters: expression`
+
+Previously, we used both `map()` and `filter()` in conjunction with user-defined functions, however, we can achieve the same result using `lambda`. This approach is more concise, eliminating the need for a separate function definition.
+
+```python
+
+# Method 1 using def
+
+# Define a function to calculate the square of a number
+def square(x):
+    return x ** 2
+
+# Create a list of integers
+numbers = [1, 2, 3, 4, 5]
+
+# Apply the square function to each element in the map object and convert the result to a list
+squared_numbers_1 = list(map(square, numbers))
+
+# Method 2 using lambda
+squared_numbers_2 = list(map(lambda x: x ** 2, numbers))
+```
+
+In this example, `lambda` performs the same check as `even()` within the `filter` call. This approach is more streamlined and avoids the overhead of defining and naming a separate function.
+
+```python
+# Method 1 using def
+def even(x):
+    return x % 2 == 0
+
+numbers = [1, 2, 3, 4, 5]
+
+# Apply the even function to each element in the filter object and convert the result to a list 
+filtered_numbers_1 = list(filter(even, numbers))
+
+# Method 2 using lambda
+filtered_numbers_2 = list(filter(lambda x: x% 2 ==0, numbers))
+```
+
+Despite the ability of lambda to make code more readable and expressive, particularly when utilised in common programming patterns involving `map()`, `filter()` and `sorted()`, `lambda` functions are not a one-size-fits-all solution and should **not** be used judiciously to maintain code clarity. Here’s an example of when the use of lambda would not be appropriate:
+
+```python
+# Using def 
+def process_data(data):
+		# Check if data is empty or None, raise an error if True
+    if not data:
+        raise ValueError("No data provided")
+		# Apply a complex data transformation to each data item if a condition is met
+    transformed = [complex_transformation(d) for d in data if condition(d)]
+		
+		# Aggregate transformed data
+    result = aggregate(transformed)
+		
+		#Post process aggregated result
+    post_processed_result = post_process(result)
+
+    return post_processed_result
+```
+
+```python
+# Using lambda
+process_data_lambda = lambda data: post_process(aggregate([complex_transformation(d) for d in data if condition(d)])) if data else ValueError("No data provided")
+```
+
+# List & Dictionary Comprehensions
+- - - 
+
+List and dictionary comprehensions are concise ways to create lists and dictionaries in Python. They offer a more readable and efficient way to generate these collections compared to traditional loops and functions. Comprehensions follow the principle of writing simple expressions that transform or filter sequence elements.
+
+**syntax:** `new_list = [expression for item in iterable if condition == True]`
+
+**syntax:** `new_dict = {key, value for key,value in iterable if condition == True}`
+
+:::{.callout-note}
+The expression can be any function or operation applied to the item, also the condition checking aspect of list and dict comprehensions is optional. 
+:::
+
+In some simple cases, using a list comprehension with a conditional can be thought of as using `map()` and `filter()` in conjunction. As the example below shows, we are squaring all even elements in a specified range.
+
+```python
+# Simple example
+squares = [x**2 for x in range(5) if x % 2 == 0]
+squares # Output: [0, 4, 16]
+```
+
+The equivalent approach using `map()` and `filter()` looks like this, it’s evident that the list comprehension is more readable and succinct, making it a preferred choice in such scenarios.
+
+```python
+squares = map(lambda x: x**2, filter(lambda x: x % 2 == 0, range(5)))
+squares = list(squares)  # Output: [0, 4, 16]
+```
+
+For dictionary comprehension, the syntax is similar except we use curly braces `{}` instead of square brackets `[]` which are typically used for lists instead, and in this case, we omitted the optional conditional.
+
+```python
+# Simple example 
+# Dictionary inversion, keys become values and values become keys
+
+my_map = {"a": 1, "b" :2, "c" : 3}
+
+inverted_map = {value: key for key, value in my_map.items()}
+inverted_map # Output: {1: 'a', 2: 'b', 3: 'c'}
+```
+
+In many machine learning models, especially those based on algorithms that require numerical input, you need to convert categorical data (like colour names) into numerical form. One simple approach is to create a binary encoding for a categorical feature, which can be simply implemented with a list or dict comprehension.
+
+```python
+# ML related example
+
+colours = ['red', 'green', 'blue', 'yellow', 'red']
+
+encoded_colours = [1 if colour == 'red' else 0 for colour in colours]
+encoded_colours # Output: [1, 0, 0, 0, 1]
+```
+
+This example demonstrates a simple one-hot encoding scenario. List comprehension makes it not only readable but also faster, which is crucial when encoding large datasets typical in machine learning tasks.
+
+```python
+categories = ['apple', 'orange', 'apple', 'pear', 'orange', 'banana']
+
+category_encoding = {category: idx for idx, category in enumerate(set(categories))}
+category_encoding # Output: {'orange': 0, 'banana': 1, 'pear': 2, 'apple': 3}
+```
+
+In summary, list and dictionary comprehensions are not only about writing more concise code; they also offer performance benefits. These benefits stem from the way Python optimises comprehensions at the bytecode level. When a comprehension is compiled, Python generates specialised bytecode. This bytecode is inherently more efficient for executing loops and performing condition checks, compared to the more general-purpose bytecode generated for loops with embedded if-else blocks. The reason behind this efficiency is the predictable pattern of comprehensions—they consistently involve iteration and, often, condition application. This predictable structure allows Python to streamline the execution process at the bytecode level, resulting in faster performance.
+
+# `zip()`
+- - - 
+
+The `zip()` function accepts iterators as its arguments and returns a zip object (an iterator of tuples) where the first item from each passed iterator is paired together, and then the second item in each passed iterator are paired together and so on until we reach the length of the iterable with the least items, this also decides the length of the output iterator. Essentially, the function returns an iterator of tuples, where the i-th tuple contains the i-th element from each of the input iterators.
+
+**syntax:** `zip(iterator_1, iterator_2, iterator_3)`
+
+```python
+# Simple example pairing fruis with their colours
+
+fruits = ['apple', 'banana', 'grape', 'pear']
+colours = ['red', 'yellow', 'purple']
+
+paired_fruits = zip(fruits,colours)
+
+list(paired_fruits) 
+# Output: [('apple', 'red'), ('banana', 'yellow'), ('grape', 'purple')]
+```
+
+:::{.callout-note}
+There's no restriction on the number of iterators you can provide to Python's `zip()` function as input arguments.
+:::
+
+Suppose you are working on a machine learning problem where you need to combine features from different datasets or feature sets. For instance, you might have one set of features coming from survey data and another set from transactional data, and you need to pair these features for each individual in your dataset. This is where the `zip()` function comes into use.
+
+```python
+survey_features = [(25, 'M'), (30, 'F'), (22, 'F')]  # Example: (Age, Gender)
+transactional_features = [(1200, 300), (2000, 500), (1500, 400)]  # Example: (Annual Spending, Number of Transactions)
+
+# Combine features using zip
+combined_features = zip(survey_features, transactional_features)
+
+for survey, transaction in combined_features:
+    print(f"Survey Data: {survey}, Transactional Data: {transaction}")
+    
+# Output:  Survey Data: (25, 'M'), Transactional Data: (1200, 300)
+#          Survey Data: (30, 'F'), Transactional Data: (2000, 500)  
+#          Survey Data: (22, 'F'), Transactional Data: (1500, 400)
+```
+
+In this example, `zip()` is used to combine data from two different feature sets, creating a paired iterable. For each individual, you now have a tuple containing both their survey data and transactional data. This can be particularly useful in feature engineering, where you might need to create a unified feature set from different sources.
+
+# Iterators & Generators
+- - - 
+
+As previously discussed, functions like `map` and `filter` in Python return iterator objects. This ties back to our discussion on iterators, which are fundamental to Python's handling of sequences and collections. An iterator in Python is an object that can be iterated over, meaning you can traverse through all the values it holds. This is facilitated by the `__iter__()` method, which returns the iterator object itself, and the `__next__()` method, which retrieves the next value from the iterator and raises a `StopIteration` exception when there are no more values.
+
+```python
+# Simple example
+
+class CountDown():
+    def __init__(self, start):
+        self.current = start
+    
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        if self.current <= 0:
+            raise StopIteration
+        else:
+            self.current -= 1
+            return self.current
+
+for number in CountDown(3):
+    print(number)
+# Output: 2 1 0
+```
+
+:::{.callout-note}
+Iterators are particularly useful in handling large data streams that might not fit entirely in memory. 
+:::
+
+```python
+# ML related example
+
+class BatchIterator():
+    """
+    An iterator that yields batches of data from a dataset.
+    This is useful in machine learning for processing large datasets in mini-batches.
+    """
+    def __init__(self, dataset, batch_size):
+        self.dataset = dataset
+        self.batch_size = batch_size
+        self.index = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.index >= len(self.dataset):
+            raise StopIteration
+        batch = self.dataset[self.index:self.index + self.batch_size]
+        self.index += self.batch_size
+        return batch
+```
+
+Generators are a more concise way to create iterators using functions. A generator is a function that behaves like an iterator, generating a sequence of values using the yield keyword. Unlike regular functions that return a single value and then terminate, generators can maintain state in local variables across multiple calls, making them ideal for efficient data processing, here’s some examples:
+
+```python
+# Simple example
+
+def countdown_generator(start):
+    current = start
+    while current > 0:
+        yield current
+        current -= 1
+
+for number in countdown_generator(3):
+    print(number)
+# Output: 3 2 1
+```
+
+```python
+# ML related example
+
+def data_augmentation_generator(dataset, augment_func):
+    """
+    A generator for performing data augmentation on the fly.
+    This is useful in machine learning for augmenting data during training without
+    needing to store the augmented data in memory.
+    """
+    for data in dataset:
+        yield augment_func(data)
+```
+
+### Overall
+- - - 
+
+*   Iterators are objects that support the iterator protocol (`__iter__` and `__next__` methods), while generators are functions that yield values using `yield`.
+
+*   **Creation:** Iterators are created using classes, requiring explicit definitions of `__iter__` and `__next__`, whereas generators are created using functions, which is generally more concise.
+
+*   **Use Case:** Iterators are ideal for more complex or stateful iteration, while generators are suitable for simpler cases where a function can manage the state.
+
+*   **Commonality:** Both iterators and generators provide a way to handle large datasets efficiently, enabling the processing of data that doesn't fit in memory, and both follow lazy evaluation, computing one element at a time on demand.
+
+# Decorators
+- - - 
+
+A decorator takes an existing function as an argument and extends its behaviour without explicitly modifying it. Decorators are a powerful feature that allows for the modification or enhancement of functions or methods in a clean, readable and maintainable way. 
+
+### Uses
+- - -
+
+*   **Code Reusability and Separation of Concerns:** Decorators can add functionality to existing functions or methods, allowing for code reuse and separation of concerns.
+
+*   **Logging and Debugging:** They are widely used for logging function calls, which is helpful for debugging.
+
+*   **Performance Testing:** Decorators can be used for timing functions, which is crucial in performance testing and optimisation.
+
+*   **Data Processing and Pipeline Setup:** In data science, decorators can streamline the setup of data processing pipelines, making the code cleaner and more modular.
+
+```python
+# Simple example
+
+def my_decorator(func):
+    def wrapper():
+        print('Something is happening before the function is called.')
+        func()
+        print('Something is happening after the function is called.')
+    return wrapper
+
+@my_decorator
+def say_hello():
+    print('Hello!')
+
+say_hello()
+
+# Output:
+# something is happening before the function is called.
+# hello!
+# something is happening after the function is called.
+```
+
+```python
+# Simple example
+
+def my_decorator(func):
+    def wrapper():
+        print('Something is happening before the function is called.')
+        func()
+        print('Something is happening after the function is called.')
+    return wrapper
+
+@my_decorator
+def say_hello():
+    print('Hello!')
+
+say_hello()
+
+# Output:
+# something is happening before the function is called.
+# hello!
+# something is happening after the function is called.
+```
+
+In machine learning and data science, decorators have practical applications in performance monitoring, logging, and setting up data processing pipelines. By understanding and utilising decorators, you can write more efficient and Pythonic code.
+
+
