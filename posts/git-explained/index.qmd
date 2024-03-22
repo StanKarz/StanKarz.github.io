@@ -1,6 +1,6 @@
 ---
 title: "Git Explained"
-description: "A brief introductory guide on what makes Git the most widely used version control system for modern development."
+description: "A brief overview on what makes Git the most widely used version control system for modern development."
 author: "Stan Karzhev"
 date: "2023-11-05"
 categories: [Development]

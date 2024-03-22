@@ -4,7 +4,7 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "Explore my projects\n        See my hands-on experience across various concepts and applications.\n      \n    \n  \n    \n      \n      \n        View my resume\n        For a full background on my education and career.\n        CV\n      \n    \n  \n    \n      \n      \n        Get in touch\n        Discuss potential collaborations and opportunities.\n      \n    \n  \n\n\n\n\n\n\nTesting\ncontent here\n\n\nAbout this blog\nfdsfsdf\n\n\n\ntesting\ncontent here"
+    "text": "Welcome to my corner of the web.\nAs a MSc graduate in Artificial Intelligence my academic and professional journey has been anything but linear. Starting with a robust foundation in Chemistry, I transitioned into the dynamic field of AI, drawn by its potential to redefine problem-solving and innovation. This interdisciplinary background has endowed me with a unique perspective and a versatile skill set, bridging the gap between the theoretical and the practical, from the microscopic intricacies of single-atom catalysts to the expansive possibilities of machine learning and AI.\n\nRecent Activities\nThis past summer, my passion for AI led me to Seoul National University in South Korea, where I immersed myself in humanoid AI robotics during a summer exchange program. I not only expanded my technical skills in programming and computer vision but also embraced the cultural diversity and collaborative spirit of a global educational environment. This experience exapnded my perspective on the universal impact and applications of AI technologies across cultures and industries.\nThis past summer, my passion for AI took me to Seoul National University in South Korea, where I engaged in hands-on learning about robotics in AI. This immersive global experience expanded my perspective on the wide-ranging impacts and applications of AI worldwide\n\n\nMost Recent Role\nBack in London, I joined the ranks of University College London as a Research Intern. There, in a vibrant and challenging lab environment, I was tasked with a project that seemed like a prelude to a PhD journey: implementing model-free reinforcement learning techniques with a focus on Q-learning algorithms. This endeavor allowed me to deep-dive into the nuances of AI research, from conception through to execution and presentation. It was a hands-on exploration of reinforcement learning’s potential and its challenges, further enhancing my skills in research methodologies and collaborative innovation.\nIn my most recent role, I embraced the opportunity to work as a Research Intern at University College London, in a dynamic research lab. Assigned a comprehensive project, I delved into the practical aspects of AI research, implementing a model-free reinforcement learning algorithm and grasping the intricacies and challenges akin to a PhD journey. This end-to-end research experience equipped me with research methodologies and collaborative problem-solving skills to drive impactful AI innovation.\n\n\nBeyond the Classroom\nPrior to my postgraduate studies, I worked as a Customer Success Specialist at Paperform, where I honed my skills in client engagement, technical support, and cross-functional collaboration. This role taught me the importance of customer-centric product development and the value of clear, accessible user education.\n\n\nSkills and Tools\nMy technical toolkit is extensive, with advanced proficiency in Python, SQL, and a suite of data science libraries (Pandas, Scikit-learn, NumPy, Matplotlib) that complement my research and development projects. I’m also well-versed in Git and Visual Studio Code, tools that underpin my collaborative projects and version control needs."
   },
   {
     "objectID": "projects.html",
@@ -51,9 +51,9 @@
   {
     "objectID": "posts/how-to-use-git/index.html",
     "href": "posts/how-to-use-git/index.html",
-    "title": "How to use Git",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
     "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!"
+    "text": "Git is a distributed VCS (version control system) that tracks changes made to files and directories, enabling users to record project changes and go back to a specific version of tracked files at any given time. Since Git is mainly used via the command line interface, knowledge of relevant commands is crucial for using Git effectively."
   },
   {
     "objectID": "posts/how-to-use-git/index.html#background",
@@ -65,98 +65,98 @@
   {
     "objectID": "posts/how-to-use-git/index.html#configuration",
     "href": "posts/how-to-use-git/index.html#configuration",
-    "title": "How to use Git",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
     "section": "Configuration",
     "text": "Configuration\nLocal configuration variables are important, as they provide a way to identify who is making what changes to the project code. This is especially useful if you’re working with other developers. To specify your Git configuration settings, use the following commands:\ngit config --global user.name \"John Doe\"\ngit config --global user.email \"johndoe@example.com\""
   },
   {
     "objectID": "posts/how-to-use-git/index.html#initialising-a-new-git-repository",
     "href": "posts/how-to-use-git/index.html#initialising-a-new-git-repository",
-    "title": "How to use Git",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
     "section": "Initialising a new Git Repository",
     "text": "Initialising a new Git Repository\nRunning the command:\ngit init\nWill create a hidden .git directory for your project, this is where Git stores all internal tracking for the current repository.\n\n\n\n\n\n\nNote\n\n\n\nBefore initialising a new Git repository ensure that you have navigated to the main folder that contains your project files.\n\n\nAfter initialising a new Git repository, you can use the command:\nls -a\nTo show all the hidden files and directories including the newly created .git directory, you should see a .git file."
   },
   {
     "objectID": "posts/how-to-use-git/index.html#working-directory",
     "href": "posts/how-to-use-git/index.html#working-directory",
-    "title": "How to use Git",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
     "section": "Working Directory",
     "text": "Working Directory\nThe working directory consists of files you are currently working on, this is where untracked and modified files reside."
   },
   {
     "objectID": "posts/how-to-use-git/index.html#staging-area",
     "href": "posts/how-to-use-git/index.html#staging-area",
-    "title": "How to use Git",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
     "section": "Staging Area",
     "text": "Staging Area\nYou can think of the staging area as a rough draft space where you organise and select all the files you want to be part of the next commit. For example, if you’ve made several changes across multiple files and you want to make multiple commits then you can stage the individual files and commit them in small chunks. This would make your commits more detailed and allow you to be more specific about what changes were made to the project.\n\nRepository\nOnce you are satisfied with the changes you’ve made you can go ahead and commit the staged files to your repository."
   },
   {
     "objectID": "posts/how-to-use-git/index.html#staging-files",
     "href": "posts/how-to-use-git/index.html#staging-files",
-    "title": "How to use Git",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
     "section": "Staging files",
     "text": "Staging files\nWe can view the files in our working directory that have been modified or are being tracked by using:\ngit status\nThis command returns the current branch you are on (master branch). Untracked files are in red, tracked files appear in green.\n\nExample screenshot\nTo add a file to the staging area use the command:\ngit add fileName\nTo add multiple files to the staging area you can specify the names of all the files with a space between each file name:\ngit add fileName1 fileName2\nOr you could stage all the files and directories in your project folder by using:\ngit add .\nOnce you have added the relevant files to the staging area, you can use git status again to ensure the correct files are in the staging area.\n\n\nScreenshot here\nNow we can see which file or files have been added to the staging area and the changes are ready to be committed."
   },
   {
     "objectID": "posts/how-to-use-git/index.html#unstaging-files",
     "href": "posts/how-to-use-git/index.html#unstaging-files",
-    "title": "How to use Git",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
     "section": "Unstaging Files",
     "text": "Unstaging Files\nTo remove a file from the staging area, use the following command.\ngit reset fileName\nAlternatively, you can use git reset to remove all files from the staging area."
   },
   {
     "objectID": "posts/how-to-use-git/index.html#making-commits",
     "href": "posts/how-to-use-git/index.html#making-commits",
-    "title": "How to use Git",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
     "section": "Making Commits",
     "text": "Making Commits\nIn Git, commits are considered checkpoints or snapshots of your project at the current state, essentially you are saving the current version of your code with every commit that you make. You can create as many commits as you need and can go back and forth between different versions of the project. Commits are typically created at different logical points, such as after adding a new feature or a bug-fix implementation.\n\n\n\n\n\n\nNote\n\n\n\nBefore you can commit a file you need to place it in the staging area first.\n\n\nTo commit a file use the command git commit -m \"commit messge\""
   },
   {
     "objectID": "posts/how-to-use-git/index.html#commit-message",
     "href": "posts/how-to-use-git/index.html#commit-message",
-    "title": "How to use Git",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
     "section": "Commit Message",
     "text": "Commit Message\n(Message that this is optional) The commit message should be a descriptive summary of the changes that you are committing to the repository. After you’ve made a commit you will see a summary displayed, similar to the one below."
   },
   {
     "objectID": "posts/how-to-use-git/index.html#commit-history",
     "href": "posts/how-to-use-git/index.html#commit-history",
-    "title": "How to use Git",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
     "section": "Commit History",
     "text": "Commit History\nTo view all the commits made for a project you can use: git log\nThis will return details for each commit including the unique generated hash, author, date & time the commit was made, along with the commit message.\n[Example here]"
   },
   {
     "objectID": "posts/how-to-use-git/index.html#reverting-to-a-previous-commit",
     "href": "posts/how-to-use-git/index.html#reverting-to-a-previous-commit",
-    "title": "How to use Git",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
     "section": "Reverting to a previous commit",
     "text": "Reverting to a previous commit\nThe commit hash can be used to go back to a previous version of the project by using the command: git checkout &lt;commit_hash&gt;\nWhere commit_hash is the hash of a previous commit that you want to revert to. As mentioned above the commit hash of all the commits can be retrieved by using git log.\nYou can return to the latest version of the project files by using the command: git checkout main"
   },
   {
     "objectID": "posts/how-to-use-git/index.html#creating-a-new-branch",
     "href": "posts/how-to-use-git/index.html#creating-a-new-branch",
-    "title": "How to use Git",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
     "section": "Creating a new branch",
     "text": "Creating a new branch\nTo create a new branch, use the command: git branch &lt;new_branch&gt;\nIt’s good practice to create a development branch for adding new features and experimenting with code, once everything is working as expected you can merge it with the master branch."
   },
   {
     "objectID": "posts/how-to-use-git/index.html#switching-between-branches",
     "href": "posts/how-to-use-git/index.html#switching-between-branches",
-    "title": "How to use Git",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
     "section": "Switching between branches",
     "text": "Switching between branches\nCreating a new branch does not automatically switch to that branch, to do this you will need to use the command: git checkout &lt;branch_name\nThe commits made on one branch will be independent of changes made on all other branches unless you decide to merge these changes later on. You can create a new branch and switch to it simultaneously by using git checkout with the -b flag: git checkout -b &lt;new_beanch&gt;\nTo return to the main branch, run: git checkout main"
   },
   {
     "objectID": "posts/how-to-use-git/index.html#deleting-a-branch",
     "href": "posts/how-to-use-git/index.html#deleting-a-branch",
-    "title": "How to use Git",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
     "section": "Deleting a branch",
     "text": "Deleting a branch\nIf you’re satisfied with the changes made on an individual branch you can merge with another branch by using:\ngit branch -d &lt;branch_name&gt;"
   },
   {
     "objectID": "posts/how-to-use-git/index.html#merging-a-branch",
     "href": "posts/how-to-use-git/index.html#merging-a-branch",
-    "title": "How to use Git",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
     "section": "Merging a Branch",
     "text": "Merging a Branch\nIf you’re satisfied with the changes made on an individual branch you can merge with another branch by using:\ngit merge &lt;branch_name&gt; For example, you may have implemented a bug fix and want to merge this with the stable branch of your code (usually the master branch). branch_name is the branch you want to integrate into the current one you are on."
   },
@@ -165,7 +165,7 @@
     "href": "index.html",
     "title": "Stan Karzhev",
     "section": "",
-    "text": "Backpropagation: The Essence of Neural Network Training\n\n\n\n\n\n\nDeep Learning\n\n\n\nA walkthrough on how the backpropagation algorithm is involved in training artificial neural networks.\n\n\n\n\n\nJan 31, 2024\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nUseful Python Features for Data Science\n\n\n\n\n\n\nCode\n\n\n\nFeatures of Python that are useful in data science workflows with code examples.\n\n\n\n\n\nDec 20, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nHow to use Git\n\n\n\n\n\n\nDevelopment\n\n\n\n\n\n\n\n\n\nNov 23, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nGit Explained\n\n\n\n\n\n\nDevelopment\n\n\n\nA brief introductory guide on what makes Git the most widely used version control system for modern development.\n\n\n\n\n\nNov 5, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\nNo matching items"
+    "text": "Backpropagation: The Essence of Neural Network Training\n\n\n\n\n\n\nDeep Learning\n\n\n\nA walkthrough on how the backpropagation algorithm is involved in training artificial neural networks.\n\n\n\n\n\nJan 31, 2024\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nUseful Python Features for Data Science\n\n\n\n\n\n\nCode\n\n\n\nFeatures of Python that are useful in data science workflows with code examples.\n\n\n\n\n\nDec 20, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nA Guide to Git Commands: From Basic to Advanced\n\n\n\n\n\n\nDevelopment\n\n\n\n….\n\n\n\n\n\nNov 23, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nGit Explained\n\n\n\n\n\n\nDevelopment\n\n\n\nA brief overview on what makes Git the most widely used version control system for modern development.\n\n\n\n\n\nNov 5, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/python-for data-science/index.html",
@@ -193,6 +193,97 @@
     "href": "posts/backpropagation/index.html#other-loss-functions",
     "title": "Backpropagation: The Essence of Neural Network Training",
     "section": "Other Loss Functions",
-    "text": "Other Loss Functions\nSelecting an appropriate loss function is another important consideration when training a neural network, this usually depends on the type of task and has significant implications for the convergence and performance of the neural network. Here are a few other common loss functions:\n\nMean Absolute Error (MAE)\n\nUse Cases: Regression tasks.\nAdvantages: Robust to outliers as errors are not squared in the calculation.\nDisadvantages: Because the errors are not squared this can understate the impact of large errors, which may not always be desirable.\nMathematical Expression: \\(MAE = \\frac 1N \\sum_{i=1}^{N} |y_i -\\hat y|\\)\n\n\n\nBinary Cross Entropy (Log Loss)\n\nUse Cases: Binary classification tasks.\nAdvantages: Well suited for measuring the performance of a classification model whose output is a probability value between 0 and 1.\nDisadvantages: Can be sensitive to imbalanced datasets where the number of instances of a class significantly outnumber the other.\nMathematical Expression: \\(L_{\\text{BCE}} = -\\frac{1}{N} \\sum_{i=1}^{N} \\left [(Y_i \\cdot \\log\\hat{Y}_i + (1 - Y_i) \\cdot \\log(1 - \\hat{Y}_i)) \\right]\\)\n\n\n\nCategorical Cross-Entropy\n\nUse Cases: Multi-class classification tasks.\nAdvantages: Generalises binary cross-entropy to multiple classes and is effective when each sample belongs to exactly one class.\nDisadvantages: Like binary cross-entropy, it can be sensitive to imbalanced datasets.\nMathematical Expression: \\(L_{CCE} = \\frac 1N \\sum_{i=1}^{N} \\sum_{c=1}^{M}y_{ic}\\cdot log(\\hat y_{ic})\\)\n\nWhere: \\(M\\) is the number of classes\n\n\nHinge Loss\n\nUse Cases: Binary classification tasks, especially for SVMs (support vector machines).\nAdvantages: It encourages the model to not only make the correct prediction but also to make it with high confidence.\nDisadvantages: Not suitable for probability estimates, as it does not model probability distributions.\nMathematical Expression: \\(L_{Hinge} = \\frac 1N \\sum_{i=1}^{N} max(0, 1 - y_i \\cdot \\hat y_i)\\)"
+    "text": "Other Loss Functions\nSelecting an appropriate loss function is another important consideration when training a neural network, this usually depends on the type of task and has significant implications for the convergence and performance of the neural network. Here are a few other common loss functions:\n\nMean Absolute Error (MAE)\n\n\nUse Cases: Regression tasks.\nAdvantages: Robust to outliers as errors are not squared in the calculation.\nDisadvantages: Because the errors are not squared this can understate the impact of large errors, which may not always be desirable.\nMathematical Expression: \\(MAE = \\frac 1N \\sum_{i=1}^{N} |y_i -\\hat y|\\)\n\n\n\nBinary Cross Entropy (Log Loss)\n\n\nUse Cases: Binary classification tasks.\nAdvantages: Well suited for measuring the performance of a classification model whose output is a probability value between 0 and 1.\nDisadvantages: Can be sensitive to imbalanced datasets where the number of instances of a class significantly outnumber the other.\nMathematical Expression: \\(L_{\\text{BCE}} = -\\frac{1}{N} \\sum_{i=1}^{N} \\left [(Y_i \\cdot \\log\\hat{Y}_i + (1 - Y_i) \\cdot \\log(1 - \\hat{Y}_i)) \\right]\\)\n\n\n\nCategorical Cross-Entropy\n\n\nUse Cases: Multi-class classification tasks.\nAdvantages: Generalises binary cross-entropy to multiple classes and is effective when each sample belongs to exactly one class.\nDisadvantages: Like binary cross-entropy, it can be sensitive to imbalanced datasets.\nMathematical Expression: \\(L_{CCE} = \\frac 1N \\sum_{i=1}^{N} \\sum_{c=1}^{M}y_{ic}\\cdot log(\\hat y_{ic})\\)\n\nWhere: \\(M\\) is the number of classes\n\n\nHinge Loss\n\n\nUse Cases: Binary classification tasks, especially for SVMs (support vector machines).\nAdvantages: It encourages the model to not only make the correct prediction but also to make it with high confidence.\nDisadvantages: Not suitable for probability estimates, as it does not model probability distributions.\nMathematical Expression: \\(L_{Hinge} = \\frac 1N \\sum_{i=1}^{N} max(0, 1 - y_i \\cdot \\hat y_i)\\)"
+  },
+  {
+    "objectID": "posts/how-to-use-git/index.html#git-basics",
+    "href": "posts/how-to-use-git/index.html#git-basics",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "section": "Git Basics",
+    "text": "Git Basics\n…."
+  },
+  {
+    "objectID": "posts/how-to-use-git/index.html#working-with-branches",
+    "href": "posts/how-to-use-git/index.html#working-with-branches",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "section": "Working with Branches",
+    "text": "Working with Branches"
+  },
+  {
+    "objectID": "posts/how-to-use-git/index.html#working-with-remote-repos",
+    "href": "posts/how-to-use-git/index.html#working-with-remote-repos",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "section": "Working with Remote Repos",
+    "text": "Working with Remote Repos"
+  },
+  {
+    "objectID": "posts/how-to-use-git/index.html#branch-strategies",
+    "href": "posts/how-to-use-git/index.html#branch-strategies",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "section": "Branch Strategies",
+    "text": "Branch Strategies"
+  },
+  {
+    "objectID": "posts/how-to-use-git/index.html#stashing-changes",
+    "href": "posts/how-to-use-git/index.html#stashing-changes",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "section": "Stashing Changes",
+    "text": "Stashing Changes"
+  },
+  {
+    "objectID": "posts/how-to-use-git/index.html#merge-conflicts",
+    "href": "posts/how-to-use-git/index.html#merge-conflicts",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "section": "Merge Conflicts",
+    "text": "Merge Conflicts"
+  },
+  {
+    "objectID": "posts/how-to-use-git/index.html#tags-for-releases",
+    "href": "posts/how-to-use-git/index.html#tags-for-releases",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "section": "Tags for Releases",
+    "text": "Tags for Releases"
+  },
+  {
+    "objectID": "posts/how-to-use-git/index.html#cleaning-up",
+    "href": "posts/how-to-use-git/index.html#cleaning-up",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "section": "Cleaning Up",
+    "text": "Cleaning Up"
+  },
+  {
+    "objectID": "posts/how-to-use-git/index.html#rebasing",
+    "href": "posts/how-to-use-git/index.html#rebasing",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "section": "Rebasing",
+    "text": "Rebasing"
+  },
+  {
+    "objectID": "posts/how-to-use-git/index.html#cherry-picking",
+    "href": "posts/how-to-use-git/index.html#cherry-picking",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "section": "Cherry-Picking",
+    "text": "Cherry-Picking"
+  },
+  {
+    "objectID": "posts/how-to-use-git/index.html#working-with-.gitignore-and-.gitattributes",
+    "href": "posts/how-to-use-git/index.html#working-with-.gitignore-and-.gitattributes",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "section": "Working with .gitignore and .gitattributes",
+    "text": "Working with .gitignore and .gitattributes"
+  },
+  {
+    "objectID": "posts/how-to-use-git/index.html#git-hooks",
+    "href": "posts/how-to-use-git/index.html#git-hooks",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "section": "Git Hooks",
+    "text": "Git Hooks"
+  },
+  {
+    "objectID": "posts/how-to-use-git/index.html#advanced-branch-management",
+    "href": "posts/how-to-use-git/index.html#advanced-branch-management",
+    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "section": "Advanced Branch Management",
+    "text": "Advanced Branch Management"
   }
 ]
