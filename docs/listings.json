@@ -3,8 +3,6 @@
     "listing": "/index.html",
     "items": [
       "/posts/backpropagation/index.html",
-      "/posts/advanced_git/index.html",
-      "/posts/intermediate_git/index.html",
       "/posts/python-for data-science/index.html",
       "/posts/basic_git/index.html",
       "/posts/git-explained/index.html"
