@@ -51,9 +51,9 @@
   {
     "objectID": "posts/how-to-use-git/index.html",
     "href": "posts/how-to-use-git/index.html",
-    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "title": "Basic Git Commands and Concepts",
     "section": "",
-    "text": "Git is a distributed VCS (version control system) that tracks changes made to files and directories, enabling users to record project changes and go back to a specific version of tracked files at any given time. Since Git is mainly used via the command line interface, knowledge of relevant commands is crucial for using Git effectively."
+    "text": "Git is a distributed VCS (version control system) that tracks changes made to files and directories, enabling users to record project changes and go back to a specific version of tracked files at any given time. Since Git is mainly used via the command line interface, knowledge of the relevant commands is crucial for using Git effectively."
   },
   {
     "objectID": "posts/how-to-use-git/index.html#background",
@@ -165,7 +165,7 @@
     "href": "index.html",
     "title": "Stan Karzhev",
     "section": "",
-    "text": "Backpropagation: The Essence of Neural Network Training\n\n\n\n\n\n\nDeep Learning\n\n\n\nA walkthrough on how the backpropagation algorithm is involved in training artificial neural networks.\n\n\n\n\n\nJan 31, 2024\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nUseful Python Features for Data Science\n\n\n\n\n\n\nCode\n\n\n\nFeatures of Python that are useful in data science workflows with code examples.\n\n\n\n\n\nDec 20, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nA Guide to Git Commands: From Basic to Advanced\n\n\n\n\n\n\nDevelopment\n\n\n\n….\n\n\n\n\n\nNov 23, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nGit Explained\n\n\n\n\n\n\nDevelopment\n\n\n\nA brief overview on what makes Git the most widely used version control system for modern development.\n\n\n\n\n\nNov 5, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\nNo matching items"
+    "text": "Backpropagation: The Essence of Neural Network Training\n\n\n\n\n\n\nDeep Learning\n\n\n\nA walkthrough on how the backpropagation algorithm is involved in training artificial neural networks.\n\n\n\n\n\nJan 31, 2024\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nAdvanced Git Commands and Techniques\n\n\n\n\n\n\nDevelopment\n\n\n\nA guide on using simple Git commands covering concepts such as initialising a repository, staging files, committing changes and viewing the commit history.\n\n\n\n\n\nJan 25, 2024\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nIntermediate Git Commands and Workflows\n\n\n\n\n\n\nDevelopment\n\n\n\nA guide on using simple Git commands covering concepts such as initialising a repository, staging files, committing changes and viewing the commit history.\n\n\n\n\n\nDec 20, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nUseful Python Features for Data Science\n\n\n\n\n\n\nCode\n\n\n\nFeatures of Python that are useful in data science workflows with code examples.\n\n\n\n\n\nDec 20, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nBasic Git Commands and Concepts\n\n\n\n\n\n\nDevelopment\n\n\n\nA guide on using simple Git commands covering concepts such as initialising a repository, staging files, committing changes and viewing the commit history.\n\n\n\n\n\nNov 23, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\n\n\n\n\n\n\nGit Explained\n\n\n\n\n\n\nDevelopment\n\n\n\nA brief overview on what makes Git the most widely used version control system for modern development.\n\n\n\n\n\nNov 5, 2023\n\n\nStan Karzhev\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/python-for data-science/index.html",
@@ -198,92 +198,120 @@
   {
     "objectID": "posts/how-to-use-git/index.html#git-basics",
     "href": "posts/how-to-use-git/index.html#git-basics",
-    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "title": "Basic Git Commands and Concepts",
     "section": "Git Basics",
-    "text": "Git Basics\n…."
+    "text": "Git Basics\nThe very first thing you should do when you want to start tracking changes with Git is to initialise a Git repository in your project directory, using the command:\ngit init\nThis creates a new .git sub directory within your project directory. It’s essentially where all the relevant and necessary information is contained that Git needs to manage the revisions and history of your project, holding metadata and the object database.\nAlternatively, if you would like to create a copy of an existing Git repository on your local machine, use:\ngit clone &lt;repository_url&gt;\nThe repository url may look something like this: https://github.com/someUser/someRepo.git\nWith this command, all the data from the source repository will be fetched including all versions of all files, the branches, tags, commit history and other repository meta data.\n\n\n\n\n\n\nNote\n\n\n\nThe source repository is typically located on a local file system or on a remote server such as GitHub, BitBucket or GitLab\n\n\nAfter cloning you will have a working copy of the latest version of the project allowing you to start working immediately. Another handy feature of this command is that the clone operation automatically sets up a remote connection called origin which points back to the source repo. This makes it easy to use future commands when you need to fetch or push data to and from the original repository.\n\n\n\n\n\n\nNote\n\n\n\nfetch and push are fundamental Git commands that allow us to download changes from a remote repo to our local repo (fetching) and upload content from our local repo to the remote repo (pushing).\n\n\nOnce Git is setup for a project we need a way to display the state of the working directory in terms of what changes have been “staged”, which haven’t and which files are not being tracked by Git, this is done via the command:\ngit status\nThe output of this command may look something like this:\n\nThe output is self explanatory and Git is telling us that we are on the main branch, we have made changes to the test.py file and we are currently not tracking changes made to test_2.py. Files highlighted in red indicate that these have not been added to the “staging area” yet.\nGit’s staging area can be thought of as a rough draft space where you can organise and select all the files you want to be part of the next commit. For example, if you’ve made several changes across multiple files and you want to make multiple commits then you can stage the individual files and commit them in small chunks. This would make your commits more detailed and allow you to be more specific about what changes were made to the project.\nTo add files to the staging we use:\ngit add .\nThis will add all the files and directories in the project folder to the staging area.\nAlternatively you can specify which files should be added to the staging area using:\ngit add fileName1 fileName2\n\n\n\n\n\n\nNote\n\n\n\nIn the interest of security, we want to avoid staging and committing sensitive information such as .env files which might include API keys, database passwords, secret tokens etc. These sensitive details DO NOT need to be pushed to a public or even a private repository where other team members or collaborators could inadvertently access them.\n\n\nOnce we have added the relevant files to the staging area, we can use git status again to see the update.\n\nIf you have accidentally added files to the staging area you can unstage them using:\ngit restore --staged fileName\nor alternatively to unstage all files, use:\ngit reset\nOnce files have been added to the staging area and you’re satisfied the last thing to do is commit these changes using:\ngit commit -m \"commit message\"\nThis tells Git to capture a snapshot of the project’s currently staged changes. The commit message typically describes what changes you made, this can be useful to track how your code has developed over time.\n\n\n\nA visual showing the three states of Git\n\n\nAnother useful command is:\ngit log\nWhich allows us to view the commit history of a repository. It displays a list of commits, starting with the most recent, along with detailed information about each commit. This information typically includes the commit hash (a unique identifier for each commit), the author, the date of the commit, and the commit message.\nHere’s an example output:"
   },
   {
     "objectID": "posts/how-to-use-git/index.html#working-with-branches",
     "href": "posts/how-to-use-git/index.html#working-with-branches",
-    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "title": "Basic Git Commands and Concepts",
     "section": "Working with Branches",
-    "text": "Working with Branches"
+    "text": "Working with Branches\ngit branch: Listing, creating, and deleting branches.\ngit checkout: Switching between branches.\ngit merge: Merging branches."
   },
   {
     "objectID": "posts/how-to-use-git/index.html#working-with-remote-repos",
     "href": "posts/how-to-use-git/index.html#working-with-remote-repos",
-    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "title": "Basic Git Commands and Concepts",
     "section": "Working with Remote Repos",
-    "text": "Working with Remote Repos"
+    "text": "Working with Remote Repos\ngit remote: Managing remote repositories.\ngit push: Sending local commits to the remote repository.\ngit pull: Fetching updates from the remote and merging them into the local repository."
   },
   {
     "objectID": "posts/how-to-use-git/index.html#branch-strategies",
     "href": "posts/how-to-use-git/index.html#branch-strategies",
-    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "title": "Basic Git Commands and Concepts",
     "section": "Branch Strategies",
     "text": "Branch Strategies"
   },
   {
     "objectID": "posts/how-to-use-git/index.html#stashing-changes",
     "href": "posts/how-to-use-git/index.html#stashing-changes",
-    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "title": "Basic Git Commands and Concepts",
     "section": "Stashing Changes",
     "text": "Stashing Changes"
   },
   {
     "objectID": "posts/how-to-use-git/index.html#merge-conflicts",
     "href": "posts/how-to-use-git/index.html#merge-conflicts",
-    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "title": "Basic Git Commands and Concepts",
     "section": "Merge Conflicts",
     "text": "Merge Conflicts"
   },
   {
     "objectID": "posts/how-to-use-git/index.html#tags-for-releases",
     "href": "posts/how-to-use-git/index.html#tags-for-releases",
-    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "title": "Basic Git Commands and Concepts",
     "section": "Tags for Releases",
     "text": "Tags for Releases"
   },
   {
     "objectID": "posts/how-to-use-git/index.html#cleaning-up",
     "href": "posts/how-to-use-git/index.html#cleaning-up",
-    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "title": "Basic Git Commands and Concepts",
     "section": "Cleaning Up",
     "text": "Cleaning Up"
   },
   {
     "objectID": "posts/how-to-use-git/index.html#rebasing",
     "href": "posts/how-to-use-git/index.html#rebasing",
-    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "title": "Basic Git Commands and Concepts",
     "section": "Rebasing",
     "text": "Rebasing"
   },
   {
     "objectID": "posts/how-to-use-git/index.html#cherry-picking",
     "href": "posts/how-to-use-git/index.html#cherry-picking",
-    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "title": "Basic Git Commands and Concepts",
     "section": "Cherry-Picking",
     "text": "Cherry-Picking"
   },
   {
     "objectID": "posts/how-to-use-git/index.html#working-with-.gitignore-and-.gitattributes",
     "href": "posts/how-to-use-git/index.html#working-with-.gitignore-and-.gitattributes",
-    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "title": "Basic Git Commands and Concepts",
     "section": "Working with .gitignore and .gitattributes",
     "text": "Working with .gitignore and .gitattributes"
   },
   {
     "objectID": "posts/how-to-use-git/index.html#git-hooks",
     "href": "posts/how-to-use-git/index.html#git-hooks",
-    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "title": "Basic Git Commands and Concepts",
     "section": "Git Hooks",
     "text": "Git Hooks"
   },
   {
     "objectID": "posts/how-to-use-git/index.html#advanced-branch-management",
     "href": "posts/how-to-use-git/index.html#advanced-branch-management",
-    "title": "A Guide to Git Commands: From Basic to Advanced",
+    "title": "Basic Git Commands and Concepts",
     "section": "Advanced Branch Management",
     "text": "Advanced Branch Management"
+  },
+  {
+    "objectID": "posts/basic_git/index.html",
+    "href": "posts/basic_git/index.html",
+    "title": "Basic Git Commands and Concepts",
+    "section": "",
+    "text": "Git is a distributed VCS (version control system) that tracks changes made to files and directories, enabling users to record project changes and go back to a specific version of tracked files at any given time. Since Git is mainly used via the command line interface, knowledge of the relevant commands is crucial for using Git effectively."
+  },
+  {
+    "objectID": "posts/basic_git/index.html#git-basics",
+    "href": "posts/basic_git/index.html#git-basics",
+    "title": "Basic Git Commands and Concepts",
+    "section": "Git Basics",
+    "text": "Git Basics\nThe very first thing you should do when you want to start tracking changes with Git is to initialise a Git repository in your project directory, using the command:\ngit init\nThis creates a new .git sub directory within your project directory. It’s essentially where all the relevant and necessary information is contained that Git needs to manage the revisions and history of your project, holding metadata and the object database.\nAlternatively, if you would like to create a copy of an existing Git repository on your local machine, use:\ngit clone &lt;repository_url&gt;\nThe repository url may look something like this: https://github.com/someUser/someRepo.git\nWith this command, all the data from the source repository will be fetched including all versions of all files, the branches, tags, commit history and other repository meta data.\n\n\n\n\n\n\nNote\n\n\n\nThe source repository is typically located on a local file system or on a remote server such as GitHub, BitBucket or GitLab\n\n\nAfter cloning you will have a working copy of the latest version of the project allowing you to start working immediately. Another handy feature of this command is that the clone operation automatically sets up a remote connection called origin which points back to the source repo. This makes it easy to use future commands when you need to fetch or push data to and from the original repository.\n\n\n\n\n\n\nNote\n\n\n\nfetch and push are fundamental Git commands that allow us to download changes from a remote repo to our local repo (fetching) and upload content from our local repo to the remote repo (pushing).\n\n\nOnce Git is setup for a project we need a way to display the state of the working directory in terms of what changes have been “staged”, which haven’t and which files are not being tracked by Git, this is done via the command:\ngit status\nThe output of this command may look something like this:\n\nThe output is self explanatory and Git is telling us that we are on the main branch, we have made changes to the test.py file and we are currently not tracking changes made to test_2.py. Files highlighted in red indicate that these have not been added to the “staging area” yet.\nGit’s staging area can be thought of as a rough draft space where you can organise and select all the files you want to be part of the next commit. For example, if you’ve made several changes across multiple files and you want to make multiple commits then you can stage the individual files and commit them in small chunks. This would make your commits more detailed and allow you to be more specific about what changes were made to the project.\nTo add files to the staging we use:\ngit add .\nThis will add all the files and directories in the project folder to the staging area.\nAlternatively you can specify which files should be added to the staging area using:\ngit add fileName1 fileName2\n\n\n\n\n\n\nNote\n\n\n\nIn the interest of security, we want to avoid staging and committing sensitive information such as .env files which might include API keys, database passwords, secret tokens etc. These sensitive details DO NOT need to be pushed to a public or even a private repository where other team members or collaborators could inadvertently access them.\n\n\nOnce we have added the relevant files to the staging area, we can use git status again to see the update.\n\nIf you have accidentally added files to the staging area you can unstage them using:\ngit restore --staged fileName\nor alternatively to unstage all files, use:\ngit reset\nOnce files have been added to the staging area and you’re satisfied the last thing to do is commit these changes using:\ngit commit -m \"commit message\"\nThis tells Git to capture a snapshot of the project’s currently staged changes. The commit message typically describes what changes you made, this can be useful to track how your code has developed over time.\n\n\n\nA visual showing the three states of Git\n\n\nAnother useful command is:\ngit log\nWhich allows us to view the commit history of a repository. It displays a list of commits, starting with the most recent, along with detailed information about each commit. This information typically includes the commit hash (a unique identifier for each commit), the author, the date of the commit, and the commit message.\nHere’s an example output:"
+  },
+  {
+    "objectID": "posts/basic_git/index.html#working-with-branches",
+    "href": "posts/basic_git/index.html#working-with-branches",
+    "title": "Basic Git Commands and Concepts",
+    "section": "Working with Branches",
+    "text": "Working with Branches\ngit branch: Listing, creating, and deleting branches.\ngit checkout: Switching between branches.\ngit merge: Merging branches."
+  },
+  {
+    "objectID": "posts/basic_git/index.html#working-with-remote-repos",
+    "href": "posts/basic_git/index.html#working-with-remote-repos",
+    "title": "Basic Git Commands and Concepts",
+    "section": "Working with Remote Repos",
+    "text": "Working with Remote Repos\ngit remote: Managing remote repositories.\ngit push: Sending local commits to the remote repository.\ngit pull: Fetching updates from the remote and merging them into the local repository."
   }
 ]
