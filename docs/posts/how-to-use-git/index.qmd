@@ -1,0 +1,193 @@
+---
+title: "A Guide to Git Commands: From Basic to Advanced"
+description: "A guide on using Git commands from simple concepts such as initialising a repository and committing changes to feature branching and merge conflicts to rebasing and Git hooks."
+author: "Stan Karzhev"
+date: "2023-11-23"
+image: "git.jpg"
+toc: true
+categories: [Development]
+---
+
+Git is a distributed VCS (version control system) that tracks changes made to files and directories, enabling users to record project changes and go back to a specific version of tracked files at any given time. Since Git is mainly used via the command line interface, knowledge of relevant commands is crucial for using Git effectively.
+
+# Basic Git Commands & Concepts
+- - -
+
+## Git Basics
+The very first thing you should do when you want to start tracking changes with Git is to initialise a Git repository in your project directory. With the command:
+
+```bash 
+git init
+```
+
+we can create a new `.git` sub directory within your project directory. This is essentially where all the relevant and necessary information is contained that Git needs to manage the revisions and history of your project holding metadata and the object database for the project. 
+
+Alternatively, if you would like to create a copy of an existing Git repository on your local machine, use:
+
+```bash
+git clone <repository_url>
+``` 
+
+The repository url may look something like this:
+
+`https://github.com/someUser/someRepo.git`
+
+With this command, all the data from the source repository will be fetched including all versions of all files, the branches, tags, commit history and other repository meta data.
+
+::: {.callout-note}
+The source repository is typically located on a local file system or on a remote server such as GitHub, BitBucket or GitLab
+:::
+
+Now, after cloning you will have a working copy of the latest version of the project allowing you to start working immediately. Another handy feature of this command is that the clone operation automatically sets up a remote connection called `origin` which points back to source repo. This makes it easy to use future commands when you need to `fetch` or `push` data to and from the original repository. 
+
+Once Git is setup for a project we need a way to display the state of the working directory in terms of what changes have been "staged", which haven't and which files are not being tracked by Git, this is done via the command:
+
+
+```bash
+git status
+```
+
+The output of this command may look something like this:
+
+...IMAGE HERE
+
+In this case Git is telling us that we are on the main branch, we have made changes to the test.py file and we are currently not tracking changes made to test_2.py. 
+
+Git's staging area can be thought of as a rough draft space where you can organise and select all the files you want to be part of the next commit. For example, if you’ve made several changes across multiple files and you want to make multiple commits then you can stage the individual files and commit them in small chunks. This would make your commits more detailed and allow you to be more specific about what changes were made to the project.
+
+
+![Example of a Git repository, each circle represents a commit.](.)
+
+To add files to the staging we use:
+
+```bash
+git add .
+```
+
+This will add all the files and directories in the project folder to the staging area.
+
+Alternatively you can specify which files should be added to the staging area using:
+
+```bash
+git add fileName1 fileName2
+```
+
+::: {.callout-note}
+Example of instance when you would not want to ADD all files to the staging area
+:::
+
+Once we have added the relevant files to the staging area, we can use `git status` again to see the change.
+
+IMAGE HERE FOR GIT STATUS WITH GREEN FILES
+
+If you have accidentally added files to the staging area you can unstage them using
+
+```bash
+git restore --staged fileName
+```
+
+or alternatively to unstage all files
+
+```bash
+git reset
+```
+
+Once files have been added to the staging area and you're satisfied the last thing to do is commit these changes using:
+
+```bash
+git commit
+```
+
+This tells Git to capture a snapshot of the project's currently staged changes.
+
+Another handy command is:
+
+```bash
+git diff
+```
+
+Which will highlight the differences between the 
+
+MAYBE GIT DIFF NOT HERE BECAUSE IT'S A BIT ADVANCED
+
+
+
+
+Another handy command is:
+
+```bash
+git diff
+```
+
+This will highlight the changes made to a particular file since thel last commit, here's an example where red text shows deletions and green text highlights insertions. 
+
+
+```bash
+git log
+```
+
+
+
+
+
+
+
+## Working with Branches
+
+git branch: Listing, creating, and deleting branches.
+
+git checkout: Switching between branches.
+
+git merge: Merging branches.
+
+## Working with Remote Repos
+
+git remote: Managing remote repositories.
+
+git push: Sending local commits to the remote repository.
+
+git pull: Fetching updates from the remote and merging them into the local repository.
+
+# Intermediate Git Commands & Workflows
+- - -
+
+## Branch Strategies
+
+## Stashing Changes
+
+## Merge Conflicts
+
+## Tags for Releases
+
+## Cleaning Up
+
+# Advanced Git Commands & Techniques
+- - -
+
+## Rebasing
+
+## Cherry-Picking
+
+## Working with `.gitignore` and `.gitattributes`
+
+## Git Hooks
+
+## Advanced Branch Management
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,172 @@
+---
+title: "Basic Git Commands and Concepts"
+description: "A guide on using simple Git commands covering concepts such as initialising a repository, staging files, committing changes and viewing the commit history."
+author: "Stan Karzhev"
+date: "2023-11-23"
+image: "git.jpg"
+toc: true
+categories: [Development]
+---
+
+Git is a distributed VCS (version control system) that tracks changes made to files and directories, enabling users to record project changes and go back to a specific version of tracked files at any given time. Since Git is mainly used via the command line interface, knowledge of the relevant commands is crucial for using Git effectively.
+
+# Basic Git Commands & Concepts
+- - -
+
+## Git Basics
+The very first thing you should do when you want to start tracking changes with Git is to initialise a Git repository in your project directory, using the command:
+
+```bash 
+git init
+```
+
+This creates a new `.git` sub directory within your project directory. It's essentially where all the relevant and necessary information is contained that Git needs to manage the revisions and history of your project, holding metadata and the object database.
+
+Alternatively, if you would like to create a copy of an existing Git repository on your local machine, use:
+
+```bash
+git clone <repository_url>
+``` 
+
+The repository url may look something like this: `https://github.com/someUser/someRepo.git`
+
+With this command, all the data from the source repository will be fetched including all versions of all files, the branches, tags, commit history and other repository meta data.
+
+::: {.callout-note}
+The source repository is typically located on a local file system or on a remote server such as GitHub, BitBucket or GitLab
+:::
+
+After cloning you will have a working copy of the latest version of the project allowing you to start working immediately. Another handy feature of this command is that the clone operation automatically sets up a remote connection called `origin` which points back to the source repo. This makes it easy to use future commands when you need to `fetch` or `push` data to and from the original repository. 
+
+::: {.callout-note}
+`fetch` and `push` are fundamental Git commands that allow us to download changes from a remote repo to our local repo (fetching) and upload content from our local repo to the remote repo (pushing).
+:::
+
+Once Git is setup for a project we need a way to display the state of the working directory in terms of what changes have been "staged", which haven't and which files are not being tracked by Git, this is done via the command:
+
+
+```bash
+git status
+```
+
+The output of this command may look something like this:
+
+![](git_status.png)
+
+The output is self explanatory and Git is telling us that we are on the main branch, we have made changes to the `test.py` file and we are currently not tracking changes made to `test_2.py`. Files highlighted in red indicate that these have not been added to the "staging area" yet.
+
+Git's staging area can be thought of as a rough draft space where you can organise and select all the files you want to be part of the next commit. For example, if you’ve made several changes across multiple files and you want to make multiple commits then you can stage the individual files and commit them in small chunks. This would make your commits more detailed and allow you to be more specific about what changes were made to the project. 
+
+To add files to the staging we use:
+
+```bash
+git add .
+```
+
+This will add all the files and directories in the project folder to the staging area.
+
+Alternatively you can specify which files should be added to the staging area using:
+
+```bash
+git add fileName1 fileName2
+```
+
+::: {.callout-note}
+In the interest of security, we want to avoid staging and committing sensitive information such as .env files which might include API keys, database passwords, secret tokens etc. These sensitive details DO NOT need to be pushed to a public or even a private repository where other team members or collaborators could inadvertently access them.
+:::
+
+Once we have added the relevant files to the staging area, we can use `git status` again to see the update.
+
+![](git_status_2.png)
+
+If you have accidentally added files to the staging area you can unstage them using:
+
+```bash
+git restore --staged fileName
+```
+
+or alternatively to unstage all files, use:
+
+```bash
+git reset
+```
+
+Once files have been added to the staging area and you're satisfied the last thing to do is commit these changes using:
+
+```bash
+git commit -m "commit message"
+```
+
+This tells Git to capture a snapshot of the project's currently staged changes. The commit message typically describes what changes you made, this can be useful to track how your code has developed over time.
+
+![A visual showing the three states of Git](git_staging.png)
+
+
+
+Another useful command is:
+
+```bash
+git log
+```
+
+Which allows us to view the commit history of a repository. It displays a list of commits, starting with the most recent, along with detailed information about each commit. This information typically includes the commit hash (a unique identifier for each commit), the author, the date of the commit, and the commit message.
+
+Here's an example output:
+
+![](git_log.png)
+
+
+<!-- 
+
+
+Another handy command is:
+
+```bash
+git diff
+```
+
+This will highlight the changes made to a particular file since thel last commit, here's an example where red text shows deletions and green text highlights insertions.  -->
+
+
+
+
+
+
+
+
+
+
+## Working with Branches
+
+git branch: Listing, creating, and deleting branches.
+
+git checkout: Switching between branches.
+
+git merge: Merging branches.
+
+## Working with Remote Repos
+
+git remote: Managing remote repositories.
+
+git push: Sending local commits to the remote repository.
+
+git pull: Fetching updates from the remote and merging them into the local repository.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
