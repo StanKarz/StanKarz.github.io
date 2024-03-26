@@ -8,7 +8,7 @@
 
 <meta name="author" content="Stan Karzhev">
 <meta name="dcterms.date" content="2023-11-23">
-<meta name="description" content="A guide on using simple Git commands covering concepts such as initialising a repository, staging files, committing changes and viewing the commit history.">
+<meta name="description" content="A guide on using everyday Git commands covering concepts such as staging files, committing changes and working with branches.">
 
 <title>Stan Karzhev - Basic Git Commands and Concepts</title>
 <style>
@@ -103,6 +103,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -153,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <h1 class="title">Basic Git Commands and Concepts</h1>
                   <div>
         <div class="description">
-          A guide on using simple Git commands covering concepts such as initialising a repository, staging files, committing changes and viewing the commit history.
+          A guide on using everyday Git commands covering concepts such as staging files, committing changes and working with branches.
         </div>
       </div>
                           <div class="quarto-categories">
@@ -191,12 +194,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#basic-git-commands-concepts" id="toc-basic-git-commands-concepts" class="nav-link active" data-scroll-target="#basic-git-commands-concepts">Basic Git Commands &amp; Concepts</a>
-  <ul class="collapse">
-  <li><a href="#git-basics" id="toc-git-basics" class="nav-link" data-scroll-target="#git-basics">Git Basics</a></li>
+  <li><a href="#git-basics" id="toc-git-basics" class="nav-link active" data-scroll-target="#git-basics">Git Basics</a></li>
   <li><a href="#working-with-branches" id="toc-working-with-branches" class="nav-link" data-scroll-target="#working-with-branches">Working with Branches</a></li>
   <li><a href="#working-with-remote-repos" id="toc-working-with-remote-repos" class="nav-link" data-scroll-target="#working-with-remote-repos">Working with Remote Repos</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -207,10 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>Git is a distributed VCS (version control system) that tracks changes made to files and directories, enabling users to record project changes and go back to a specific version of tracked files at any given time. Since Git is mainly used via the command line interface, knowledge of the relevant commands is crucial for using Git effectively.</p>
-<section id="basic-git-commands-concepts" class="level1">
-<h1>Basic Git Commands &amp; Concepts</h1>
-<hr>
+<p>Git is a distributed VCS (version control system) that tracks changes made to files and directories, enabling users to record project changes and revert back to a specific version of tracked files at any given time. Since Git is mainly used via the command line interface, knowledge of the relevant commands is crucial for using Git effectively.</p>
 <section id="git-basics" class="level2">
 <h2 class="anchored" data-anchor-id="git-basics">Git Basics</h2>
 <p>The very first thing you should do when you want to start tracking changes with Git is to initialise a Git repository in your project directory, using the command:</p>
@@ -219,7 +216,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Alternatively, if you would like to create a copy of an existing Git repository on your local machine, use:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="op">&lt;</span>repository_url<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The repository url may look something like this: <code>https://github.com/someUser/someRepo.git</code></p>
-<p>With this command, all the data from the source repository will be fetched including all versions of all files, the branches, tags, commit history and other repository meta data.</p>
+<p>With this command all the data from the source repository will be fetched, including previous and current versions of all files, the branches, tags, commit history and other repository meta data.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -233,7 +230,7 @@ Note
 <p>The source repository is typically located on a local file system or on a remote server such as GitHub, BitBucket or GitLab</p>
 </div>
 </div>
-<p>After cloning you will have a working copy of the latest version of the project allowing you to start working immediately. Another handy feature of this command is that the clone operation automatically sets up a remote connection called <code>origin</code> which points back to the source repo. This makes it easy to use future commands when you need to <code>fetch</code> or <code>push</code> data to and from the original repository.</p>
+<p>After cloning you will have a working copy of the latest project version allowing you to start making your own chabges. Luckily for us when using the clone command it automatically sets up a remote connection called <code>origin</code>, which points back to the source repo. This makes it easy to use future commands when you need to <code>fetch</code> or <code>push</code> data to and from the original repository.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -244,14 +241,20 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><code>fetch</code> and <code>push</code> are fundamental Git commands that allow us to download changes from a remote repo to our local repo (fetching) and upload content from our local repo to the remote repo (pushing).</p>
+<p><code>fetch</code> and <code>push</code> are fundamental Git commands that allow us to download the latest changes from a remote repo to our local repo (fetching) and upload content from our local repo to the remote repo (pushing).</p>
 </div>
 </div>
 <p>Once Git is setup for a project we need a way to display the state of the working directory in terms of what changes have been “staged”, which haven’t and which files are not being tracked by Git, this is done via the command:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The output of this command may look something like this:</p>
 <p><img src="git_status.png" class="img-fluid"></p>
-<p>The output is self explanatory and Git is telling us that we are on the main branch, we have made changes to the <code>test.py</code> file and we are currently not tracking changes made to <code>test_2.py</code>. Files highlighted in red indicate that these have not been added to the “staging area” yet.</p>
+<p>The output is self explanatory and Git is telling us that:</p>
+<ul>
+<li>We are on the main branch</li>
+<li>Changes have been made to <code>test.py</code></li>
+<li><code>test_2.py</code> is currently not being tracked by Git</li>
+</ul>
+<p>Files highlighted in red indicate that these have not been added to the staging area yet or are untracked.</p>
 <p>Git’s staging area can be thought of as a rough draft space where you can organise and select all the files you want to be part of the next commit. For example, if you’ve made several changes across multiple files and you want to make multiple commits then you can stage the individual files and commit them in small chunks. This would make your commits more detailed and allow you to be more specific about what changes were made to the project.</p>
 <p>To add files to the staging we use:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -268,7 +271,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In the interest of security, we want to avoid staging and committing sensitive information such as .env files which might include API keys, database passwords, secret tokens etc. These sensitive details DO NOT need to be pushed to a public or even a private repository where other team members or collaborators could inadvertently access them.</p>
+<p>In the interest of security, we want to avoid staging and committing sensitive information such as .env files which might include API keys, database passwords, secret tokens etc. <strong>These sensitive details don’t need to be pushed to a public or even a private repository</strong> where other team members or collaborators could inadvertently access them.</p>
 </div>
 </div>
 <p>Once we have added the relevant files to the staging area, we can use <code>git status</code> again to see the update.</p>
@@ -277,7 +280,7 @@ Note
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> restore <span class="at">--staged</span> fileName</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>or alternatively to unstage all files, use:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> reset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Once files have been added to the staging area and you’re satisfied the last thing to do is commit these changes using:</p>
+<p>After you have staged your files and you’re satisfied, the last thing to do is commit these changes using:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"commit message"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This tells Git to capture a snapshot of the project’s currently staged changes. The commit message typically describes what changes you made, this can be useful to track how your code has developed over time.</p>
 <div class="quarto-figure quarto-figure-center">
@@ -291,31 +294,108 @@ Note
 <p>Which allows us to view the commit history of a repository. It displays a list of commits, starting with the most recent, along with detailed information about each commit. This information typically includes the commit hash (a unique identifier for each commit), the author, the date of the commit, and the commit message.</p>
 <p>Here’s an example output:</p>
 <p><img src="git_log.png" class="img-fluid"></p>
-<!-- 
-
-
-Another handy command is:
-
-```bash
-git diff
-```
-
-This will highlight the changes made to a particular file since thel last commit, here's an example where red text shows deletions and green text highlights insertions.  -->
 </section>
 <section id="working-with-branches" class="level2">
 <h2 class="anchored" data-anchor-id="working-with-branches">Working with Branches</h2>
-<p>git branch: Listing, creating, and deleting branches.</p>
-<p>git checkout: Switching between branches.</p>
-<p>git merge: Merging branches.</p>
+<p>One of Git’s most popular features is it’s straightforward branching model, effectively enabling multiple streams of work to proceed independently from each other before they are eventually merged back into a main line of development (usually the <code>main</code> branch). By default we are working and making changes to files on the <code>main branch</code> but this isn’t always a good idea. If we were working on a separate feature or a bug fix we can create a new branch for these changes. Essentially, this prevents our potentially unstable code to affect and disrupt the entire main code base. This is especially important when you’re working in teams and need to thoroughly clean up and test code before merging it into the main branch.</p>
+<p>We can list all the branches for our repo, along with the current branch we are working on, highlighted with an asterisk and green text, using:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="git_branch.png" class="img-fluid"></p>
+<p>To create a new branch run:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> branch_name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This will also switch to the newly created branch, switching between branches is also simple and can be done with either:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout branch_name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch branch_name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Once we are on our newly created branch we can safely make changes without worrying about breaking the code in the main branch. At some point when you’re satisfied with the changes made on the newly created branch, you will most likely want to merge them with main codebase. To do so, first switch to main branch and run:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> merge branch_name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To delete a branch, use:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch <span class="at">-d</span> branch_name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Deleting a branch after merging it with the main branch is optional but recommended for cleanliness and manageability because it can help avoid clutter as more branches are created and merged, reduce confusion when multiple branches are active and encourages a tidy repository where only active development is front and centre.</p>
+</div>
+</div>
+<p>Since we are currently only working within our local repository the workflow would look like this:</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD;
+    A[Create new branch] --&gt; B[Switch to new branch];
+    B --&gt; C[Make changes];
+    C --&gt; D[Stage changes];
+    D --&gt; E[Commit changes];
+    E --&gt; F[Switch to main branch];
+    F --&gt; G[Merge changes to main branch];
+    G --&gt; H[Delete test/feature branch]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 </section>
 <section id="working-with-remote-repos" class="level2">
 <h2 class="anchored" data-anchor-id="working-with-remote-repos">Working with Remote Repos</h2>
-<p>git remote: Managing remote repositories.</p>
-<p>git push: Sending local commits to the remote repository.</p>
-<p>git pull: Fetching updates from the remote and merging them into the local repository.</p>
+<p>When working in a team it’s common for the main codebase to be hosted on a remote server, with members cloning this repo onto their local machine, developing the code and then pushing their changes to the remote repository. For this workflow there will be a few added steps, namely cloning the remote repo, pushing the changes, pulling any changes made while you were working on your branch or local repo and creating a PR (pull request).</p>
+<p>The workflow for this would be:</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD;
+    A[Clone remote repo] --&gt; B[Switch to new branch];
+    B --&gt; C[Make changes];
+    C --&gt; D[Stage changes];
+    D --&gt; E[Pull any changes from remote repo];
+    E --&gt; F[Commit your changes];
+    F --&gt; G[Switch to main branch];
+    G --&gt; H[Merge changes into main branch];
+    H --&gt; I[Create a PR]
+    I --&gt; J[Delete test/feature branch];
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>The first added step is creating a copy of the remote repository, locally using <code>git clone &lt;repo_url&gt;</code>. After this we can continue as usual, until just before we commit our changes, at this point we use:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This command will fetch updates from the remote repository and merge them into your local repository. This is crucial for avoiding <strong>merge conflicts</strong>, as someone may have pushed their own changes, whilst you were still working on your own local version which would would no longer be up to date if you don’t use the <code>pull</code> command.</p>
+<p>A merge conflict occurs in Git when two separate branches have made different changes to the same line(s) of code in a file, and Git is unable to automatically merge these changes when attempting to combine the branches. When you try to merge one branch into another Git will attempt to automatically merge the changes from both branches. However, if Git detects that the same lines of code have been modified differently in both branches, it will not be able to determine which change should take precedence, resulting in a merge conflict.</p>
+<p>In this situation, Git will pause the merge process and mark the conflicted files. You’ll need to manually resolve the conflicts by editing the files and deciding which changes to keep or how to combine the conflicting changes.</p>
+<p>Git will mark the conflicting sections in the files with special markers, like this:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span> HEAD</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Code from the current branch</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="ex">=======</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Code from the branch being merged</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span> other-branch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Merge conflicts are a normal part of the Git workflow, especially when multiple people are working on the same codebase or when a branch has diverged significantly from the main branch. Resolving conflicts manually ensures that your code remains consistent and that unintended changes are not introduced during the merge process.</p>
+</div>
+</div>
+<p>The last thing left to do after successfully merging is to create a PR, which is simply a way to propose your changes to the main codebase. It allows others to review your code, provide feedback, and eventually merge your branch into the main branch.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
