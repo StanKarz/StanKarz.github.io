@@ -17,7 +17,7 @@ This past summer, my passion for AI led me to Seoul National University in South
 
 # Most Recent Role
 
-Back in London, I embraced the opportunity to work as a Research Intern at University College London, in a dynamic research lab. I was tasked with a project that seemed like a prelude to a PhD journey: implementing model-free reinforcement learning techniques focusing on Q-learning algorithms and investigating the effectiveness of various methods for adversarial attacks. This endeavour allowed me to dive deep into the nuances of AI research, from conception to execution and presentation. It was a hands-on exploration of reinforcement learning’s potential and its challenges, further enhancing my skills in research methodologies and collaborative innovation.
+Back in London, I embraced the opportunity to work as a Research Intern at University College London, in a dynamic research lab. I was tasked with implementing model-free reinforcement learning techniques focusing on Q-learning algorithms and investigating the effectiveness of various methods for adversarial attacks. This endeavour allowed me to dive deep into the nuances of AI research, from conception to execution and presentation. It was a hands-on exploration of reinforcement learning’s potential and its challenges, further enhancing my skills in research methodologies and collaborative innovation.
 
 # Beyond the Classroom
 

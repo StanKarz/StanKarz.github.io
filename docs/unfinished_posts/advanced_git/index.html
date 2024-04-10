@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Stan Karzhev">
+<meta name="dcterms.date" content="2024-01-25">
+<meta name="description" content="A guide on using simple Git commands covering concepts such as initialising a repository, staging files, committing changes and viewing the commit history.">
 
-<title>Stan Karzhev</title>
+<title>Stan Karzhev - Advanced Git Commands and Techniques</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +26,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,67 +69,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -138,7 +81,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Stan Karzhev</span>
     </a>
   </div>
@@ -149,7 +92,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -170,194 +113,90 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(5)</span></div><div class="category" data-category="Code">Code <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Deep Learning">Deep Learning <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Development">Development <span class="quarto-category-count">(2)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#advanced-git-commands-techniques" id="toc-advanced-git-commands-techniques" class="nav-link active" data-scroll-target="#advanced-git-commands-techniques">Advanced Git Commands &amp; Techniques</a>
+  <ul class="collapse">
+  <li><a href="#rebasing" id="toc-rebasing" class="nav-link" data-scroll-target="#rebasing">Rebasing</a></li>
+  <li><a href="#cherry-picking" id="toc-cherry-picking" class="nav-link" data-scroll-target="#cherry-picking">Cherry-Picking</a></li>
+  <li><a href="#working-with-.gitignore-and-.gitattributes" id="toc-working-with-.gitignore-and-.gitattributes" class="nav-link" data-scroll-target="#working-with-.gitignore-and-.gitattributes">Working with <code>.gitignore</code> and <code>.gitattributes</code></a></li>
+  <li><a href="#git-hooks" id="toc-git-hooks" class="nav-link" data-scroll-target="#git-hooks">Git Hooks</a></li>
+  <li><a href="#advanced-branch-management" id="toc-advanced-branch-management" class="nav-link" data-scroll-target="#advanced-branch-management">Advanced Branch Management</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Advanced Git Commands and Techniques</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Development</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    A guide on using simple Git commands covering concepts such as initialising a repository, staging files, committing changes and viewing the commit history.
+  </div>
+</div>
 
 
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Stan Karzhev </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 25, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
 
 
+</header>
 
 
+<section id="advanced-git-commands-techniques" class="level1">
+<h1>Advanced Git Commands &amp; Techniques</h1>
+<hr>
+<section id="rebasing" class="level2">
+<h2 class="anchored" data-anchor-id="rebasing">Rebasing</h2>
+</section>
+<section id="cherry-picking" class="level2">
+<h2 class="anchored" data-anchor-id="cherry-picking">Cherry-Picking</h2>
+</section>
+<section id="working-with-.gitignore-and-.gitattributes" class="level2">
+<h2 class="anchored" data-anchor-id="working-with-.gitignore-and-.gitattributes">Working with <code>.gitignore</code> and <code>.gitattributes</code></h2>
+</section>
+<section id="git-hooks" class="level2">
+<h2 class="anchored" data-anchor-id="git-hooks">Git Hooks</h2>
+</section>
+<section id="advanced-branch-management" class="level2">
+<h2 class="anchored" data-anchor-id="advanced-branch-management">Advanced Branch Management</h2>
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Deep Learning" data-listing-date-sort="1711584000000" data-listing-file-modified-sort="1712655142846" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1553">
-<div class="thumbnail">
-<p><a href="./posts/deploying_a_cv_model/index.html" class="no-external"></a></p><a href="./posts/deploying_a_cv_model/index.html" class="no-external">
-<p><img src="./posts/deploying_a_cv_model/cover2.png" class="thumbnail-image"></p>
-</a><p><a href="./posts/deploying_a_cv_model/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/deploying_a_cv_model/index.html" class="no-external">Deploying a computer vision model using Fastai, Gradio and Hugging Face Spaces</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/deploying_a_cv_model/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Deep Learning'); return false;">
-Deep Learning
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/deploying_a_cv_model/index.html" class="no-external">Learn to train and deploy your own computer vision model.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/deploying_a_cv_model/index.html" class="no-external">
-<div class="listing-date">
-Mar 28, 2024
-</div>
-<div class="listing-author">
-Stan Karzhev
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="Deep Learning" data-listing-date-sort="1706659200000" data-listing-file-modified-sort="1710025017336" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2334">
-<div class="thumbnail">
-<p><a href="./posts/backpropagation/index.html" class="no-external"></a></p><a href="./posts/backpropagation/index.html" class="no-external">
-<p><img src="./posts/backpropagation/neural-net.png" class="thumbnail-image"></p>
-</a><p><a href="./posts/backpropagation/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/backpropagation/index.html" class="no-external">Backpropagation: The Essence of Neural Network Training</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/backpropagation/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Deep Learning'); return false;">
-Deep Learning
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/backpropagation/index.html" class="no-external">A walkthrough on how the backpropagation algorithm is involved in training artificial neural networks.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/backpropagation/index.html" class="no-external">
-<div class="listing-date">
-Jan 31, 2024
-</div>
-<div class="listing-author">
-Stan Karzhev
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="Code" data-listing-date-sort="1703030400000" data-listing-file-modified-sort="1709772773309" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2948">
-<div class="thumbnail">
-<p><a href="./posts/python-for data-science/index.html" class="no-external"></a></p><a href="./posts/python-for data-science/index.html" class="no-external">
-<p><img src="./posts/python-for data-science/python-ds.png" class="thumbnail-image"></p>
-</a><p><a href="./posts/python-for data-science/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/python-for data-science/index.html" class="no-external">Useful Python Features for Data Science</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/python-for data-science/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Code'); return false;">
-Code
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/python-for data-science/index.html" class="no-external">Features of Python that are useful in data science workflows with code examples.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/python-for data-science/index.html" class="no-external">
-<div class="listing-date">
-Dec 20, 2023
-</div>
-<div class="listing-author">
-Stan Karzhev
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="Development" data-listing-date-sort="1700697600000" data-listing-file-modified-sort="1711451305754" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1635">
-<div class="thumbnail">
-<p><a href="./posts/basic_git/index.html" class="no-external"></a></p><a href="./posts/basic_git/index.html" class="no-external">
-<p><img src="./posts/basic_git/git.jpg" class="thumbnail-image"></p>
-</a><p><a href="./posts/basic_git/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/basic_git/index.html" class="no-external">Basic Git Commands and Concepts</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/basic_git/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Development'); return false;">
-Development
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/basic_git/index.html" class="no-external">A guide on using everyday Git commands covering concepts such as staging files, committing changes and working with branches.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/basic_git/index.html" class="no-external">
-<div class="listing-date">
-Nov 23, 2023
-</div>
-<div class="listing-author">
-Stan Karzhev
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="Development" data-listing-date-sort="1699142400000" data-listing-file-modified-sort="1710024441121" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1533">
-<div class="thumbnail">
-<p><a href="./posts/git-explained/index.html" class="no-external"></a></p><a href="./posts/git-explained/index.html" class="no-external">
-<p><img src="./posts/git-explained/git.png" class="thumbnail-image"></p>
-</a><p><a href="./posts/git-explained/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/git-explained/index.html" class="no-external">Git Explained</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/git-explained/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Development'); return false;">
-Development
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/git-explained/index.html" class="no-external">A brief overview on what makes Git the most widely used version control system for modern development.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/git-explained/index.html" class="no-external">
-<div class="listing-date">
-Nov 5, 2023
-</div>
-<div class="listing-author">
-Stan Karzhev
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</section>
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
