@@ -3,6 +3,7 @@
     "listing": "/index.html",
     "items": [
       "/posts/deploying_a_cv_model/index.html",
+      "/posts/intermediate_git/index.html",
       "/posts/backpropagation/index.html",
       "/posts/python-for data-science/index.html",
       "/posts/basic_git/index.html",
