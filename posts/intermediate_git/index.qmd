@@ -1,0 +1,438 @@
+---
+title: "Intermediate Git Commands and Workflows"
+description: "Breaking down Git concepts for effective collaboration and repository maintenance."
+author: "Stan Karzhev"
+date: "2024-02-21"
+image: "git_2.png"
+toc: true
+categories: [Development]
+---
+
+# Introduction
+This post picks up where the [Basic Git Commands and Concepts](https://stankarz.github.io/posts/basic_git/) guide left off, which covered introductory concepts and commands such as the staging area, everyday git commands, working with branches and remote repositories. Here, we will focus on slightly more advanced ideas, including implementing different Git workflows, managing merge conflicts, stashing changes and cleaning up your repo.
+
+# Branch Strategies
+Firstly, we need to define what a branching strategy in Git is. You can think of it as a set of rules a development team follows for creating and managing branches in a Git repository. The goal is to streamline the development process, facilitate continuous integration and delivery and manage releases in an orderly fashion. A good branching strategy should provide a clear framework for handling different versions of code, managing new features, fixes, and releases, and ensuring that the codebase remains stable and deployable at any given time.
+
+### Feature Branching 
+An example of a simple but useful git strategy is feature branching. Essentially, the idea is that all features should be encapsulated in their dedicated branches, separate from the main branch. This approach helps prevent potentially buggy code from making its way into the main code base. Another advantage of this workflow is that it allows for greater collaboration, as other team members can verify that your feature works before it is integrated via a pull request.
+
+![An example of feature branching, each circle represents a separate commit.](feature_branch_1.png)
+
+Here's a typical sequence of commands you would need when utilising this workflow:
+
+**1. Clone the Repository**
+<br>First, clone the remote repo to your local machine, setting up a connection to the remote server with your local repo in the process.
+```bash
+git clone <remote_repo_url>
+cd <project_name>
+```
+
+**2. Create & Switch to New Feature Branch**
+<br>
+Create a feature branch off of the `main` branch (we run `git` pull before creating the feature branch to avoid merge conflicts later on).
+```bash
+git checkout main
+git pull
+git checkout -b new-feature main
+```
+
+**3. Make Changes Locally**
+<br>
+Make your code changes locally on your `new-feature` branch, add and commit those changes.
+```bash
+git add <file_name>
+git commit -m "<commit message>"
+```
+
+**4. Push Feature Branch to Remote Repository**
+<br>
+After committing your changes locally, the next step is to share the branch with your team by pushing it to the remote repository. This enables collaboration, as others can see the branch and contribute if necessary. It also ensures that your work is backed up remotely.
+```bash
+git push -u origin new-feature
+```
+
+This command pushes the new-feature branch to the remote repository (origin) and sets it to track the remote branch, which is useful for subsequent pushes and pulls.
+
+
+**5. Open a Pull Request**
+<br>
+Once your feature is ready and pushed to the remote repository, you'll typically open a pull request (or merge request, depending on the platform like GitHub, GitLab, etc.). This is a request to merge your `feature` branch into the `main` branch. The pull request allows team members to review the code, discuss it, run automated tests, and provide feedback or approval before the changes are integrated into the `main` branch.
+
+**6. Review & Merge the Pull Request**
+<br>
+After creating the pull request, it enters the review phase. Team members can review the changes, discuss modifications, and request further commits if necessary. If the pull request meets all criteria (passing tests, approvals, etc.), it is merged into `main` via the platform interface of the hosting service.
+
+**7. Pull the Updated Main Branch**
+<br>
+Once your feature branch has been merged, you should update your local main branch to reflect the merged changes.
+
+```bash
+git checkout main
+git pull
+```
+This ensures that your local `main` branch is synchronised with the remote, containing all the latest merged changes.
+
+
+**8. Delete the Feature Branch (Optional)**
+<br>
+After a feature branch is merged, it's usually no longer needed, you can clean up by deleting it both locally and remotely, to keep the repo tidy.
+
+```bash 
+git branch -d new-feature
+```
+
+This deletes the branch locally, using `-d` which ensures you can only delete the branch if it has been fully merged in its upstream branch.
+
+:::::: {.callout-note}
+When we first push the `new-feature` branch to the remote repository using git `push -u origin new-feature`, the `-u` option sets the upstream branch for our local `new-feature branch`. This means that `origin/new-feature` becomes the default branch for any future push and pull operations on this branch. Setting the upstream branch is crucial as it allows Git to know where to push your changes and from where to fetch updates without specifying the remote and branch each time.
+:::
+
+To delete the remote branch use:
+
+```bash
+git push origin --delete new-feature
+```
+
+### Git Flow
+Git flow is one of the most well-known branching models, it is particularly well-suited for projects that have a scheduled release cycle and require multiple stages of development and testing.
+
+It involves two primary branches:
+
+- `main`: This branch holds the official release history and is considered production-ready at all times.
+- `develop`: This branch serves as an integration branch for features. It contains the complete history of the project but is more a state of development rather than stable production. 
+
+Alongside these branches, Git flow uses various types of support branches to help with parallel development between team members, ease tracking of features, prepare for production releases and assist in quickly fixing live production issues. These are:
+
+- **Feature branches**: Branch off from `develop` and merge back into `develop` when they are completed. These are used for developing new features, they should never interact directly with `main`.
+
+- **Release branches**: These support preparation for a new production release. Branching off from `develop` when a certain number of features are ready or a scheduled release date approaches. They allow for minor tweaks and preparations tasks that need to be done before the release. Once ready, they merge into main and are tagged with a version number, and back into develop to ensure that any changes made in the release branch aren’t lost.
+
+- **Hotfix branches**: Used to quickly patch production releases. They are the only branches that should branch directly off `main`. Once the fix is complete, they should be merged into both `main` and `develop` (or the current release branch) and `main` should be tagged with an updated version number. 
+
+
+Here's what this looks like visually:
+
+![](git_flow_2.png)
+
+
+We can make use of the Git Flow extension, which provides high-level repository operations for this particular branching model. Designed by Vincent Driessen, this set of extensions extend Git's functionality to automate the process of managing branches according to the model. 
+
+:::::: {.callout-note}
+The Git flow extension may not be installed on your system, you can find instructions on how to install it [here](https://skoch.github.io/Git-Workflow/).
+:::
+
+Here are some of the most common commands you'll use with this flow.
+
+**1. Initialising a Repository with Git Flow**
+<br>
+Assuming you've already cloned a Git repository, start with:
+```bash
+git flow init
+```
+This sets up your repository with the standard Git Flow branches we mentioned. It will prompt you to confirm the names of your branches, which are typically set to the defaults `develop`, `master`, `feature/`, `release/`, `hotfix/`, `support/`.
+
+
+**2. Start a New Feature**
+<br>
+To start developing a new feature:
+```bash
+git flow feature start my-feature
+```
+
+This will:
+
+- Switch to the `develop` branch.
+- Update your local repository
+- Create a new feature branch called `feature/my-feature` based on `develop`.
+
+**3. Develop the Feature**
+<br>
+Make your code changes, add and commit them as usual:
+
+```bash
+git add <file_name>
+git commit -m "<commit message>"
+```
+
+**4. Finish the Feature**
+<br>
+Once feature development is complete:
+```bash
+git flow feature finish my-feature
+```
+
+This command:
+
+- Merges `feature/my-feature` into `develop`.
+- Deletes the `feature/my-feature` branch 
+- Switches back to the `develop` branch. 
+
+**5. Start a Release**
+<br> 
+When you're ready to prepare a new production release:
+```bash 
+git flow release start 1.0.0
+```
+This creates a new branch called `release/1.0.0` based off `develop`.
+
+:::::: {.callout-note}
+At this point you can still make any necessary last-minute tweaks directly on the release branch, with `git commit`. Any commits made will be on this `release/1.0.0` branch.
+:::
+
+**6. Finish the release**
+<br>
+To complete the release, merge it into `master` or `main`:
+
+```bash 
+git flow release finish '1.0.0'
+```
+
+This command performs a few actions:
+
+- Merges `release/1.0.0` into `main`.
+- Tags the release with `1.0.0`.
+- Merges `release/1.0.0` back into `develop`.
+- Deletes the `release/1.0.0` branch.
+
+**7. Push changes to Remote**
+<br>
+Push all branches and tags (more on Git tags later on) to your remote repo:
+```bash
+git push origin develop
+git push origin master
+git push --Tags
+```
+
+**8. Start a Hotfix**
+<br>
+If you need to make a critical fix directly on `master`:
+
+```bash
+git flow hotfix start hotfix-branch
+```
+
+This creates a new branch `hotfix/hotfix-branch` based off `master`.
+
+**9. Finish the Hotfix**
+<br>
+After making the fix and committing changes:
+
+```bash
+git flow hotfix finish hotfix-branch
+```
+
+This will:
+
+- Merges `hotfix/hotfix-branch` into both `master` and `develop`
+- Tag the new version
+- Delete the `hotfix/hotfix-branch`
+
+**11. Push Hotfix Changes**
+<br>
+Finally, push the changes and tags to the remote repo once more:
+
+```bash
+git push origin develop
+git push origin master
+git push --Tags
+```
+
+# Tags for Releases
+We briefly mentioned tags in our discussion of Git flow, but what exactly are they? Git tags are markers that are used to point to specific points in a repository's history. They are commonly used to mark release points, such as v1.0, v2.0, etc. They're useful for creating snapshots of a project at certain stages, and they allow you to quickly revert to these versions without having to remember specific commit hashes. 
+
+Tags in Git can be:
+
+- **Lightweight**: These are essentially pointers to specific commits. They're like branch references but are fixed to one commit.
+
+- **Annotated**: These are stored as full objects in the Git database, they can contain a message, the tagger name, email and date -- similar to a commit. Annotated tags are generally recommended because they include more information about the tag itself, such as the release notes or relevant information about that snapshot. 
+
+The naming convention for tags in a Git Flow workflow generally follows semantic  versioning, and the tag increments the patch version (e.g. from 1.0.1 to 1.0.2).
+
+Here’s a rundown of the most important tag-related commands you might use:
+
+**1. Creating Tags**
+
+- **Annotated tags**:
+<br>
+These are the mosts common type of tags for release since they can include metadata such as the author's name, email and date, as well as a tagging message. 
+
+    ```bash
+    git tag -a v1.0.0 -m "Release version 1.0.0"
+    ```
+
+- **Lightweight tags**: These are essentially pointers to specific commits without the extra metadata.
+
+    ```bash
+    git tag v1.0.0
+    ```
+    This creates a simple tag at the current commit.
+
+**2. Listing Tags**
+<br>
+To list all tags in a repo:
+```bash
+git tag
+```
+
+**3. Checking Out Tags**
+<br>
+To checkout a specific tag:
+```git checkout tags/v1.0.0
+```
+This command switches the working directory to the state of the `v1.0.0` tags. It's a detached HEAD state, meaining you're not working on any branch. 
+
+**4. Pushing Tags to Remote Repository**
+
+- **Push a Specific Tag**:
+
+    ```bash
+    git push origin v1.0.0
+    ```
+    This will push the `v1.0.0` tag to the remote repository named `origin`
+
+- **Push All Tags**:
+    
+    ```bash
+    git push origin --tags
+    ```
+
+**5. Deleting Tags**
+
+- **Delete a Local Tag**:
+
+    ```bash
+    git tag -d v1.0.0
+    ```
+    This will delete the `v1.0.0` tag from your local repo.
+
+- **Delete a Remote Tag**:
+
+    ```bash
+    git push --delete origin v1.0.0
+    ```
+
+**6. Displaying Tag Information**
+<br>
+To show information associated with a tag, especially useful with annotated tags:
+```bash
+git show v1.0.0
+```
+
+# Stashing Changes
+
+Stashing in Git is a powerful feature that allows you to temporarily save changes you've made in your working directory without committing them to the repository's history. This is particularly useful when you need to switch contexts quickly --such as changing branches or pulling updates --but you're not ready to make a commit. Stashing helps keep your working directory clean and allows you to apply saved changes later, either to the same branch or on a different one. 
+
+**Saving Changes**
+<br> 
+When you have modified files that are not yet ready to be committed you can use:
+
+```bash
+git stash
+```
+
+To record the current state of your working directory and the staging area. This action creates a new stash entry---a snapshot of your modifications at that moment.
+
+:::{.callout-note}
+`git stash` does not automatically include untracked files or ignored files in the stash by default, it only stashes changes that have been added to the staging area and moodificaitons to files that are already tracked by Git. To stash the untracked files along with the tracked changes run: 
+`git stash push -u`.
+:::
+
+
+**List of Stashes**
+<br>
+You can have multiple stash entries stored at the same time. Each stash is stored in a stack, where the most recent stash is on top. You can list all stashes using:
+
+```bash
+git stash list
+```
+
+Git displays a list of stashes in the stack, formatted as follows:
+
+```bash
+stash@{0}: WIP on branch_name: commit_hash Message of the last commit before stashing
+stash@{1}: WIP on branch_name: commit_hash Message of the last commit before stashing
+```
+
+**Dropping a Specific Stash**
+<br>
+When you want to drop (delete) a specific stash, you specify it's index number:
+
+```bash
+git stash drop stash@{n}
+```
+
+where `n` is the index of the stash you want to drop.
+
+:::::: {.callout-note}
+If you run `git stash drop` without specifying an index, Git will default to dropping the most recent stash i.e. `stash@{0}`
+:::
+
+Another convenient command is:
+```bash
+git stash pop
+```
+
+allowing you to quickly move your most recently shelved changes into the working directory and deleting the popped stash in the process.
+
+
+**Applying Stashed Changes**
+<br> 
+To reapply changes from a stash without deleting the stash we can use:
+
+```bash
+git stash apply
+```
+
+:::::: {.callout-note}
+You can specify which stash to apply the `pop` or `apply` commands using the stash identifier `stash@{n}` e.g. `git stash pop stash@{1}`
+or `git stash apply stash{0}`. 
+:::
+
+<!-- # Managing Merge Conflicts
+
+Understanding Merge Conflicts: Explain what merge conflicts are and why they occur.
+Resolving Conflicts Manually: Walk through a typical process of manual conflict resolution.
+Using git mergetool: Introduce tools that can assist in resolving conflicts and demonstrate basic usage.
+
+
+# Cleaning Up Your Repository
+
+git clean: Explain how to remove untracked files from the working directory safely.
+git gc: Describe how this command helps in optimizing the repository by cleaning unnecessary files and optimizing local storage.
+
+Reverting Changes and Comparing Differences
+
+git revert: Introduce the command for undoing changes, specifying how it differs from other undoing methods like git reset.
+git diff: Explain how to use git diff to see changes between commits, branches, working directory, etc.
+
+Conclusion
+
+Summarize the key points discussed, reiterate the importance of understanding and using these intermediate Git commands effectively. Encourage experimentation with these commands in a non-critical repository to gain confidence.
+Call to Action -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
