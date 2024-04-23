@@ -30,7 +30,7 @@ cd <project_name>
 
 **2. Create & Switch to New Feature Branch**
 <br>
-Create a feature branch off of the `main` branch (we run `git` pull before creating the feature branch to avoid merge conflicts later on).
+Create a feature branch off of the `main` branch (we run `git` pull before creating the feature branch to minimise merge conflicts later on).
 ```bash
 git checkout main
 git pull
@@ -52,7 +52,7 @@ After committing your changes locally, the next step is to share the branch with
 git push -u origin new-feature
 ```
 
-This command pushes the new-feature branch to the remote repository (origin) and sets it to track the remote branch, which is useful for subsequent pushes and pulls.
+This command pushes the `new-feature` branch to the remote repository (origin) and sets it to track the remote branch, which is useful for subsequent pushes and pulls.
 
 
 **5. Open a Pull Request**
@@ -65,7 +65,7 @@ After creating the pull request, it enters the review phase. Team members can re
 
 **7. Pull the Updated Main Branch**
 <br>
-Once your feature branch has been merged, you should update your local main branch to reflect the merged changes.
+Once your feature branch has been merged, you should update your local `main` branch to reflect the merged changes.
 
 ```bash
 git checkout main
@@ -85,7 +85,7 @@ git branch -d new-feature
 This deletes the branch locally, using `-d` which ensures you can only delete the branch if it has been fully merged in its upstream branch.
 
 :::::: {.callout-note}
-When we first push the `new-feature` branch to the remote repository using git `push -u origin new-feature`, the `-u` option sets the upstream branch for our local `new-feature branch`. This means that `origin/new-feature` becomes the default branch for any future push and pull operations on this branch. Setting the upstream branch is crucial as it allows Git to know where to push your changes and from where to fetch updates without specifying the remote and branch each time.
+When we first push the `new-feature` branch to the remote repository using `git push -u origin new-feature`, the `-u` option sets the upstream branch for our local `new-feature branch`. This means that `origin/new-feature` becomes the default branch for any future push and pull operations on this branch. Setting the upstream branch is crucial as it allows Git to know where to push your changes and from where to fetch updates without specifying the remote and branch each time.
 :::
 
 To delete the remote branch use:
@@ -106,7 +106,7 @@ Alongside these branches, Git flow uses various types of support branches to hel
 
 - **Feature branches**: Branch off from `develop` and merge back into `develop` when they are completed. These are used for developing new features, they should never interact directly with `main`.
 
-- **Release branches**: These support preparation for a new production release. Branching off from `develop` when a certain number of features are ready or a scheduled release date approaches. They allow for minor tweaks and preparations tasks that need to be done before the release. Once ready, they merge into main and are tagged with a version number, and back into develop to ensure that any changes made in the release branch aren’t lost.
+- **Release branches**: These support preparation for a new production release. Branching off from `develop` when a certain number of features are ready or a scheduled release date approaches. They allow for minor tweaks and preparation tasks that need to be done before the release. Once ready, they merge into main and are tagged with a version number, and back into develop to ensure that any changes made in the release branch aren’t lost.
 
 - **Hotfix branches**: Used to quickly patch production releases. They are the only branches that should branch directly off `main`. Once the fix is complete, they should be merged into both `main` and `develop` (or the current release branch) and `main` should be tagged with an updated version number. 
 
@@ -177,7 +177,7 @@ git flow release start 1.0.0
 This creates a new branch called `release/1.0.0` based off `develop`.
 
 :::::: {.callout-note}
-At this point you can still make any necessary last-minute tweaks directly on the release branch, with `git commit`. Any commits made will be on this `release/1.0.0` branch.
+At this point, you can still make any necessary last-minute tweaks directly on the release branch, with `git commit`. Any commits made will be on this `release/1.0.0` branch.
 :::
 
 **6. Finish the release**
@@ -200,19 +200,19 @@ This command performs a few actions:
 Push all branches and tags (more on Git tags later on) to your remote repo:
 ```bash
 git push origin develop
-git push origin master
+git push origin main
 git push --Tags
 ```
 
 **8. Start a Hotfix**
 <br>
-If you need to make a critical fix directly on `master`:
+If you need to make a critical fix directly on `main`:
 
 ```bash
 git flow hotfix start hotfix-branch
 ```
 
-This creates a new branch `hotfix/hotfix-branch` based off `master`.
+This creates a new branch `hotfix/hotfix-branch` based off `main`.
 
 **9. Finish the Hotfix**
 <br>
@@ -224,7 +224,7 @@ git flow hotfix finish hotfix-branch
 
 This will:
 
-- Merges `hotfix/hotfix-branch` into both `master` and `develop`
+- Merge `hotfix/hotfix-branch` into both `main` and `develop`
 - Tag the new version
 - Delete the `hotfix/hotfix-branch`
 
@@ -234,7 +234,7 @@ Finally, push the changes and tags to the remote repo once more:
 
 ```bash
 git push origin develop
-git push origin master
+git push origin main
 git push --Tags
 ```
 
@@ -249,24 +249,26 @@ Tags in Git can be:
 
 The naming convention for tags in a Git Flow workflow generally follows semantic  versioning, and the tag increments the patch version (e.g. from 1.0.1 to 1.0.2).
 
+### Tag Commands
+
 Here’s a rundown of the most important tag-related commands you might use:
 
 **1. Creating Tags**
 
 - **Annotated tags**:
 <br>
-These are the mosts common type of tags for release since they can include metadata such as the author's name, email and date, as well as a tagging message. 
+These are the most common types of tags for release since they can include metadata such as the author's name, email and date, as well as a tagging message. 
 
     ```bash
     git tag -a v1.0.0 -m "Release version 1.0.0"
     ```
 
-- **Lightweight tags**: These are essentially pointers to specific commits without the extra metadata.
+- **Lightweight tags**: These are pointers to specific commits without the extra metadata, creating a simple tag at the current commit.
 
     ```bash
     git tag v1.0.0
     ```
-    This creates a simple tag at the current commit.
+    
 
 **2. Listing Tags**
 <br>
@@ -280,7 +282,7 @@ git tag
 To checkout a specific tag:
 ```git checkout tags/v1.0.0
 ```
-This command switches the working directory to the state of the `v1.0.0` tags. It's a detached HEAD state, meaining you're not working on any branch. 
+This command switches the working directory to the state of the `v1.0.0` tags. It's a detached HEAD state, meaning you're not working on any branch. 
 
 **4. Pushing Tags to Remote Repository**
 
@@ -319,9 +321,54 @@ To show information associated with a tag, especially useful with annotated tags
 git show v1.0.0
 ```
 
+**7. Reverting to a Specific Tag**
+<br>
+Resetting a branch to the state of a tag can be very useful when you need to revert your project to a specific version. 
+
+:::::: {.callout-caution}
+This operation should be used with caution, especially when working in collaborative environments, as it alters the history of the branch.
+:::
+
+Here's how to do it:
+
+- **Hard Reset (Alters History)**:
+<br>
+To reset the current branch to the state of a specific tag and discard all the changes to the working directory and staging area since that tag use:
+
+    ```bash
+    git reset --hard <tagname>
+    ```
+    Example:
+
+    ```bash
+    git reset --hard v1.0.0
+    ```
+    
+    This command will reset your current branch's HEAD to the commit associated with `v1.0.0`, discarding any changes in the working directory and index (staging area) since that tag.
+
+    **Checking out a Tag into a New Branch**:
+    <br>
+    If you want to explore or continue work from the state of a specific tag without altering the current branch, it's safer to checkout the new tag into a new branch:
+
+    ```bash
+    git checkout -b <new-branch-name> <tagname>
+    ```
+
+    Example:
+
+    ```bash
+    git checkout -b version-1.0.0 v1.0.0
+    ```
+
+    This creates a new branch named `version-1.0.0` based on the `v1.0.0` tag and switches to it. Now you can make commits and changes without affecting the original line of development.
+
+    
+
+
+
 # Stashing Changes
 
-Stashing in Git is a powerful feature that allows you to temporarily save changes you've made in your working directory without committing them to the repository's history. This is particularly useful when you need to switch contexts quickly --such as changing branches or pulling updates --but you're not ready to make a commit. Stashing helps keep your working directory clean and allows you to apply saved changes later, either to the same branch or on a different one. 
+Stashing in Git is a powerful feature that allows you to temporarily save changes you've made in your working directory without committing them to the repository's history. This is particularly useful when you need to switch contexts quickly, such as changing branches or pulling updates, but you're not ready to commit. Stashing helps keep your working directory clean and allows you to apply saved changes later, either to the same branch or to a different one. 
 
 **Saving Changes**
 <br> 
@@ -334,7 +381,7 @@ git stash
 To record the current state of your working directory and the staging area. This action creates a new stash entry---a snapshot of your modifications at that moment.
 
 :::{.callout-note}
-`git stash` does not automatically include untracked files or ignored files in the stash by default, it only stashes changes that have been added to the staging area and moodificaitons to files that are already tracked by Git. To stash the untracked files along with the tracked changes run: 
+`git stash` does not automatically include untracked files or ignored files in the stash by default, it only stashes changes that have been added to the staging area and modificaitons to files that are already tracked by Git. To stash any untracked files along with the tracked changes run: 
 `git stash push -u`.
 :::
 
@@ -356,7 +403,7 @@ stash@{1}: WIP on branch_name: commit_hash Message of the last commit before sta
 
 **Dropping a Specific Stash**
 <br>
-When you want to drop (delete) a specific stash, you specify it's index number:
+When you want to drop (delete) a specific stash, you have to specify it's index number:
 
 ```bash
 git stash drop stash@{n}
@@ -373,7 +420,7 @@ Another convenient command is:
 git stash pop
 ```
 
-allowing you to quickly move your most recently shelved changes into the working directory and deleting the popped stash in the process.
+allowing you to quickly move your most recently shelved changes into the working directory and delete the popped stash in the process.
 
 
 **Applying Stashed Changes**
@@ -389,27 +436,188 @@ You can specify which stash to apply the `pop` or `apply` commands using the sta
 or `git stash apply stash{0}`. 
 :::
 
-<!-- # Managing Merge Conflicts
+# Managing Merge Conflicts
+A merge conflict in Git occurs when Git is unable to automatically decide which differences in code should take precedence between two commits. This situation typically arises during the merging of two branches when multiple developers have made edits to the same parts of a file. Conflicts might involve edits to the same lines, or contradictory file operations such as deletions and additions. Since Git cannot resolve these conflicts, they require manual intervention to determine which changes should be incorporated into the final merge.
 
-Understanding Merge Conflicts: Explain what merge conflicts are and why they occur.
-Resolving Conflicts Manually: Walk through a typical process of manual conflict resolution.
-Using git mergetool: Introduce tools that can assist in resolving conflicts and demonstrate basic usage.
+To illustrate how a merge conflict might occur and how to resolve it, let's walkthrough a scenario:
+
+### Merge Conflict Scenario
+
+**Main Branch Code**
+```python
+def calculate_discount(price):
+    return price * 0.95
+```
+
+**Feature Branch Code (created from main)**
+```python
+def calculate_discount(price, loyalty_points):
+    discount_rate = 0.95 - loyalty_points * 0.01
+    return price * discount_rate
+```
+
+Developer B updates the `calculate_discount` function in the `feature` branch to incorporate a discount based on loyalty points, while Developer A makes a different modification to the same function on the `main` branch to change the discount rate. When attempting to merge the `feature` branch back into `main`, Git will flag this as a conflict because both branches altered the same lines in the function, and there's no clear rule on which change should take precedence. 
+
+We can see exactly which files are conflicted with `git status` which will return some useful information:
+
+```bash
+On branch main
+Your branch and 'origin/main' have diverged,
+and have 1 and 1 different commits each, respectively.
+  (use "git pull" to merge the remote branch into yours)
+
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+	both modified:   discount.py
+```
+
+**Update the Main branch**
+<br>
+Firstly, Developer B should ensure their local main branch is up-to-date with the latest changes from the remote repository. This reduces the likelihood of further conflicts and ensures that any changes are built on the most recent version of `main`.
+
+```bash
+git checkout main
+git pull origin main
+```
+
+**Merge Main into the Feature Branch**
+<br>
+Before merging the `feature` branch into `main`, it's good practice to first merge the latest `main` into the `feature` branch. This way Developer B can handle any conflicts on their `feature` branch without affecting the `main` branch.
+
+```bash
+git checkout feature
+git merge main
+```
+
+**Resolve Conflicts Locally on the Feature Branch**
+<br>
+Git will highlight the conflicting lines of code once you open the file in question within your code editor. 
+
+![](merge_conflict.png)
+
+
+At this point Developer B can resolve the conflict by editing the file to integrate both changes, for example:
+
+```python
+def calculate_discount(price, loyalty_points=0):
+    return price * (0.90 - loyalty_points * 0.01)  
+```
+
+**Finalise the Merge**
+<br>
+Once all conflicts are resolved, Developer B stages and commits the resolved files:
+
+```bash
+git add <file_name>
+git commit -m "Resolved merge conflict by integrating changes from main into feature"
+```
+
+**Push Changes**
+<br>
+After ensuring that their `feature` branch works correctly with the changes from `main` and that all conflicts are resolved, Developer B can push the updated `feature` branch to the remote repository.
+
+```bash
+git push origin feature
+```
+
+**Merge Feature into Main**
+<br>
+Finally, if Developer B has permission to merge into `main`, or if there's a pull request this would be the time to initiate it, if directly merging you can use:
+
+```bash
+git checkout main
+git merge feature
+git push origin main
+```
+
+This careful approach of merging `main` into the `feature` branch first, resolving conflicts there, and then merging back into `main` helps maintain the stability and integrity of the main codebase. It ensures that the `main` branch only receives fully integrated and tested code, minimising disruptions in the mainline development.
 
 
 # Cleaning Up Your Repository
+In this final section, we'll explore how to tidy up your Git repository by removing unneeded files and optimising the repository's performance. This cleanup is crucial for maintaining an efficient workflow, especially in large projects or ones that have evolved over time. We'll focus on two powerful commands: `git clean` and `git gc`.
 
-git clean: Explain how to remove untracked files from the working directory safely.
-git gc: Describe how this command helps in optimizing the repository by cleaning unnecessary files and optimizing local storage.
+### Using `git clean` to Remove Untracked Files
+The `git clean` command is used to remove untracked files from the working directory. This is especially useful in scenarios where your workspace is cluttered with build outputs, logs, or other temporary files that you don't want to commit. 
 
-Reverting Changes and Comparing Differences
+:::::: {.callout-caution}
+`git clean` is a destructive command that will permanently delete files, so it should be used with caution.
+:::
 
-git revert: Introduce the command for undoing changes, specifying how it differs from other undoing methods like git reset.
-git diff: Explain how to use git diff to see changes between commits, branches, working directory, etc.
+**Dry Run**: Before actually deleting any files, perform a dry run to see which files will be deleted:
+```bash
+git clean -n
+```
 
-Conclusion
+**Interactive Mode**: To choose which files to delete, use the interactive mode:
+```bash
+git clean -i
+```
 
-Summarize the key points discussed, reiterate the importance of understanding and using these intermediate Git commands effectively. Encourage experimentation with these commands in a non-critical repository to gain confidence.
-Call to Action -->
+![](git_clean.png)
+
+This mode presents a user-friendly interface to select which untracked or modified files to delete or ignore. Users are provided with a list of commands to interact with items that `git clean` has identified for potential removal.
+
+The options are:
+
+- **clean**: Immediately deletes the file listed without further prompts.
+- **filter by pattern**: Allows you to specify a pattern to filter out the list of items, e.g. you could input `*.log` to select all log files, and only these files would be considered for cleaning.
+- **select by numbers**: This option allows you to choose files based on their listed numbers. You can typically input a series of numbers separated by spaces or use ranges to select multiple files.
+- **ask each**: With this option, Git will prompt you for each file individually, letting you decide whether to clean or not. This can be useful if you want to review each file before making a decision. 
+- **quit**: Exits the interactive mode without any changes.
+- **help**: Provides additional information about the commands and how to use them.
+
+
+:::::: {.callout-note}
+For best practices, always perform a dry run before cleaning files and add important files and directories to `.gitignore` to prevent them from being accidentally deleted.
+:::
+
+### Optimising the Repository with `git gc`
+The `git gc` command stands for "garbage collection". It's used for optimising the repository by cleaning up unnecessary files and compressing the database of revisions. While Git runs `git gc` automatically on certain commands, running it manually can be useful when:
+
+- You've removed a significant amount of data (e.g. via `git push --force`).
+- Your repository starts to perform poorly.
+- After a series of heavy operations like branch merges and deletions.
+
+:::::: {.callout-note}
+Basic commands (`git status`, `git commit`, `git push`) taking longer than usual to execute, your `.git` directory growing significantly in size (consuming more disk space than necessary) and slow network operations that involve remote repositories are all examples of a repository performing "poorly".
+:::
+
+
+To manually run garbage collection:
+
+```bash
+git gc
+```
+
+This default command is designed to be relatively fast, while still providing some level of housekeeping for the repo. It's optimised to run fairly quickly and to be used often without disrupting workflows. It performs several tasks such as compressing file revisions (to a pack file), pruning loose objects and removing objects that are no longer reachable from any commits. `git gc` performs incremental optimisation, it doesn't necessarily optimise all files but rather focuses on what it can improve without taking too much time. 
+
+:::::: {.callout-note}
+When many versions of a file are stored in a Git repository, Git stores them in a pack file. This is a single file that contains the complete contents of multiple objects (like file contents, tree structures and commit information) that Git needs to maintain the history of a repository. 
+:::
+
+
+For a more aggressive cleanup, you can use:
+```bash
+git gc --aggressive
+```
+
+The `--aggressive` option makes `git gc` more thorough. It tries to aggressively optimise the repo, which can result in smaller pack files but at the cost of taking more time to execute. It recomputes the delta compression of the pack files, which can potentially find better delta matches and further reduce the size of the pack file. This is more CPU-intensive and can take significantly longer, especially in large repositories. Therefore, this command is intended for occasional maintenance e.g. before making a repository clone available to others, or if repo performance has degraded drastically. 
+
+:::::: {.callout-note}
+Delta compression is a method of reducing the size of pack files. Instead of storing the full content of every version of every file, Git stores the initial version of the file (known as a base) and then only the changes made in subsequent versions. These changes are the "deltas". When Git needs to reconstruct a particular version of a file it starts with the base and then applies each delta in sequence until it reaches the desired version.
+:::
+
+
+
+
+
+
+
+
 
 
 

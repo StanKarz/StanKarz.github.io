@@ -197,8 +197,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#feature-branching" id="toc-feature-branching" class="nav-link" data-scroll-target="#feature-branching">Feature Branching</a></li>
   <li><a href="#git-flow" id="toc-git-flow" class="nav-link" data-scroll-target="#git-flow">Git Flow</a></li>
   </ul></li>
-  <li><a href="#tags-for-releases" id="toc-tags-for-releases" class="nav-link" data-scroll-target="#tags-for-releases">Tags for Releases</a></li>
+  <li><a href="#tags-for-releases" id="toc-tags-for-releases" class="nav-link" data-scroll-target="#tags-for-releases">Tags for Releases</a>
+  <ul class="collapse">
+  <li><a href="#tag-commands" id="toc-tag-commands" class="nav-link" data-scroll-target="#tag-commands">Tag Commands</a></li>
+  </ul></li>
   <li><a href="#stashing-changes" id="toc-stashing-changes" class="nav-link" data-scroll-target="#stashing-changes">Stashing Changes</a></li>
+  <li><a href="#managing-merge-conflicts" id="toc-managing-merge-conflicts" class="nav-link" data-scroll-target="#managing-merge-conflicts">Managing Merge Conflicts</a>
+  <ul class="collapse">
+  <li><a href="#merge-conflict-scenario" id="toc-merge-conflict-scenario" class="nav-link" data-scroll-target="#merge-conflict-scenario">Merge Conflict Scenario</a></li>
+  </ul></li>
+  <li><a href="#cleaning-up-your-repository" id="toc-cleaning-up-your-repository" class="nav-link" data-scroll-target="#cleaning-up-your-repository">Cleaning Up Your Repository</a>
+  <ul class="collapse">
+  <li><a href="#using-git-clean-to-remove-untracked-files" id="toc-using-git-clean-to-remove-untracked-files" class="nav-link" data-scroll-target="#using-git-clean-to-remove-untracked-files">Using <code>git clean</code> to Remove Untracked Files</a></li>
+  <li><a href="#optimising-the-repository-with-git-gc" id="toc-optimising-the-repository-with-git-gc" class="nav-link" data-scroll-target="#optimising-the-repository-with-git-gc">Optimising the Repository with <code>git gc</code></a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -229,7 +241,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>1. Clone the Repository</strong> <br>First, clone the remote repo to your local machine, setting up a connection to the remote server with your local repo in the process.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="op">&lt;</span>remote_repo_url<span class="op">&gt;</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="op">&lt;</span>project_name<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>2. Create &amp; Switch to New Feature Branch</strong> <br> Create a feature branch off of the <code>main</code> branch (we run <code>git</code> pull before creating the feature branch to avoid merge conflicts later on).</p>
+<p><strong>2. Create &amp; Switch to New Feature Branch</strong> <br> Create a feature branch off of the <code>main</code> branch (we run <code>git</code> pull before creating the feature branch to minimise merge conflicts later on).</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout main</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> new-feature main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -238,10 +250,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"&lt;commit message&gt;"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>4. Push Feature Branch to Remote Repository</strong> <br> After committing your changes locally, the next step is to share the branch with your team by pushing it to the remote repository. This enables collaboration, as others can see the branch and contribute if necessary. It also ensures that your work is backed up remotely.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin new-feature</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This command pushes the new-feature branch to the remote repository (origin) and sets it to track the remote branch, which is useful for subsequent pushes and pulls.</p>
+<p>This command pushes the <code>new-feature</code> branch to the remote repository (origin) and sets it to track the remote branch, which is useful for subsequent pushes and pulls.</p>
 <p><strong>5. Open a Pull Request</strong> <br> Once your feature is ready and pushed to the remote repository, you’ll typically open a pull request (or merge request, depending on the platform like GitHub, GitLab, etc.). This is a request to merge your <code>feature</code> branch into the <code>main</code> branch. The pull request allows team members to review the code, discuss it, run automated tests, and provide feedback or approval before the changes are integrated into the <code>main</code> branch.</p>
 <p><strong>6. Review &amp; Merge the Pull Request</strong> <br> After creating the pull request, it enters the review phase. Team members can review the changes, discuss modifications, and request further commits if necessary. If the pull request meets all criteria (passing tests, approvals, etc.), it is merged into <code>main</code> via the platform interface of the hosting service.</p>
-<p><strong>7. Pull the Updated Main Branch</strong> <br> Once your feature branch has been merged, you should update your local main branch to reflect the merged changes.</p>
+<p><strong>7. Pull the Updated Main Branch</strong> <br> Once your feature branch has been merged, you should update your local <code>main</code> branch to reflect the merged changes.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout main</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This ensures that your local <code>main</code> branch is synchronised with the remote, containing all the latest merged changes.</p>
@@ -258,7 +270,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>When we first push the <code>new-feature</code> branch to the remote repository using git <code>push -u origin new-feature</code>, the <code>-u</code> option sets the upstream branch for our local <code>new-feature branch</code>. This means that <code>origin/new-feature</code> becomes the default branch for any future push and pull operations on this branch. Setting the upstream branch is crucial as it allows Git to know where to push your changes and from where to fetch updates without specifying the remote and branch each time.</p>
+<p>When we first push the <code>new-feature</code> branch to the remote repository using <code>git push -u origin new-feature</code>, the <code>-u</code> option sets the upstream branch for our local <code>new-feature branch</code>. This means that <code>origin/new-feature</code> becomes the default branch for any future push and pull operations on this branch. Setting the upstream branch is crucial as it allows Git to know where to push your changes and from where to fetch updates without specifying the remote and branch each time.</p>
 </div>
 </div>
 <p>To delete the remote branch use:</p>
@@ -275,7 +287,7 @@ Note
 <p>Alongside these branches, Git flow uses various types of support branches to help with parallel development between team members, ease tracking of features, prepare for production releases and assist in quickly fixing live production issues. These are:</p>
 <ul>
 <li><p><strong>Feature branches</strong>: Branch off from <code>develop</code> and merge back into <code>develop</code> when they are completed. These are used for developing new features, they should never interact directly with <code>main</code>.</p></li>
-<li><p><strong>Release branches</strong>: These support preparation for a new production release. Branching off from <code>develop</code> when a certain number of features are ready or a scheduled release date approaches. They allow for minor tweaks and preparations tasks that need to be done before the release. Once ready, they merge into main and are tagged with a version number, and back into develop to ensure that any changes made in the release branch aren’t lost.</p></li>
+<li><p><strong>Release branches</strong>: These support preparation for a new production release. Branching off from <code>develop</code> when a certain number of features are ready or a scheduled release date approaches. They allow for minor tweaks and preparation tasks that need to be done before the release. Once ready, they merge into main and are tagged with a version number, and back into develop to ensure that any changes made in the release branch aren’t lost.</p></li>
 <li><p><strong>Hotfix branches</strong>: Used to quickly patch production releases. They are the only branches that should branch directly off <code>main</code>. Once the fix is complete, they should be merged into both <code>main</code> and <code>develop</code> (or the current release branch) and <code>main</code> should be tagged with an updated version number.</p></li>
 </ul>
 <p>Here’s what this looks like visually:</p>
@@ -330,7 +342,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>At this point you can still make any necessary last-minute tweaks directly on the release branch, with <code>git commit</code>. Any commits made will be on this <code>release/1.0.0</code> branch.</p>
+<p>At this point, you can still make any necessary last-minute tweaks directly on the release branch, with <code>git commit</code>. Any commits made will be on this <code>release/1.0.0</code> branch.</p>
 </div>
 </div>
 <p><strong>6. Finish the release</strong> <br> To complete the release, merge it into <code>master</code> or <code>main</code>:</p>
@@ -344,22 +356,22 @@ Note
 </ul>
 <p><strong>7. Push changes to Remote</strong> <br> Push all branches and tags (more on Git tags later on) to your remote repo:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin develop</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin master</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin main</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">--Tags</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>8. Start a Hotfix</strong> <br> If you need to make a critical fix directly on <code>master</code>:</p>
+<p><strong>8. Start a Hotfix</strong> <br> If you need to make a critical fix directly on <code>main</code>:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> flow hotfix start hotfix-branch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This creates a new branch <code>hotfix/hotfix-branch</code> based off <code>master</code>.</p>
+<p>This creates a new branch <code>hotfix/hotfix-branch</code> based off <code>main</code>.</p>
 <p><strong>9. Finish the Hotfix</strong> <br> After making the fix and committing changes:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> flow hotfix finish hotfix-branch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This will:</p>
 <ul>
-<li>Merges <code>hotfix/hotfix-branch</code> into both <code>master</code> and <code>develop</code></li>
+<li>Merge <code>hotfix/hotfix-branch</code> into both <code>main</code> and <code>develop</code></li>
 <li>Tag the new version</li>
 <li>Delete the <code>hotfix/hotfix-branch</code></li>
 </ul>
 <p><strong>11. Push Hotfix Changes</strong> <br> Finally, push the changes and tags to the remote repo once more:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin develop</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin master</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin main</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">--Tags</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
@@ -372,18 +384,19 @@ Note
 <li><p><strong>Annotated</strong>: These are stored as full objects in the Git database, they can contain a message, the tagger name, email and date – similar to a commit. Annotated tags are generally recommended because they include more information about the tag itself, such as the release notes or relevant information about that snapshot.</p></li>
 </ul>
 <p>The naming convention for tags in a Git Flow workflow generally follows semantic versioning, and the tag increments the patch version (e.g.&nbsp;from 1.0.1 to 1.0.2).</p>
+<section id="tag-commands" class="level3">
+<h3 class="anchored" data-anchor-id="tag-commands">Tag Commands</h3>
 <p>Here’s a rundown of the most important tag-related commands you might use:</p>
 <p><strong>1. Creating Tags</strong></p>
 <ul>
-<li><p><strong>Annotated tags</strong>: <br> These are the mosts common type of tags for release since they can include metadata such as the author’s name, email and date, as well as a tagging message.</p>
+<li><p><strong>Annotated tags</strong>: <br> These are the most common types of tags for release since they can include metadata such as the author’s name, email and date, as well as a tagging message.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> tag <span class="at">-a</span> v1.0.0 <span class="at">-m</span> <span class="st">"Release version 1.0.0"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p><strong>Lightweight tags</strong>: These are essentially pointers to specific commits without the extra metadata.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> tag v1.0.0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This creates a simple tag at the current commit.</p></li>
+<li><p><strong>Lightweight tags</strong>: These are pointers to specific commits without the extra metadata, creating a simple tag at the current commit.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> tag v1.0.0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul>
 <p><strong>2. Listing Tags</strong> <br> To list all tags in a repo:</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> tag</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>3. Checking Out Tags</strong> <br> To checkout a specific tag: <code>git checkout tags/v1.0.0</code> This command switches the working directory to the state of the <code>v1.0.0</code> tags. It’s a detached HEAD state, meaining you’re not working on any branch.</p>
+<p><strong>3. Checking Out Tags</strong> <br> To checkout a specific tag: <code>git checkout tags/v1.0.0</code> This command switches the working directory to the state of the <code>v1.0.0</code> tags. It’s a detached HEAD state, meaning you’re not working on any branch.</p>
 <p><strong>4. Pushing Tags to Remote Repository</strong></p>
 <ul>
 <li><p><strong>Push a Specific Tag</strong>:</p>
@@ -402,12 +415,40 @@ Note
 </ul>
 <p><strong>6. Displaying Tag Information</strong> <br> To show information associated with a tag, especially useful with annotated tags:</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> show v1.0.0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>7. Reverting to a Specific Tag</strong> <br> Resetting a branch to the state of a tag can be very useful when you need to revert your project to a specific version.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This operation should be used with caution, especially when working in collaborative environments, as it alters the history of the branch.</p>
+</div>
+</div>
+<p>Here’s how to do it:</p>
+<ul>
+<li><p><strong>Hard Reset (Alters History)</strong>: <br> To reset the current branch to the state of a specific tag and discard all the changes to the working directory and staging area since that tag use:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> reset <span class="at">--hard</span> <span class="op">&lt;</span>tagname<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Example:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> reset <span class="at">--hard</span> v1.0.0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This command will reset your current branch’s HEAD to the commit associated with <code>v1.0.0</code>, discarding any changes in the working directory and index (staging area) since that tag.</p>
+<p><strong>Checking out a Tag into a New Branch</strong>: <br> If you want to explore or continue work from the state of a specific tag without altering the current branch, it’s safer to checkout the new tag into a new branch:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> <span class="op">&lt;</span>new-branch-name<span class="op">&gt;</span> <span class="op">&lt;</span>tagname<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Example:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> version-1.0.0 v1.0.0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This creates a new branch named <code>version-1.0.0</code> based on the <code>v1.0.0</code> tag and switches to it. Now you can make commits and changes without affecting the original line of development.</p></li>
+</ul>
+</section>
 </section>
 <section id="stashing-changes" class="level1">
 <h1>Stashing Changes</h1>
-<p>Stashing in Git is a powerful feature that allows you to temporarily save changes you’ve made in your working directory without committing them to the repository’s history. This is particularly useful when you need to switch contexts quickly –such as changing branches or pulling updates –but you’re not ready to make a commit. Stashing helps keep your working directory clean and allows you to apply saved changes later, either to the same branch or on a different one.</p>
+<p>Stashing in Git is a powerful feature that allows you to temporarily save changes you’ve made in your working directory without committing them to the repository’s history. This is particularly useful when you need to switch contexts quickly, such as changing branches or pulling updates, but you’re not ready to commit. Stashing helps keep your working directory clean and allows you to apply saved changes later, either to the same branch or to a different one.</p>
 <p><strong>Saving Changes</strong> <br> When you have modified files that are not yet ready to be committed you can use:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> stash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> stash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To record the current state of your working directory and the staging area. This action creates a new stash entry—a snapshot of your modifications at that moment.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -419,16 +460,16 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><code>git stash</code> does not automatically include untracked files or ignored files in the stash by default, it only stashes changes that have been added to the staging area and moodificaitons to files that are already tracked by Git. To stash the untracked files along with the tracked changes run: <code>git stash push -u</code>.</p>
+<p><code>git stash</code> does not automatically include untracked files or ignored files in the stash by default, it only stashes changes that have been added to the staging area and modificaitons to files that are already tracked by Git. To stash any untracked files along with the tracked changes run: <code>git stash push -u</code>.</p>
 </div>
 </div>
 <p><strong>List of Stashes</strong> <br> You can have multiple stash entries stored at the same time. Each stash is stored in a stack, where the most recent stash is on top. You can list all stashes using:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> stash list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> stash list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Git displays a list of stashes in the stack, formatted as follows:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">stash@{0}:</span> WIP on branch_name: commit_hash Message of the last commit before stashing</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="ex">stash@{1}:</span> WIP on branch_name: commit_hash Message of the last commit before stashing</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Dropping a Specific Stash</strong> <br> When you want to drop (delete) a specific stash, you specify it’s index number:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> stash drop stash@{n}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">stash@{0}:</span> WIP on branch_name: commit_hash Message of the last commit before stashing</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="ex">stash@{1}:</span> WIP on branch_name: commit_hash Message of the last commit before stashing</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Dropping a Specific Stash</strong> <br> When you want to drop (delete) a specific stash, you have to specify it’s index number:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> stash drop stash@{n}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>where <code>n</code> is the index of the stash you want to drop.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -444,10 +485,10 @@ Note
 </div>
 </div>
 <p>Another convenient command is:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> stash pop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>allowing you to quickly move your most recently shelved changes into the working directory and deleting the popped stash in the process.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> stash pop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>allowing you to quickly move your most recently shelved changes into the working directory and delete the popped stash in the process.</p>
 <p><strong>Applying Stashed Changes</strong> <br> To reapply changes from a stash without deleting the stash we can use:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> stash apply</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> stash apply</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -461,29 +502,161 @@ Note
 <p>You can specify which stash to apply the <code>pop</code> or <code>apply</code> commands using the stash identifier <code>stash@{n}</code> e.g.&nbsp;<code>git stash pop stash@{1}</code> or <code>git stash apply stash{0}</code>.</p>
 </div>
 </div>
-<!-- # Managing Merge Conflicts
+</section>
+<section id="managing-merge-conflicts" class="level1">
+<h1>Managing Merge Conflicts</h1>
+<p>A merge conflict in Git occurs when Git is unable to automatically decide which differences in code should take precedence between two commits. This situation typically arises during the merging of two branches when multiple developers have made edits to the same parts of a file. Conflicts might involve edits to the same lines, or contradictory file operations such as deletions and additions. Since Git cannot resolve these conflicts, they require manual intervention to determine which changes should be incorporated into the final merge.</p>
+<p>To illustrate how a merge conflict might occur and how to resolve it, let’s walkthrough a scenario:</p>
+<section id="merge-conflict-scenario" class="level3">
+<h3 class="anchored" data-anchor-id="merge-conflict-scenario">Merge Conflict Scenario</h3>
+<p><strong>Main Branch Code</strong></p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_discount(price):</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> price <span class="op">*</span> <span class="fl">0.95</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Feature Branch Code (created from main)</strong></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_discount(price, loyalty_points):</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    discount_rate <span class="op">=</span> <span class="fl">0.95</span> <span class="op">-</span> loyalty_points <span class="op">*</span> <span class="fl">0.01</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> price <span class="op">*</span> discount_rate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Developer B updates the <code>calculate_discount</code> function in the <code>feature</code> branch to incorporate a discount based on loyalty points, while Developer A makes a different modification to the same function on the <code>main</code> branch to change the discount rate. When attempting to merge the <code>feature</code> branch back into <code>main</code>, Git will flag this as a conflict because both branches altered the same lines in the function, and there’s no clear rule on which change should take precedence.</p>
+<p>We can see exactly which files are conflicted with <code>git status</code> which will return some useful information:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="ex">On</span> branch main</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Your</span> branch and <span class="st">'origin/main'</span> have diverged,</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="ex">and</span> have 1 and 1 different commits each, respectively.</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">(</span><span class="ex">use</span> <span class="st">"git pull"</span> to merge the remote branch into yours<span class="kw">)</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="ex">You</span> have unmerged paths.</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">(</span><span class="ex">fix</span> conflicts and run <span class="st">"git commit"</span><span class="kw">)</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">(</span><span class="ex">use</span> <span class="st">"git merge --abort"</span> to abort the merge<span class="kw">)</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Unmerged</span> paths:</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">(</span><span class="ex">use</span> <span class="st">"git add &lt;file&gt;..."</span> to mark resolution<span class="kw">)</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">both</span> modified:   discount.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Update the Main branch</strong> <br> Firstly, Developer B should ensure their local main branch is up-to-date with the latest changes from the remote repository. This reduces the likelihood of further conflicts and ensures that any changes are built on the most recent version of <code>main</code>.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout main</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull origin main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Merge Main into the Feature Branch</strong> <br> Before merging the <code>feature</code> branch into <code>main</code>, it’s good practice to first merge the latest <code>main</code> into the <code>feature</code> branch. This way Developer B can handle any conflicts on their <code>feature</code> branch without affecting the <code>main</code> branch.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout feature</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> merge main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Resolve Conflicts Locally on the Feature Branch</strong> <br> Git will highlight the conflicting lines of code once you open the file in question within your code editor.</p>
+<p><img src="merge_conflict.png" class="img-fluid"></p>
+<p>At this point Developer B can resolve the conflict by editing the file to integrate both changes, for example:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_discount(price, loyalty_points<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> price <span class="op">*</span> (<span class="fl">0.90</span> <span class="op">-</span> loyalty_points <span class="op">*</span> <span class="fl">0.01</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Finalise the Merge</strong> <br> Once all conflicts are resolved, Developer B stages and commits the resolved files:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add <span class="op">&lt;</span>file_name<span class="op">&gt;</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Resolved merge conflict by integrating changes from main into feature"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Push Changes</strong> <br> After ensuring that their <code>feature</code> branch works correctly with the changes from <code>main</code> and that all conflicts are resolved, Developer B can push the updated <code>feature</code> branch to the remote repository.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin feature</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Merge Feature into Main</strong> <br> Finally, if Developer B has permission to merge into <code>main</code>, or if there’s a pull request this would be the time to initiate it, if directly merging you can use:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout main</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> merge feature</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This careful approach of merging <code>main</code> into the <code>feature</code> branch first, resolving conflicts there, and then merging back into <code>main</code> helps maintain the stability and integrity of the main codebase. It ensures that the <code>main</code> branch only receives fully integrated and tested code, minimising disruptions in the mainline development.</p>
+</section>
+</section>
+<section id="cleaning-up-your-repository" class="level1">
+<h1>Cleaning Up Your Repository</h1>
+<p>In this final section, we’ll explore how to tidy up your Git repository by removing unneeded files and optimising the repository’s performance. This cleanup is crucial for maintaining an efficient workflow, especially in large projects or ones that have evolved over time. We’ll focus on two powerful commands: <code>git clean</code> and <code>git gc</code>.</p>
+<section id="using-git-clean-to-remove-untracked-files" class="level3">
+<h3 class="anchored" data-anchor-id="using-git-clean-to-remove-untracked-files">Using <code>git clean</code> to Remove Untracked Files</h3>
+<p>The <code>git clean</code> command is used to remove untracked files from the working directory. This is especially useful in scenarios where your workspace is cluttered with build outputs, logs, or other temporary files that you don’t want to commit.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>git clean</code> is a destructive command that will permanently delete files, so it should be used with caution.</p>
+</div>
+</div>
+<p><strong>Dry Run</strong>: Before actually deleting any files, perform a dry run to see which files will be deleted:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clean <span class="at">-n</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Interactive Mode</strong>: To choose which files to delete, use the interactive mode:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clean <span class="at">-i</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="git_clean.png" class="img-fluid"></p>
+<p>This mode presents a user-friendly interface to select which untracked or modified files to delete or ignore. Users are provided with a list of commands to interact with items that <code>git clean</code> has identified for potential removal.</p>
+<p>The options are:</p>
+<ul>
+<li><strong>clean</strong>: Immediately deletes the file listed without further prompts.</li>
+<li><strong>filter by pattern</strong>: Allows you to specify a pattern to filter out the list of items, e.g.&nbsp;you could input <code>*.log</code> to select all log files, and only these files would be considered for cleaning.</li>
+<li><strong>select by numbers</strong>: This option allows you to choose files based on their listed numbers. You can typically input a series of numbers separated by spaces or use ranges to select multiple files.</li>
+<li><strong>ask each</strong>: With this option, Git will prompt you for each file individually, letting you decide whether to clean or not. This can be useful if you want to review each file before making a decision.</li>
+<li><strong>quit</strong>: Exits the interactive mode without any changes.</li>
+<li><strong>help</strong>: Provides additional information about the commands and how to use them.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For best practices, always perform a dry run before cleaning files and add important files and directories to <code>.gitignore</code> to prevent them from being accidentally deleted.</p>
+</div>
+</div>
+</section>
+<section id="optimising-the-repository-with-git-gc" class="level3">
+<h3 class="anchored" data-anchor-id="optimising-the-repository-with-git-gc">Optimising the Repository with <code>git gc</code></h3>
+<p>The <code>git gc</code> command stands for “garbage collection”. It’s used for optimising the repository by cleaning up unnecessary files and compressing the database of revisions. While Git runs <code>git gc</code> automatically on certain commands, running it manually can be useful when:</p>
+<ul>
+<li>You’ve removed a significant amount of data (e.g.&nbsp;via <code>git push --force</code>).</li>
+<li>Your repository starts to perform poorly.</li>
+<li>After a series of heavy operations like branch merges and deletions.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Basic commands (<code>git status</code>, <code>git commit</code>, <code>git push</code>) taking longer than usual to execute, your <code>.git</code> directory growing significantly in size (consuming more disk space than necessary) and slow network operations that involve remote repositories are all examples of a repository performing “poorly”.</p>
+</div>
+</div>
+<p>To manually run garbage collection:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> gc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This default command is designed to be relatively fast, while still providing some level of housekeeping for the repo. It’s optimised to run fairly quickly and to be used often without disrupting workflows. It performs several tasks such as compressing file revisions (to a pack file), pruning loose objects and removing objects that are no longer reachable from any commits. <code>git gc</code> performs incremental optimisation, it doesn’t necessarily optimise all files but rather focuses on what it can improve without taking too much time.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When many versions of a file are stored in a Git repository, Git stores them in a pack file. This is a single file that contains the complete contents of multiple objects (like file contents, tree structures and commit information) that Git needs to maintain the history of a repository.</p>
+</div>
+</div>
+<p>For a more aggressive cleanup, you can use:</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> gc <span class="at">--aggressive</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>--aggressive</code> option makes <code>git gc</code> more thorough. It tries to aggressively optimise the repo, which can result in smaller pack files but at the cost of taking more time to execute. It recomputes the delta compression of the pack files, which can potentially find better delta matches and further reduce the size of the pack file. This is more CPU-intensive and can take significantly longer, especially in large repositories. Therefore, this command is intended for occasional maintenance e.g.&nbsp;before making a repository clone available to others, or if repo performance has degraded drastically.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Delta compression is a method of reducing the size of pack files. Instead of storing the full content of every version of every file, Git stores the initial version of the file (known as a base) and then only the changes made in subsequent versions. These changes are the “deltas”. When Git needs to reconstruct a particular version of a file it starts with the base and then applies each delta in sequence until it reaches the desired version.</p>
+</div>
+</div>
 
-Understanding Merge Conflicts: Explain what merge conflicts are and why they occur.
-Resolving Conflicts Manually: Walk through a typical process of manual conflict resolution.
-Using git mergetool: Introduce tools that can assist in resolving conflicts and demonstrate basic usage.
 
-
-# Cleaning Up Your Repository
-
-git clean: Explain how to remove untracked files from the working directory safely.
-git gc: Describe how this command helps in optimizing the repository by cleaning unnecessary files and optimizing local storage.
-
-Reverting Changes and Comparing Differences
-
-git revert: Introduce the command for undoing changes, specifying how it differs from other undoing methods like git reset.
-git diff: Explain how to use git diff to see changes between commits, branches, working directory, etc.
-
-Conclusion
-
-Summarize the key points discussed, reiterate the importance of understanding and using these intermediate Git commands effectively. Encourage experimentation with these commands in a non-critical repository to gain confidence.
-Call to Action -->
-
-
+</section>
 </section>
 
 </main> <!-- /main -->
