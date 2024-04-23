@@ -9,7 +9,7 @@ title: "About"
 
 Welcome to my corner of the web.
 
-My academic and professional journey has been anything but linear, taking me from the intricate world of Chemistry to the dynamic field of AI, drawn by its potential to redefine problem-solving and innovation. This interdisciplinary background has endowed me with a unique perspective and a versatile skill set, bridging the gap between the theoretical and the practical.
+My academic and professional journey has been anything but linear, taking me from the intricate world of Chemistry to the dynamic field of AI, drawn by its potential to redefine problem-solving and innovation. This interdisciplinary background has provided me with a unique perspective and a versatile skill set, bridging the gap between the theoretical and the practical.
 
 # Recent Activities
 
@@ -21,7 +21,7 @@ Back in London, I embraced the opportunity to work as a Research Intern at Unive
 
 # Beyond the Classroom
 
-Prior to my postgraduate studies, I worked as a Customer Success Specialist at Paperform, where I honed my skills in client engagement, technical support, and cross-functional collaboration. This role taught me the importance of customer-centric product development and the value of clear, accessible user education.
+Prior to my postgraduate studies, I worked as a Customer Support Specialist at Paperform, where I honed my skills in client engagement, technical support, and cross-functional collaboration. This role taught me the importance of customer-centric product development and the value of clear, accessible user education.
 
 
 # Skills and Tools
