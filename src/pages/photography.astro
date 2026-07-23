@@ -1,0 +1,208 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+
+// Folder-driven gallery: every image in src/assets/photography shows up here,
+// sorted by filename. Curate by adding or removing files, no code changes needed.
+const modules = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/photography/*.{jpg,jpeg,png,webp}',
+  { eager: true },
+);
+const photos = Object.entries(modules)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, mod]) => mod.default);
+---
+
+<BaseLayout
+  title="Photography"
+  description="A few frames from wherever I've been carrying a camera."
+>
+  <section class="photography">
+    <h1 class="heading">Photography</h1>
+    <p class="intro">A few frames from wherever I've been carrying a camera.</p>
+    <div class="gallery">
+      {
+        photos.map((photo) => (
+          <button type="button" class="thumb" aria-label="Enlarge photo">
+            <Image
+              src={photo}
+              alt=""
+              widths={[400, 800, 1600]}
+              sizes="(max-width: 600px) 100vw, 300px"
+              class="photo"
+              loading="lazy"
+            />
+          </button>
+        ))
+      }
+    </div>
+  </section>
+
+  <div
+    class="lightbox"
+    id="lightbox"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Enlarged photo"
+    hidden
+  >
+    <button type="button" class="lightbox-close" aria-label="Close">&times;</button>
+    <img class="lightbox-img" alt="" />
+  </div>
+</BaseLayout>
+
+<script>
+  function initLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    if (!lightbox) return;
+    const lightboxImg = lightbox.querySelector('.lightbox-img') as HTMLImageElement | null;
+    if (!lightboxImg) return;
+
+    // Astro emits a srcset; pull the widest rendition for the enlarged view.
+    function largestSrc(img: HTMLImageElement): string {
+      const srcset = img.getAttribute('srcset');
+      if (!srcset) return img.currentSrc || img.src;
+      let best = img.src;
+      let bestW = 0;
+      for (const part of srcset.split(',')) {
+        const [url, descriptor] = part.trim().split(/\s+/);
+        const w = parseInt(descriptor, 10);
+        if (w > bestW) {
+          bestW = w;
+          best = url;
+        }
+      }
+      return best;
+    }
+
+    function close() {
+      lightbox!.hidden = true;
+      lightboxImg!.src = '';
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.thumb').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const img = btn.querySelector('img');
+        if (!img) return;
+        lightboxImg!.src = largestSrc(img);
+        lightbox!.hidden = false;
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    lightbox.addEventListener('click', close);
+
+    // Bind the global Escape handler once, even across View Transition swaps.
+    if (!(window as any).__lightboxKeyBound) {
+      (window as any).__lightboxKeyBound = true;
+      document.addEventListener('keydown', (e) => {
+        const lb = document.getElementById('lightbox');
+        if (lb && e.key === 'Escape' && !lb.hidden) {
+          lb.hidden = true;
+          const im = lb.querySelector('.lightbox-img') as HTMLImageElement | null;
+          if (im) im.src = '';
+          document.body.style.overflow = '';
+        }
+      });
+    }
+  }
+
+  document.addEventListener('astro:page-load', initLightbox);
+</script>
+
+<style>
+  .photography {
+    max-width: var(--max-width);
+  }
+
+  .heading {
+    font-family: var(--font-serif);
+    font-size: var(--font-size-2xl);
+    font-weight: 600;
+    line-height: var(--line-height-heading);
+    letter-spacing: var(--letter-spacing-tight);
+    margin-bottom: var(--space-md);
+  }
+
+  .intro {
+    line-height: var(--line-height-body);
+    margin-bottom: var(--space-xl);
+  }
+
+  /* CSS-columns masonry keeps each photo's own aspect ratio, portrait and landscape alike. */
+  .gallery {
+    column-count: 2;
+    column-gap: var(--space-md);
+  }
+
+  .thumb {
+    display: block;
+    width: 100%;
+    margin: 0 0 var(--space-md);
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: zoom-in;
+    break-inside: avoid;
+  }
+
+  .photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 2px;
+    transition: opacity 0.2s ease;
+  }
+
+  .thumb:hover .photo,
+  .thumb:focus-visible .photo {
+    opacity: 0.85;
+  }
+
+  .lightbox[hidden] {
+    display: none;
+  }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-xl);
+    background: rgba(0, 0, 0, 0.88);
+    cursor: zoom-out;
+  }
+
+  .lightbox-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 2px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-lg);
+    border: 0;
+    background: none;
+    color: #fff;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  @media (max-width: 600px) {
+    .heading {
+      font-size: var(--font-size-xl);
+    }
+
+    .gallery {
+      column-count: 1;
+    }
+  }
+</style>

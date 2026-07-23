@@ -1,0 +1,28 @@
+---
+import styles from './SubscribeForm.module.css';
+
+// TODO: create a new Buttondown newsletter under your own name and put its handle here.
+// Do NOT reuse 'burnedthoughts' — those subscribers signed up to an anonymous blog and
+// would start receiving email with your name on it.
+const BUTTONDOWN_HANDLE = 'CHANGEME';
+---
+
+<form
+  action={`https://buttondown.com/api/emails/embed-subscribe/${BUTTONDOWN_HANDLE}`}
+  method="post"
+  target="_blank"
+  class={styles.form}
+>
+  <label for="bd-email" class={styles.label}>Get new posts by email</label>
+  <div class={styles.row}>
+    <input
+      type="email"
+      name="email"
+      id="bd-email"
+      placeholder="you@example.com"
+      required
+      class={styles.input}
+    />
+    <button type="submit" class={styles.button}>Subscribe</button>
+  </div>
+</form>

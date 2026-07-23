@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#1a1510"/>
+  <text x="600" y="280" text-anchor="middle" font-family="Georgia, serif" font-size="72" font-weight="600" fill="#e8e0d4" letter-spacing="-2">Stan Karzhev</text>
+  <text x="600" y="370" text-anchor="middle" font-family="monospace" font-size="24" fill="#a39787">machine learning, robotics, building things</text>
+  <rect x="560" y="410" width="80" height="3" rx="1.5" fill="#c4602a"/>
+</svg>

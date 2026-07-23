@@ -1,0 +1,125 @@
+.header {
+  padding: var(--space-xl) 0 var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topRight {
+  display: none;
+}
+
+.logo {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: var(--font-size-xl);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.logo:hover {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-top: var(--space-sm);
+}
+
+.link {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  text-transform: lowercase;
+}
+
+.link:hover {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+/* Burger button — hidden on desktop */
+.burger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  padding: var(--space-xs);
+}
+
+.burger:hover {
+  color: var(--color-accent);
+}
+
+.closeIcon {
+  display: none;
+}
+
+/* Show X when menu is open */
+:global([aria-expanded='true']) .burgerIcon {
+  display: none;
+}
+
+:global([aria-expanded='true']) .closeIcon {
+  display: block;
+}
+
+/* Desktop: hide burger, show inline theme toggle */
+.desktopOnly {
+  display: contents;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .topRight {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .burger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo {
+    font-size: var(--font-size-lg);
+  }
+
+  /* Hide nav by default on mobile */
+  .nav {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* Show nav when open */
+  .nav:global(.open) {
+    display: flex;
+  }
+
+  .link {
+    font-size: var(--font-size-base);
+    padding: var(--space-xs) 0;
+  }
+
+  /* Hide the inline theme toggle on mobile (it's in topRight instead) */
+  .desktopOnly {
+    display: none;
+  }
+}

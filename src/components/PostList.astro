@@ -1,0 +1,38 @@
+---
+import PostCard from './PostCard.astro';
+import type { PostListProps } from '../types/components';
+import styles from './PostList.module.css';
+
+interface Props extends PostListProps {}
+
+const { posts } = Astro.props;
+
+// Group posts by year, sorted newest first
+const sorted = posts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const grouped = new Map<number, typeof sorted>();
+for (const post of sorted) {
+  const year = post.data.pubDate.getUTCFullYear();
+  if (!grouped.has(year)) grouped.set(year, []);
+  grouped.get(year)!.push(post);
+}
+---
+
+<div class={styles.list}>
+  {[...grouped.entries()].map(([year, yearPosts]) => (
+    <section class={styles.yearGroup}>
+      <h2 class={styles.year}>{year}</h2>
+      <ul class={styles.posts}>
+        {yearPosts.map((post) => (
+          <PostCard
+            title={post.data.title}
+            href={`/blog/${post.id}`}
+            date={post.data.pubDate}
+          />
+        ))}
+      </ul>
+    </section>
+  ))}
+</div>

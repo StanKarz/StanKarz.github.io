@@ -1,0 +1,262 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import type { ReadingEntry } from '../../types/components';
+import readingData from '../../data/reading.json';
+
+function decodeEntities(str: string): string {
+  const named: Record<string, string> = {
+    amp: '&', lt: '<', gt: '>', quot: '"', apos: "'",
+    nbsp: '\u00a0', ndash: '\u2013', mdash: '\u2014',
+    lsquo: '\u2018', rsquo: '\u2019', ldquo: '\u201c', rdquo: '\u201d',
+    hellip: '\u2026', copy: '\u00a9', reg: '\u00ae', trade: '\u2122',
+  };
+  return str
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(parseInt(dec, 10)))
+    .replace(/&(\w+);/g, (match, name) => named[name] ?? match);
+}
+
+function formatDate(dateStr: string): string {
+  const d = new Date(dateStr + 'T00:00:00Z');
+  return d.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
+}
+
+export function getStaticPaths() {
+  const entries: ReadingEntry[] = readingData as ReadingEntry[];
+
+  function getMonthInfo(dateStr: string) {
+    const d = new Date(dateStr + 'T00:00:00Z');
+    const label = d.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      timeZone: 'UTC',
+    });
+    const slug = label.toLowerCase().replace(/\s+/g, '-');
+    const sortKey = `${d.getUTCFullYear()}-${String(d.getUTCMonth()).padStart(2, '0')}`;
+    return { slug, label, sortKey };
+  }
+
+  const grouped: Record<string, { label: string; sortKey: string; entries: ReadingEntry[] }> = {};
+  for (const entry of entries) {
+    const { slug, label, sortKey } = getMonthInfo(entry.addedDate);
+    if (!grouped[slug]) grouped[slug] = { label, sortKey, entries: [] };
+    grouped[slug].entries.push(entry);
+  }
+
+  const slugs = Object.keys(grouped).sort(
+    (a, b) => grouped[b].sortKey.localeCompare(grouped[a].sortKey)
+  );
+
+  return slugs.map((slug, i) => ({
+    params: { month: slug },
+    props: {
+      label: grouped[slug].label,
+      entries: grouped[slug].entries.sort(
+        (a, b) => new Date(b.addedDate).valueOf() - new Date(a.addedDate).valueOf()
+      ),
+      prev: i < slugs.length - 1 ? { slug: slugs[i + 1], label: grouped[slugs[i + 1]].label } : null,
+      next: i > 0 ? { slug: slugs[i - 1], label: grouped[slugs[i - 1]].label } : null,
+    },
+  }));
+}
+
+interface Props {
+  label: string;
+  entries: ReadingEntry[];
+  prev: { slug: string; label: string } | null;
+  next: { slug: string; label: string } | null;
+}
+
+const { label, entries, prev, next } = Astro.props;
+---
+
+<BaseLayout title="reading" description="Things I've been reading.">
+  <section class="reading-header">
+    <h1 class="page-heading">reading log</h1>
+    <p class="page-desc">Articles, essays, and other things I've been reading.</p>
+  </section>
+
+  <section class="month-group">
+    <h2 class="month-heading">{label.toLowerCase()}</h2>
+    <ul class="entry-list">
+      {entries.map((entry) => (
+        <li class="entry">
+          <div class="entry-top">
+            <a href={entry.url} target="_blank" rel="noopener noreferrer" class="entry-title">
+              {decodeEntities(entry.title)}
+            </a>
+            {entry.author && <span class="entry-meta">{entry.author}</span>}
+          </div>
+          {entry.thoughts && (
+            <p class="entry-thoughts">{entry.thoughts}</p>
+          )}
+          <div class="entry-footer">
+            <span class="entry-added">read on {formatDate(entry.addedDate)}</span>
+            {entry.rating && (
+              <span class="entry-rating">{'*'.repeat(entry.rating)}</span>
+            )}
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <nav class="pagination">
+    {prev ? (
+      <a href={`/reading/${prev.slug}`} class="pagination-link pagination-prev">
+        &larr; {prev.label.toLowerCase()}
+      </a>
+    ) : <span />}
+    {next ? (
+      <a href={`/reading/${next.slug}`} class="pagination-link pagination-next">
+        {next.label.toLowerCase()} &rarr;
+      </a>
+    ) : <span />}
+  </nav>
+</BaseLayout>
+
+<style>
+  .reading-header {
+    margin-bottom: var(--space-3xl);
+  }
+
+  .page-heading {
+    font-family: var(--font-serif);
+    font-size: var(--font-size-2xl);
+    font-weight: 600;
+    line-height: var(--line-height-heading);
+    letter-spacing: var(--letter-spacing-tight);
+    margin-bottom: var(--space-md);
+  }
+
+  .page-desc {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    max-width: 50ch;
+    line-height: var(--line-height-body);
+  }
+
+  .month-group {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .month-heading {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 400;
+    color: var(--color-text-muted);
+    letter-spacing: 0.05em;
+    text-transform: lowercase;
+    margin-bottom: var(--space-md);
+  }
+
+  .entry-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .entry {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .entry-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-md);
+  }
+
+  .entry-title {
+    font-family: var(--font-serif);
+    font-size: var(--font-size-base);
+    color: var(--color-accent);
+    text-decoration: none;
+    line-height: 1.4;
+  }
+
+  .entry-title:hover {
+    text-decoration: underline;
+    color: var(--color-accent-hover);
+  }
+
+  .entry-meta {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .entry-thoughts {
+    font-family: var(--font-serif);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: var(--line-height-body);
+  }
+
+  .entry-footer {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+  }
+
+  .entry-added {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    opacity: 0.7;
+  }
+
+  .entry-rating {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-accent);
+    letter-spacing: 0.15em;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: var(--space-3xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .pagination-link {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .pagination-link:hover {
+    text-decoration: underline;
+    color: var(--color-accent-hover);
+  }
+
+  @media (max-width: 600px) {
+    .page-heading {
+      font-size: var(--font-size-xl);
+    }
+
+    .reading-header {
+      margin-bottom: var(--space-2xl);
+    }
+
+    .entry-top {
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+  }
+</style>

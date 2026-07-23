@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="flame" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#c4602a"/>
+      <stop offset="100%" stop-color="#e07c3e"/>
+    </linearGradient>
+  </defs>
+  <!-- Flame / ember shape -->
+  <path d="M16 3c0 0-6 7-6 14a6 6 0 0 0 4 5.6c-.5-1-.8-2.2-.8-3.6 0-4 2.8-8 2.8-8s2.8 4 2.8 8c0 1.4-.3 2.6-.8 3.6A6 6 0 0 0 22 17C22 10 16 3 16 3z" fill="url(#flame)"/>
+  <!-- Ember dot -->
+  <circle cx="16" cy="27" r="1.5" fill="#c4602a" opacity="0.7"/>
+</svg>

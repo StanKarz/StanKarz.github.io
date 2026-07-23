@@ -1,0 +1,58 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import SEOHead from '../components/SEOHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+import type { SEOProps } from '../types/components';
+import styles from './BaseLayout.module.css';
+
+interface Props extends SEOProps {}
+
+const { title, description, ogImage, articleDate } = Astro.props;
+
+// Umami website ID for the stankarz.github.io property. Empty = analytics disabled.
+// Create a NEW property for this site rather than reusing the one from the old blog —
+// a shared ID merges both sites' traffic into a single dashboard.
+const UMAMI_WEBSITE_ID = '';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <SEOHead title={title} description={description} ogImage={ogImage} articleDate={articleDate} />
+    <ViewTransitions />
+    <!-- Theme init — runs before paint to prevent flash -->
+    <script is:inline>
+      (function () {
+        const saved = localStorage.getItem('theme');
+        const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+        document.documentElement.setAttribute('data-theme', saved || preferred);
+      })();
+    </script>
+    <!-- Preserve theme across View Transitions swaps -->
+    <script is:inline>
+      document.addEventListener('astro:before-swap', function (e) {
+        var theme = document.documentElement.getAttribute('data-theme');
+        if (theme) {
+          e.newDocument.documentElement.setAttribute('data-theme', theme);
+        }
+      });
+    </script>
+    {/* Umami analytics — production only, and only once UMAMI_WEBSITE_ID is set above. */}
+    {import.meta.env.PROD && UMAMI_WEBSITE_ID && (
+      <script is:inline defer src="https://cloud.umami.is/script.js" data-website-id={UMAMI_WEBSITE_ID}></script>
+    )}
+  </head>
+  <body>
+    <div class={styles.wrapper}>
+      <Header />
+      <main class={styles.main}>
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

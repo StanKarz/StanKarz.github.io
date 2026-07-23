@@ -1,0 +1,146 @@
+/* ============================================
+   Prose — Markdown content styling
+   ============================================ */
+
+.prose {
+  max-width: var(--max-width);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-body);
+  color: var(--color-text);
+}
+
+.prose > * + * {
+  margin-top: var(--space-lg);
+}
+
+/* Headings */
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-family: var(--font-serif);
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-text);
+}
+
+.prose h2 {
+  font-size: var(--font-size-xl);
+  margin-top: var(--space-3xl);
+}
+
+.prose h3 {
+  font-size: var(--font-size-lg);
+  margin-top: var(--space-2xl);
+}
+
+.prose h4 {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  margin-top: var(--space-xl);
+}
+
+/* Paragraphs & inline */
+.prose p {
+  margin-top: var(--space-lg);
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+.prose em {
+  font-style: italic;
+}
+
+/* Links */
+.prose a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.prose a:hover {
+  color: var(--color-accent-hover);
+}
+
+/* Lists */
+.prose ul,
+.prose ol {
+  padding-left: var(--space-xl);
+}
+
+.prose li {
+  margin-top: var(--space-sm);
+}
+
+.prose li::marker {
+  color: var(--color-text-muted);
+}
+
+/* Blockquotes */
+.prose blockquote {
+  border-left: 3px solid var(--color-accent);
+  padding-left: var(--space-lg);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* Code */
+.prose code {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  background-color: var(--color-code-bg);
+  padding: 0.15em 0.35em;
+  border-radius: 3px;
+}
+
+.prose pre {
+  background-color: var(--color-code-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: var(--space-lg);
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: var(--font-size-sm);
+}
+
+/* Images */
+.prose img {
+  border-radius: 4px;
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+
+/* Horizontal rules */
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin-top: var(--space-2xl);
+  margin-bottom: var(--space-2xl);
+}
+
+/* Tables */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.prose th,
+.prose td {
+  border: 1px solid var(--color-border);
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+}
+
+.prose th {
+  font-weight: 600;
+  background-color: var(--color-bg-raised);
+}

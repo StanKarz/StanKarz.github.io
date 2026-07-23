@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Contact" description="How to get in touch with Stan Karzhev.">
+  <article class="contact">
+    <h1 class="heading">Contact</h1>
+    <div class="body">
+      <p>
+        I'm open to hearing from people. Whether it's a question about something
+        I wrote, a correction, a collaboration idea, or just a thought you wanted
+        to share.
+      </p>
+      <p>
+        Email is the best way to reach me.
+      </p>
+      <div class="email-block">
+        <p class="email-label">Email</p>
+        <p class="email-value">skarzhev <span class="at">@</span> googlemail <span class="dot">dot</span> com</p>
+      </div>
+      <p class="note">
+        Spelled out to keep the bots away.
+      </p>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .contact {
+    max-width: var(--max-width);
+  }
+
+  .heading {
+    font-family: var(--font-serif);
+    font-size: var(--font-size-2xl);
+    font-weight: 600;
+    line-height: var(--line-height-heading);
+    letter-spacing: var(--letter-spacing-tight);
+    margin-bottom: var(--space-xl);
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    line-height: var(--line-height-body);
+  }
+
+  .body a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .body a:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .email-block {
+    background-color: var(--color-bg-raised);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: var(--space-lg);
+  }
+
+  .email-label {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-xs);
+  }
+
+  .email-value {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-lg);
+    color: var(--color-accent);
+    letter-spacing: 0.02em;
+  }
+
+  .at,
+  .dot {
+    color: var(--color-text-muted);
+  }
+
+  .note {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  @media (max-width: 600px) {
+    .heading {
+      font-size: var(--font-size-xl);
+    }
+
+    .email-value {
+      font-size: var(--font-size-base);
+    }
+  }
+</style>

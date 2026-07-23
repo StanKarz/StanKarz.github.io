@@ -1,0 +1,143 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+import { SITE } from '../types/components';
+
+const allPosts = await getCollection('blog', ({ data }) => {
+  return import.meta.env.PROD ? data.draft !== true : true;
+});
+
+const recentPosts = allPosts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 5);
+---
+
+<BaseLayout title={SITE.title} description={SITE.description}>
+  <section class="intro">
+    <h1 class="intro-heading">Machine learning, robots, and thinking clearly</h1>
+    <div class="body">
+      <p>
+        I'm Stan, an ML Engineer/Data Scientist in London working on LLM systems and agents,
+        lately exploring embodied AI.
+      </p>
+      <p>
+        I spent the past year at <strong>Dojo</strong>, building a forecasting pipeline and a
+        pricing-optimisation engine. Prior to that I was at <strong>Faculty AI</strong>, building
+        LLM systems, and I've written about them for <strong>DataCamp</strong>: advanced RAG,
+        distillation, and deployment. I hold an MSc in Artificial Intelligence from King's College
+        London, and I spent a summer at Seoul National University building a robot's vision system,
+        a YOLO model that recognised food from a live camera and prompted the robot to react in
+        real time.
+      </p>
+      <p>
+        Lately I've been drawn to where agents meet robotics: LLM systems and tool-use agents on one
+        side, robot learning and imitation policies on the other. What interests me is the distance
+        between a policy that works in simulation and one that works on real hardware.
+      </p>
+      <p>
+        Outside of tech, I'm better at tennis than my ranking suggests and an amateur
+        <a href="/photography">photographer</a>. I read more than I finish, usually about incentives
+        and why things are the way they are.
+      </p>
+      <p>
+        I mostly write to think out loud and follow my interests wherever they lead. You can see what
+        I've been reading on the <a href="/reading">reading log</a>, and if you want to follow along,
+        grab the <a href="/rss.xml">RSS feed</a>.
+      </p>
+    </div>
+  </section>
+
+  {recentPosts.length > 0 && (
+    <section class="recent">
+      <h2 class="section-heading">Recent</h2>
+      <ul class="post-list">
+        {recentPosts.map((post) => (
+          <PostCard
+            title={post.data.title}
+            href={`/blog/${post.id}`}
+            date={post.data.pubDate}
+          />
+        ))}
+      </ul>
+      {allPosts.length > 5 && (
+        <a href="/blog" class="archive-link">all posts &rarr;</a>
+      )}
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .intro {
+    margin-bottom: var(--space-3xl);
+  }
+
+  .intro-heading {
+    font-family: var(--font-serif);
+    font-size: var(--font-size-2xl);
+    font-weight: 600;
+    line-height: var(--line-height-heading);
+    letter-spacing: var(--letter-spacing-tight);
+    margin-bottom: var(--space-xl);
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    line-height: var(--line-height-body);
+  }
+
+  .body a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .body a:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .recent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 400;
+    color: var(--color-text-muted);
+    letter-spacing: 0.05em;
+    text-transform: lowercase;
+  }
+
+  .post-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .archive-link {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-accent);
+    text-decoration: none;
+    margin-top: var(--space-md);
+  }
+
+  .archive-link:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    .intro-heading {
+      font-size: var(--font-size-xl);
+    }
+
+    .intro {
+      margin-bottom: var(--space-2xl);
+    }
+  }
+</style>

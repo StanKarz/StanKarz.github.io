@@ -1,0 +1,38 @@
+---
+import type { ReadingEntry } from '../../types/components';
+import readingData from '../../data/reading.json';
+
+const entries: ReadingEntry[] = readingData as ReadingEntry[];
+
+// Find the latest month slug
+let latestSlug = '';
+let latestKey = '';
+
+for (const entry of entries) {
+  const d = new Date(entry.addedDate + 'T00:00:00Z');
+  const sortKey = `${d.getUTCFullYear()}-${String(d.getUTCMonth()).padStart(2, '0')}`;
+  if (sortKey > latestKey) {
+    latestKey = sortKey;
+    const label = d.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      timeZone: 'UTC',
+    });
+    latestSlug = label.toLowerCase().replace(/\s+/g, '-');
+  }
+}
+
+const redirectUrl = `/reading/${latestSlug}`;
+---
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0;url=${redirectUrl}`} />
+    <link rel="canonical" href={redirectUrl} />
+    <script is:inline define:vars={{ redirectUrl }}>
+      window.location.replace(redirectUrl);
+    </script>
+  </head>
+  <body></body>
+</html>

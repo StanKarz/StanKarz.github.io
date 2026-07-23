@@ -1,0 +1,16 @@
+---
+import FormattedDate from './FormattedDate.astro';
+import type { PostCardProps } from '../types/components';
+import styles from './PostCard.module.css';
+
+interface Props extends PostCardProps {}
+
+const { title, href, date } = Astro.props;
+---
+
+<li class={styles.card}>
+  <a href={href} class={styles.link}>{title}</a>
+  <span class={styles.date}>
+    <FormattedDate date={date} />
+  </span>
+</li>

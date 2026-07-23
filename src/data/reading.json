@@ -1,0 +1,1098 @@
+[
+  {
+    "url": "https://vimscoops.dev/game",
+    "title": "Vim Scoops, learn Vim motions in your browser",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-07-14",
+    "thoughts": "Super neat game for learning Vim",
+    "rating": 5
+  },
+  {
+    "url": "https://pradyuprasad.com/writings/how-to-ask-for-help/",
+    "title": "How to ask for help from people who don't know you",
+    "author": "@PradyuPrasad",
+    "publishedDate": null,
+    "addedDate": "2026-07-09",
+    "thoughts": "Solid advice",
+    "rating": 4
+  },
+  {
+    "url": "https://weli.dev/blog/half-baked-product/",
+    "title": "Half-Baked Product",
+    "author": null,
+    "publishedDate": "2026-07-02",
+    "addedDate": "2026-07-08",
+    "thoughts": "total freedom to build the perfect...",
+    "rating": 4
+  },
+  {
+    "url": "https://superuserdone.com/posts/2026-07-03-give-smart-people-the-tools/",
+    "title": "Give Smart People The Tools To Do Smart Things",
+    "author": "Louis van der Walt",
+    "publishedDate": "2026-07-03",
+    "addedDate": "2026-07-08",
+    "thoughts": "100% on point",
+    "rating": 4
+  },
+  {
+    "url": "https://trishagee.com/2026/07/04/the-ugly-phase/",
+    "title": "The Ugly Phase",
+    "author": "Trisha Gee",
+    "publishedDate": "2026-07-04",
+    "addedDate": "2026-07-08",
+    "thoughts": "An idea worth applying to projects & life",
+    "rating": 4
+  },
+  {
+    "url": "https://ohshitgit.com/",
+    "title": "Oh shit, I did something terribly wrong, please tell me git has a magic time machine!?!",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-06-28",
+    "thoughts": "Neat reference for getting out of sticky git situations",
+    "rating": 3
+  },
+  {
+    "url": "https://ben-mini.com/2026/stealing-is-a-skill",
+    "title": "Stealing is a Skill",
+    "author": "Ben Wallace",
+    "publishedDate": "2026-06-24",
+    "addedDate": "2026-06-27",
+    "thoughts": "Solid advice in an age where everyone is dying to be unique and original",
+    "rating": 3
+  },
+  {
+    "url": "https://openrouter.ai/blog/insights/royale-last-agent-standing/",
+    "title": "A Robot is Sprinting Towards You: Do You Want it Running on Claude or Grok?",
+    "author": "Jacky Liang",
+    "publishedDate": "2026-06-04",
+    "addedDate": "2026-06-21",
+    "thoughts": "Most novel & interesting LLM experiment",
+    "rating": 4
+  },
+  {
+    "url": "https://newsletter.pragmaticengineer.com/p/why-is-meta-destroying-its-engineering",
+    "title": "Why is Meta destroying its engineering organization?",
+    "author": "Gergely Orosz",
+    "publishedDate": "2026-06-16",
+    "addedDate": "2026-06-21",
+    "thoughts": "Meta loses the last thing good thing it had going: High performance engineering",
+    "rating": 3
+  },
+  {
+    "url": "https://www.thesignalist.io/s/the-dialogue-dividend/",
+    "title": "The Dialogue Dividend",
+    "author": "Jakub Skoczeń",
+    "publishedDate": "2026-06-17",
+    "addedDate": "2026-06-21",
+    "thoughts": "\"The mind doesn't stop at the skull. It extends into the environment, including the people in it\"",
+    "rating": 4
+  },
+  {
+    "url": "https://shoesandshots.substack.com/p/discomfort-is-the-price-you-pay-for",
+    "title": "discomfort is the price you pay for a fulfilling life",
+    "author": "jacqueline",
+    "publishedDate": "2025-08-30",
+    "addedDate": "2026-06-21",
+    "thoughts": "Gotta kick the routine sometimes",
+    "rating": 3
+  },
+  {
+    "url": "https://odetoapoet.substack.com/p/the-hunger-to-be-everything",
+    "title": "the hunger to be everything.",
+    "author": "amber.",
+    "publishedDate": "2025-05-15",
+    "addedDate": "2026-06-21",
+    "thoughts": "\"We’ve become spectators of everyone and participants in nothing of our own\" fr",
+    "rating": 3
+  },
+  {
+    "url": "https://www.goodinternetmagazine.com/why-i-email-complete-strangers/",
+    "title": "Why I email complete strangers",
+    "author": null,
+    "publishedDate": "2026-02-06",
+    "addedDate": "2026-06-21",
+    "thoughts": "\"The largest joys often start with the smallest gestures\"",
+    "rating": 4
+  },
+  {
+    "url": "https://mrmarket.lol/what-the-fuck-happened-to-nerds/",
+    "title": "What the Fuck Happened to Nerds",
+    "author": null,
+    "publishedDate": "2026-06-12",
+    "addedDate": "2026-06-21",
+    "thoughts": "No subsitute for humility, love of learning and skepticism of the spotlight",
+    "rating": 4
+  },
+  {
+    "url": "https://paulgraham.com/ds.html",
+    "title": "Do Things that Don't Scale",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-06-21",
+    "thoughts": "OG wisdom from 2013",
+    "rating": 4
+  },
+  {
+    "url": "https://blog.jxmo.io/p/zen-and-the-art-of-machine-learning",
+    "title": "Zen and the Art of Machine Learning Research",
+    "author": "Jack Morris",
+    "publishedDate": "2026-06-15",
+    "addedDate": "2026-06-21",
+    "thoughts": "Insights worth taking note of",
+    "rating": 4
+  },
+  {
+    "url": "https://dfdxlabs.com/research/2026/robotics-setup",
+    "title": "Building a robotics research setup that lives next to my desk",
+    "author": "dfdx labs",
+    "publishedDate": "2026-06-17",
+    "addedDate": "2026-06-21",
+    "thoughts": "Super interesting stuff, worth keeping track of dfdx labs",
+    "rating": 4
+  },
+  {
+    "url": "https://michaelnovati.substack.com/p/i-shipped-a-facebook-feature-so-fast",
+    "title": "I Shipped a Facebook Feature So Fast Sheryl Sandberg Called an Emergency Meeting to Stop Me",
+    "author": "Michael Novati",
+    "publishedDate": "2026-06-19",
+    "addedDate": "2026-06-21",
+    "thoughts": "Cool story; maybe don't take no for an answer sometimes",
+    "rating": 3
+  },
+  {
+    "url": "https://paulgraham.com/ramenprofitable.html",
+    "title": "Ramen Profitable",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-06-19",
+    "thoughts": "interesting ideas",
+    "rating": 3
+  },
+  {
+    "url": "https://paulgraham.com/airbnbs.html",
+    "title": "The Airbnbs",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-06-19",
+    "thoughts": "attitude goes a long way",
+    "rating": 3
+  },
+  {
+    "url": "https://paulgraham.com/earn.html",
+    "title": "How to Earn a Billion Dollars",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-06-18",
+    "thoughts": "gotta build cool things for myself",
+    "rating": 4
+  },
+  {
+    "url": "https://gavinray97.github.io/blog/building-from-zero-after-addiction-prison-felony",
+    "title": "Building from Zero After Addiction, Prison, and a Felony",
+    "author": "Gavin Ray",
+    "publishedDate": "2026-06-07",
+    "addedDate": "2026-06-14",
+    "thoughts": "What a story",
+    "rating": 4
+  },
+  {
+    "url": "https://www.thedial.world/articles/news/american-tourists-rome",
+    "title": "Are You Enjoying Our Linguine?",
+    "author": "Francesco Pacifico",
+    "publishedDate": "2025-12-09",
+    "addedDate": "2026-06-13",
+    "thoughts": "Turns out mass tourism is not so good for preserving culture",
+    "rating": 3
+  },
+  {
+    "url": "https://lewiscampbell.tech/blog/260607.html",
+    "title": "The Persistence of Folk Wisdom",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-06-12",
+    "thoughts": "Second order effects matter too",
+    "rating": 3
+  },
+  {
+    "url": "https://evonomics.com/less-work-job-creation-peter-gray/",
+    "title": "Economists are Obsessed with “Job Creation.” How about Less Work?",
+    "author": "Peter Gray",
+    "publishedDate": "2017-12-09",
+    "addedDate": "2026-06-12",
+    "thoughts": "Less work more play",
+    "rating": 4
+  },
+  {
+    "url": "https://substack.com/@hasskhan/p-201324960",
+    "title": "When the Wall Finally Gives Way",
+    "author": "Substack",
+    "publishedDate": null,
+    "addedDate": "2026-06-09",
+    "thoughts": "Good introspective post about resilience",
+    "rating": 3
+  },
+  {
+    "url": "https://orchidfiles.com/build-without-calls/",
+    "title": "I manage teams without a single call",
+    "author": "Orchid",
+    "publishedDate": "2026-05-24",
+    "addedDate": "2026-06-01",
+    "thoughts": "LESS CALLS MORE FOCUS",
+    "rating": 3
+  },
+  {
+    "url": "https://borretti.me/article/human-bottlenecks",
+    "title": "Human Bottlenecks",
+    "author": "Fernando Borretti",
+    "publishedDate": "2026-05-18",
+    "addedDate": "2026-05-31",
+    "thoughts": "Solid essay on why humans will ALWAYS be the bottlneck",
+    "rating": 5
+  },
+  {
+    "url": "https://マリウス.com/the-rise-of-the-bullshittery/",
+    "title": "The Rise of the Bullshittery",
+    "author": null,
+    "publishedDate": "2026-05-12",
+    "addedDate": "2026-05-31",
+    "thoughts": "Just gotta keep doing honest work",
+    "rating": 4
+  },
+  {
+    "url": "https://www.thenewcritic.com/p/the-great-zombification",
+    "title": "The Great Zombification",
+    "author": "Owen Yingling",
+    "publishedDate": "2026-05-11",
+    "addedDate": "2026-05-17",
+    "thoughts": "So glad I graduated before AI really took off",
+    "rating": 4
+  },
+  {
+    "url": "https://www.theguardian.com/us-news/ng-interactive/2026/may/10/fiction-writing-professor-ai",
+    "title": "I knew my writing students were using AI. Their confessions led to a powerful teaching moment | Micah Nathan",
+    "author": "Micah Nathan",
+    "publishedDate": "2026-05-10",
+    "addedDate": "2026-05-17",
+    "thoughts": "What do we lose when AI writes for us",
+    "rating": 4
+  },
+  {
+    "url": "https://ketanjoshi.co/2026/05/13/why-anthropics-ultra-dirty-deal-shouldnt-surprise-you-at-all/",
+    "title": "Why Anthropic’s ultra-dirty deal shouldn’t surprise you at all",
+    "author": "Ketan Joshi",
+    "publishedDate": "2026-05-13",
+    "addedDate": "2026-05-16",
+    "thoughts": "Datacentres are poison",
+    "rating": 3
+  },
+  {
+    "url": "https://undecidability.net/senior/",
+    "title": "I caught the car",
+    "author": null,
+    "publishedDate": "2026-04-22",
+    "addedDate": "2026-05-16",
+    "thoughts": "Reminder: don't chase titles",
+    "rating": 3
+  },
+  {
+    "url": "https://www.gsb.stanford.edu/insights/power-free-popsicle",
+    "title": "The Power of a Free Popsicle",
+    "author": "Theodore Kinni",
+    "publishedDate": "2013-03-26",
+    "addedDate": "2026-05-16",
+    "thoughts": "\"You don’t have to excel at everything. You only have to excel at a few things that are going to be memorable\"",
+    "rating": 4
+  },
+  {
+    "url": "https://worksinprogress.co/issue/the-worlds-most-complex-machine/",
+    "title": "The world’s most complex machine",
+    "author": "WorksInProgMag",
+    "publishedDate": null,
+    "addedDate": "2026-05-16",
+    "thoughts": "Interesting history of ASML",
+    "rating": 4
+  },
+  {
+    "url": "https://www.theatlantic.com/ideas/2026/05/ai-for-good-uses/687082/",
+    "title": "The Secret to Understanding AI",
+    "author": "Josh Tyrangiel",
+    "publishedDate": "2026-05-07",
+    "addedDate": "2026-05-16",
+    "thoughts": "\"Imagine the tech without the tech companies\"",
+    "rating": 4
+  },
+  {
+    "url": "https://nonogra.ph/write-some-software-give-it-away-for-free-05-05-2026",
+    "title": "Write some software, give it away for free",
+    "author": "Anonymous",
+    "publishedDate": "2026-05-05",
+    "addedDate": "2026-05-07",
+    "thoughts": "Not everything needs to be monetized huh",
+    "rating": 3
+  },
+  {
+    "url": "https://www.stvn.sh/writing/programming-still-sucks-fqffhyp",
+    "title": "Programming Still Sucks.",
+    "author": "Steven Langbroek",
+    "publishedDate": "2026-04-19",
+    "addedDate": "2026-05-07",
+    "thoughts": "Expressed things I didn't even know I thought",
+    "rating": 5
+  },
+  {
+    "url": "https://rmoff.net/2026/05/06/ai-slop-is-killing-online-communities/",
+    "title": "AI Slop is Killing Online Communities",
+    "author": null,
+    "publishedDate": "2026-05-06",
+    "addedDate": "2026-05-07",
+    "thoughts": "Point illustrated beautifully",
+    "rating": 4
+  },
+  {
+    "url": "https://haseebq.com/how-not-to-bomb-your-offer-negotiation/",
+    "title": "How Not to Bomb Your Offer Negotiation",
+    "author": "Haseeb Qureshi",
+    "publishedDate": null,
+    "addedDate": "2026-05-02",
+    "thoughts": "Valuable advice",
+    "rating": 5
+  },
+  {
+    "url": "https://haseebq.com/my-ten-rules-for-negotiating-a-job-offer/",
+    "title": "Ten Rules for Negotiating a Job Offer",
+    "author": "Haseeb Qureshi",
+    "publishedDate": null,
+    "addedDate": "2026-05-02",
+    "thoughts": "Important techniques to leverage",
+    "rating": 5
+  },
+  {
+    "url": "https://handyai.substack.com/p/your-ceo-is-suffering-from-ai-psychosis",
+    "title": "Your CEO is suffering from AI psychosis",
+    "author": "Jake Handy",
+    "publishedDate": "2026-04-15",
+    "addedDate": "2026-04-30",
+    "thoughts": "What a world",
+    "rating": 3
+  },
+  {
+    "url": "https://omarnajjarine.substack.com/p/make-your-life-about-one-thing",
+    "title": "Multitasking is a form of escapism",
+    "author": "Omar Najjarine",
+    "publishedDate": "2025-11-30",
+    "addedDate": "2026-04-29",
+    "rating": 3
+  },
+  {
+    "url": "https://stirthepots.substack.com/p/the-nonchalance-epidemic",
+    "title": "the nonchalance epidemic",
+    "author": "kitty",
+    "publishedDate": "2025-02-13",
+    "addedDate": "2026-04-29",
+    "thoughts": "real",
+    "rating": 4
+  },
+  {
+    "url": "https://luminousmen.substack.com/p/drunk-post-things-ive-learned-as",
+    "title": "Drunk Post: Things I’ve Learned as a Senior Engineer",
+    "author": "luminousmen",
+    "publishedDate": "2026-04-21",
+    "addedDate": "2026-04-25",
+    "thoughts": "Raw",
+    "rating": 3
+  },
+  {
+    "url": "https://www.henrikkarlsson.xyz/p/hacker-mindset",
+    "title": "How to walk through walls",
+    "author": "Henrik Karlsson",
+    "publishedDate": "2026-04-14",
+    "addedDate": "2026-04-23",
+    "thoughts": "Great read",
+    "rating": 4
+  },
+  {
+    "url": "https://garymarcus.substack.com/p/the-back-story-behind-the-first-18",
+    "title": "The back story behind the first “$1.8 Billion” dollar “AI Company”",
+    "author": "Gary Marcus",
+    "publishedDate": "2026-04-05",
+    "addedDate": "2026-04-23",
+    "thoughts": "Well well well....",
+    "rating": 3
+  },
+  {
+    "url": "https://www.worseonpurpose.com/p/your-glasses-got-worse-on-purpose",
+    "title": "Your Glasses Got Worse On Purpose",
+    "author": "Keyana Sapp",
+    "publishedDate": "2026-04-09",
+    "addedDate": "2026-04-23",
+    "thoughts": "Welp glad I never have to buy glasses frames again",
+    "rating": 4
+  },
+  {
+    "url": "https://blog.zacka.io/p/simplify-then-add-lightness-bc4",
+    "title": "Simplify, Then Add Lightness",
+    "author": "Zack Anderson",
+    "publishedDate": "2026-04-06",
+    "addedDate": "2026-04-22",
+    "thoughts": "Very insightful",
+    "rating": 4
+  },
+  {
+    "url": "https://spectrum.ieee.org/exoskeleton-user-experience",
+    "title": "What Exoskeleton Technology Learned From One User",
+    "author": "Eliza Strickland",
+    "publishedDate": "2026-04-01",
+    "addedDate": "2026-04-18",
+    "thoughts": "Insane story, interesting tech - exoskeletons",
+    "rating": 5
+  },
+  {
+    "url": "https://ccunpacked.dev",
+    "title": "The Agent Loop",
+    "author": "Claude Code Unpacked",
+    "publishedDate": null,
+    "addedDate": "2026-04-05",
+    "thoughts": "Super cool visualisation into Claude Code under the hood",
+    "rating": 4
+  },
+  {
+    "url": "https://hamel.dev/blog/posts/revenge/",
+    "title": "The Revenge of the Data Scientist",
+    "author": "Hamel Husain",
+    "publishedDate": "2026-03-26",
+    "addedDate": "2026-04-05",
+    "thoughts": "Valid points about data science becoming a lost art",
+    "rating": 3
+  },
+  {
+    "url": "https://dbushell.com/2026/04/01/i-quit-the-clankers-won/",
+    "title": "I quit. The clankers won.",
+    "author": "David Bushell",
+    "publishedDate": "2026-04-01",
+    "addedDate": "2026-04-04",
+    "thoughts": "Uplifting",
+    "rating": 4
+  },
+  {
+    "url": "https://www.greptile.com/blog/ai-slopware-future",
+    "title": "Slop Is Not Necessarily The Future",
+    "author": "Soohoon Choi",
+    "publishedDate": "2026-03-31",
+    "addedDate": "2026-04-04",
+    "thoughts": "Maybe the future isn't so bleak for AI gen code",
+    "rating": 3
+  },
+  {
+    "url": "https://alexhwoods.com/dont-let-ai-write-for-you/",
+    "title": "Don't Let AI Write For You ",
+    "author": null,
+    "publishedDate": "2026-03-09",
+    "addedDate": "2026-04-04",
+    "thoughts": "\"Each LLM-generated document is a missed opportunity to think and build trust\"",
+    "rating": 3
+  },
+  {
+    "url": "https://browsergate.eu/",
+    "title": "LinkedIn Is Illegally Searching Your Computer",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-04-04",
+    "thoughts": "Shocking but not surprising",
+    "rating": 3
+  },
+  {
+    "url": "https://www.wsj.com/tech/ai/the-sudden-fall-of-openais-most-hyped-product-since-chatgpt-64c730c9",
+    "title": "The Sudden Fall of OpenAI’s Most Hyped Product Since ChatGPT",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-04-04",
+    "thoughts": "Surely inevitable",
+    "rating": 3
+  },
+  {
+    "url": "https://www.nytimes.com/2026/04/02/technology/ai-billion-dollar-company-medvi.html",
+    "title": "How A.I. Helped One Man (and His Brother) Build a $1.8 Billion Company",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-04-04",
+    "thoughts": "Pretty insane story",
+    "rating": 3
+  },
+  {
+    "url": "https://hawksley.org/2026/02/17/timeframe.html",
+    "title": "How I built Timeframe, our family e-paper dashboard",
+    "author": "Joel Hawksley",
+    "publishedDate": "2026-02-17",
+    "addedDate": "2026-03-30",
+    "thoughts": "Pretty cool",
+    "rating": 3
+  },
+  {
+    "url": "https://daeus.blog/2026/01/18/game-theory-patterns-at-work/",
+    "title": "Game Theory Patterns at Work",
+    "author": "Daeus Jorento",
+    "publishedDate": "2026-01-18",
+    "addedDate": "2026-03-30",
+    "thoughts": "Could be useful for navigating corporate life",
+    "rating": 4
+  },
+  {
+    "url": "https://essays.fnnch.com/make-a-living",
+    "title": "How to Make a Living as an Artist",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-03-30",
+    "thoughts": "Interesting",
+    "rating": 4
+  },
+  {
+    "url": "https://www.politico.com/news/magazine/2026/03/07/soviet-spy-america-cold-war-00755831",
+    "title": "They Came to Spy on America. They Stayed to Coach Little League.",
+    "author": "Zach Dorfman",
+    "publishedDate": "2026-03-07",
+    "addedDate": "2026-03-29",
+    "thoughts": "One of the most insane stories",
+    "rating": 5
+  },
+  {
+    "url": "https://blog.hofstede.it/shell-tricks-that-actually-make-life-easier-and-save-your-sanity/",
+    "title": "Shell Tricks That Actually Make Life Easier (And Save Your Sanity)",
+    "author": "Christian Hofstede-Kuhn",
+    "publishedDate": "2026-03-25",
+    "addedDate": "2026-03-29",
+    "thoughts": "Incredibly useful",
+    "rating": 5
+  },
+  {
+    "url": "https://kindxiaoming.github.io/blog/2024/kolmogorov-arnold-networks/",
+    "title": "Philosophical thoughts on Kolmogorov-Arnold Networks",
+    "author": "Ziming Liu",
+    "publishedDate": null,
+    "addedDate": "2026-03-29",
+    "thoughts": "Reminder to look into & implement KAN",
+    "rating": 3
+  },
+  {
+    "url": "https://worrydream.com/ExplorableExplanations/#reactiveDocument",
+    "title": "1. Reactive Documents",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-03-29",
+    "thoughts": "Really cool idea of making text \"an environment to think in\" rather than purely for consumption",
+    "rating": 5
+  },
+  {
+    "url": "https://www.derekthompson.org/p/we-havent-seen-the-worst-of-what",
+    "title": "We Haven’t Seen the Worst of What Gambling and Prediction Markets Will Do to America",
+    "author": "Derek Thompson",
+    "publishedDate": "2026-03-26",
+    "addedDate": "2026-03-28",
+    "thoughts": "Reminder: NEVER gamble especially via prediction markets",
+    "rating": 4
+  },
+  {
+    "url": "https://johnjwang.com/post/2026/03/27/why-are-executives-enabled-with-ai-but-ics-arent/",
+    "title": "Managing non-deterministic systems",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-03-28",
+    "thoughts": "Spot on",
+    "rating": 4
+  },
+  {
+    "url": "https://sightlessscribbles.com/posts/the-paperwork-flood/",
+    "title": "The 'Paperwork Flood': How I Drowned a Bureaucrat before dinner.",
+    "author": null,
+    "publishedDate": "2026-03-25",
+    "addedDate": "2026-03-28",
+    "thoughts": "Great example of malicious compliance",
+    "rating": 4
+  },
+  {
+    "url": "https://マリウス.com/hold-on-to-your-hardware/",
+    "title": "Hold on to Your Hardware",
+    "author": null,
+    "publishedDate": "2026-02-19",
+    "addedDate": "2026-03-28",
+    "thoughts": "Dystopian future where consumers have 0 ownership and rent everything instead",
+    "rating": 5
+  },
+  {
+    "url": "https://mariozechner.at/posts/2026-03-25-thoughts-on-slowing-the-fuck-down/#toc_1",
+    "title": "Thoughts on slowing the fuck down",
+    "author": "Mario Zechner",
+    "publishedDate": "2026-03-25",
+    "addedDate": "2026-03-28",
+    "thoughts": "Experience some friction now pays dividends later on",
+    "rating": 4
+  },
+  {
+    "url": "https://ngrok.com/blog/quantization#what-is-quantization",
+    "title": "Quantization from the ground up",
+    "author": "Sam Rose",
+    "publishedDate": "2026-03-25",
+    "addedDate": "2026-03-28",
+    "thoughts": "Real good intro to quantization in LLMs",
+    "rating": 5
+  },
+  {
+    "url": "https://paulgraham.com/kids.html",
+    "title": "Having Kids",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-03-24",
+    "rating": 4
+  },
+  {
+    "url": "https://www.bloomberg.com/news/articles/2026-02-26/ai-coding-agents-like-claude-code-are-fueling-a-productivity-panic-in-tech",
+    "title": "Claude Code and the Great Productivity Panic of 2026",
+    "author": "Issie Lapowsky",
+    "publishedDate": "2026-02-26",
+    "addedDate": "2026-03-24",
+    "thoughts": "Time to think about what NOT to build",
+    "rating": 4
+  },
+  {
+    "url": "https://shkspr.mobi/blog/2026/03/im-ok-being-left-behind-thanks/",
+    "title": "I'm OK being left behind, thanks!",
+    "author": "Terence Eden",
+    "publishedDate": "2026-03-20",
+    "addedDate": "2026-03-24",
+    "thoughts": "Pretty relevant to AI FOMO rn",
+    "rating": 4
+  },
+  {
+    "url": "https://www.answer.ai/posts/2026-03-12-so-where-are-all-the-ai-apps.html",
+    "title": "So where are all the AI apps?",
+    "author": "Alexis Gallagher & Rens Dimmendaal",
+    "publishedDate": null,
+    "addedDate": "2026-03-24",
+    "thoughts": "A rational take on all the 10x 100x productivity engineers",
+    "rating": 4
+  },
+  {
+    "url": "https://www.joanwestenberg.com/collaboration-is-bullshit/",
+    "title": "&quot;Collaboration&quot; is bullshit.",
+    "author": "JA Westenberg",
+    "publishedDate": "2026-03-22",
+    "addedDate": "2026-03-24",
+    "thoughts": "Real",
+    "rating": 4
+  },
+  {
+    "url": "https://lucumr.pocoo.org/2026/3/20/some-things-just-take-time/",
+    "title": "Some Things Just Take Time",
+    "author": "Armin Ronacher",
+    "publishedDate": "2026-03-20",
+    "addedDate": "2026-03-22",
+    "thoughts": "Word.",
+    "rating": 4
+  },
+  {
+    "url": "https://yuedoesntwanttorest.substack.com/p/a-hunger-for-more-than-one-life",
+    "title": "A Hunger for more than one life.",
+    "author": "Xiǎoyuè",
+    "publishedDate": "2026-02-20",
+    "addedDate": "2026-03-21",
+    "thoughts": "Nice introspective read",
+    "rating": 3
+  },
+  {
+    "url": "https://sharif.io/looking-stupid",
+    "title": "Willingness to look stupid is a genuine moat in creative work",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-03-20",
+    "thoughts": "I should really look stupid more often",
+    "rating": 4
+  },
+  {
+    "url": "https://thelastfarm.substack.com/p/the-low-tech-brilliance-of-iranian",
+    "title": "The low-tech brilliance of Iranian design",
+    "author": "TheLastFarm",
+    "publishedDate": "2026-03-15",
+    "addedDate": "2026-03-20",
+    "thoughts": "Genius designs",
+    "rating": 4
+  },
+  {
+    "url": "https://daringfireball.net/2026/03/your_frustration_is_the_product",
+    "title": "‘Your Frustration Is the Product’",
+    "author": "@gruber",
+    "publishedDate": null,
+    "addedDate": "2026-03-20",
+    "thoughts": "Online media is only getting worse",
+    "rating": 4
+  },
+  {
+    "url": "https://pluralistic.net/2025/03/13/electronic-whipping/#youre-next",
+    "title": "The future of Amazon coders is the present of Amazon warehouse workers",
+    "author": "Cory Doctorow",
+    "publishedDate": "2025-03-13",
+    "addedDate": "2026-03-20",
+    "thoughts": "The future looks bleak for fellow techies",
+    "rating": 4
+  },
+  {
+    "url": "https://codewall.ai/blog/how-we-hacked-mckinseys-ai-platform",
+    "title": "How We Hacked McKinsey's AI Platform",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-03-20",
+    "thoughts": "Reminder: security is very important",
+    "rating": 3
+  },
+  {
+    "url": "https://www.bloomberg.com/news/articles/2026-03-06/roblox-s-teen-millionaires-are-disrupting-the-gaming-industry",
+    "title": "Roblox Is Minting Teen Millionaires",
+    "author": "Cecilia D'Anastasio",
+    "publishedDate": "2026-03-06",
+    "addedDate": "2026-03-20",
+    "thoughts": "Potentially a reason to invest in Roblox",
+    "rating": 3
+  },
+  {
+    "url": "https://www.otherstrangeness.com/2026/03/14/have-a-fucking-website/",
+    "title": "Have a Fucking Website",
+    "author": "merritt k",
+    "publishedDate": "2026-03-14",
+    "addedDate": "2026-03-19",
+    "thoughts": "Valid",
+    "rating": 3
+  },
+  {
+    "url": "https://madalitso.me/notes/why-everyone-is-talking-about-filesystems/",
+    "title": "Filesystems are having a moment",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-03-19",
+    "thoughts": "Interesting...",
+    "rating": 4
+  },
+  {
+    "url": "https://geohot.github.io/blog/jekyll/update/2026/01/18/how-do-i-stop.html",
+    "title": "how do I stop participating?",
+    "author": "the singularity is nearer",
+    "publishedDate": "2026-01-17",
+    "addedDate": "2026-03-19",
+    "thoughts": "Time to find something truly worth working on",
+    "rating": 3
+  },
+  {
+    "url": "https://neilmadden.blog/2026/03/02/why-i-dont-use-llms-for-programming/",
+    "title": "Why I don’t use LLMs for programming",
+    "author": "@neilmaddog",
+    "publishedDate": "2026-03-02",
+    "addedDate": "2026-03-19",
+    "thoughts": "The essene of learning",
+    "rating": 3
+  },
+  {
+    "url": "https://mathenchant.wordpress.com/2026/03/12/in-praise-of-stupid-questions/",
+    "title": "In Praise of Stupid Questions",
+    "author": "jamespropp",
+    "publishedDate": "2026-03-12",
+    "addedDate": "2026-03-19",
+    "thoughts": "A solid reason to always ask questions",
+    "rating": 3
+  },
+  {
+    "url": "https://www.science.org/content/article/why-i-may-hire-ai-instead-graduate-student",
+    "title": "Why I may ‘hire’ AI instead of a graduate student",
+    "author": "Ariel Rosenfeld",
+    "publishedDate": "2026-03-12",
+    "addedDate": "2026-03-19",
+    "thoughts": "An uncomfortable truth",
+    "rating": 3
+  },
+  {
+    "url": "https://sebi.io/posts/2026-03-14-allow-me-to-get-to-know-you-mistakes-and-all/",
+    "title": "Allow me to get to know you, mistakes and all",
+    "author": "Sebastian Aigner",
+    "publishedDate": "2026-03-14",
+    "addedDate": "2026-03-19",
+    "thoughts": "Subtle reminder to never use AI for my writing",
+    "rating": 3
+  },
+  {
+    "url": "https://www.baldurbjarnason.com/2026/the-two-worlds-of-programming/",
+    "title": "The two worlds of programming: why developers who make the same observations about LLMs come to opposite conclusions",
+    "author": "Baldur Bjarnason",
+    "publishedDate": "2026-03-16",
+    "addedDate": "2026-03-19",
+    "thoughts": "Valid critique of the direction software is heading in especially in age of AI",
+    "rating": 4
+  },
+  {
+    "url": "https://colossus.com/article/we-have-learned-nothing-startup-pundits/",
+    "title": "Startup Punditry’s 25 Years of Failure",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-03-19",
+    "thoughts": "Surprise surprise there is no good startup founder advice",
+    "rating": 5
+  },
+  {
+    "url": "https://paulgraham.com/brandage.html",
+    "title": "The Brand Age",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-03-07",
+    "thoughts": "Super interesting read on 'golden age'",
+    "rating": 5
+  },
+  {
+    "url": "https://uphack.io/blog/post/the-illusion-of-building/",
+    "title": "The two pages",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-03-07",
+    "thoughts": "Great summary on the current state of \"building with AI\"",
+    "rating": 4
+  },
+  {
+    "url": "https://terriblesoftware.org/2026/03/03/nobody-gets-promoted-for-simplicity/",
+    "title": "Nobody Gets Promoted for Simplicity",
+    "author": null,
+    "publishedDate": "2026-03-03",
+    "addedDate": "2026-03-07",
+    "thoughts": "Sad but true",
+    "rating": 4
+  },
+  {
+    "url": "https://ogirardot.writizzy.com/p/good-software-knows-when-to-stop",
+    "title": "Good software knows when to stop",
+    "author": "Olivier Girardot",
+    "publishedDate": "2026-03-05",
+    "addedDate": "2026-03-07",
+    "thoughts": "True",
+    "rating": 3
+  },
+  {
+    "url": "https://yasint.dev/we-might-all-be-ai-engineers-now/",
+    "title": "We Might All Be AI Engineers Now",
+    "author": null,
+    "publishedDate": "2026-03-05",
+    "addedDate": "2026-03-07",
+    "thoughts": "A somewhat uncomfortable realisation",
+    "rating": 3
+  },
+  {
+    "url": "https://www.fast.ai/posts/2026-01-28-dark-flow/",
+    "title": "Breaking the Spell of Vibe Coding",
+    "author": "Rachel Thomas",
+    "publishedDate": null,
+    "addedDate": "2026-03-07",
+    "thoughts": "Yet another timely reminder to keep learning",
+    "rating": 4
+  },
+  {
+    "url": "https://www.gorillasun.de/blog/the-importance-of-sketching-with-code/?utm_source=Pinterest&utm_medium=organic",
+    "title": "The Importance of Sketching with Code",
+    "author": "Ahmad Moussa",
+    "publishedDate": "2023-05-07",
+    "addedDate": "2026-03-07",
+    "thoughts": "The intersection of art and tech is always cool to see",
+    "rating": 3
+  },
+  {
+    "url": "https://quarter--mile.com/vanity-activities",
+    "title": "Vanity Activities",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-03-03",
+    "thoughts": "No more productivity optimisation for me",
+    "rating": 4
+  },
+  {
+    "url": "https://simonwillison.net/2026/Feb/9/ai-intensifies-work/",
+    "title": "Simon Willison’s Weblog",
+    "author": "Simon Willison",
+    "publishedDate": null,
+    "addedDate": "2026-03-02",
+    "thoughts": "Relatable",
+    "rating": 3
+  },
+  {
+    "url": "https://www.ben-evans.com/benedictevans/2026/2/19/how-will-openai-compete-nkg2x",
+    "title": "How will OpenAI compete?",
+    "author": "Benedict Evans",
+    "publishedDate": "2026-02-19",
+    "addedDate": "2026-03-02",
+    "thoughts": "Can openAI survive",
+    "rating": 4
+  },
+  {
+    "url": "https://spencer.wtf/2026/02/20/cleaning-up-merged-git-branches-a-one-liner-from-the-cias-leaked-dev-docs.html",
+    "title": "Cleaning up merged git branches: a one-liner from the CIA&#39;s leaked dev docs",
+    "author": "Spencer Dixon",
+    "publishedDate": "2026-02-20",
+    "addedDate": "2026-03-02",
+    "thoughts": "Super useful git command",
+    "rating": 5
+  },
+  {
+    "url": "https://lithub.com/the-work-behind-the-writing-on-writers-and-their-day-jobs/",
+    "title": "The Work Behind the Writing: On Writers and Their Day Jobs",
+    "author": "Ed Simon",
+    "publishedDate": "2026-01-14",
+    "addedDate": "2026-03-02",
+    "thoughts": "Writing is truly a privilege and an honour for someone else to sit and read your work",
+    "rating": 4
+  },
+  {
+    "url": "https://www.newyorker.com/magazine/2026/02/16/what-is-claude-anthropic-doesnt-know-either",
+    "title": "What Is Claude? Anthropic Doesn’t Know, Either",
+    "author": "Gideon Lewis-Kraus",
+    "publishedDate": "2026-02-09",
+    "addedDate": "2026-03-02",
+    "thoughts": "Cool insights about the inner workings of Anthropic",
+    "rating": 4
+  },
+  {
+    "url": "https://www.theatlantic.com/culture/2026/02/pressure-olympics-malinin-shiffrin/686097/",
+    "title": "What Pressure Does to an Athlete’s Body",
+    "author": "Sally Jenkins",
+    "publishedDate": "2026-02-21",
+    "addedDate": "2026-03-02",
+    "thoughts": "How pressure manifests in the body and mind",
+    "rating": 3
+  },
+  {
+    "url": "https://www.todayintabs.com/p/a-i-isn-t-people",
+    "title": "A.I. Isn't People",
+    "author": "Rusty Foster",
+    "publishedDate": "2026-02-23",
+    "addedDate": "2026-03-02",
+    "thoughts": "Blurring the line between software and real people",
+    "rating": 5
+  },
+  {
+    "url": "https://www.nytimes.com/2026/02/26/opinion/crypto-trump-bitcoin-clarity-genius.html",
+    "title": "Crypto Is Pointless. Not Even the White House Can Fix That.",
+    "author": "Ryan Cummings and Jared Bernstein",
+    "publishedDate": "2026-02-26",
+    "addedDate": "2026-03-02",
+    "thoughts": "The future looks bleak for Crypto",
+    "rating": 3
+  },
+  {
+    "url": "https://boristane.com/blog/how-i-use-claude-code/",
+    "title": "How I Use Claude Code",
+    "author": "Boris Tane",
+    "publishedDate": "2026-02-10",
+    "addedDate": "2026-03-01",
+    "thoughts": "Strong case for adding an annotated plan document sitting between dev and code",
+    "rating": 4
+  },
+  {
+    "url": "https://www.tolans.com/relay/how-we-hire-engineers-when-ai-writes-our-code",
+    "title": "How We Hire Engineers When AI Writes Our Code | Tolans.com",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-03-01",
+    "thoughts": "A sensible approach to hiring in tech in the age of AI",
+    "rating": 4
+  },
+  {
+    "url": "https://lighthousesoftware.co.uk/projects/from-noise-to-image/",
+    "title": "From Noise to Image",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-03-01",
+    "thoughts": "Really cool interactive way of visualising diffusion for image gen",
+    "rating": 5
+  },
+  {
+    "url": "https://www.rockoder.com/beyondthecode/cognitive-debt-when-velocity-exceeds-comprehension/",
+    "title": "Cognitive Debt: When Velocity Exceeds Comprehension",
+    "author": "Ganesh Pagade",
+    "publishedDate": "2026-02-17",
+    "addedDate": "2026-03-01",
+    "thoughts": "Yet another reminder to review AI code more closely",
+    "rating": 4
+  },
+  {
+    "url": "https://pseudosingleton.com/leaving-google-improved-my-life/",
+    "title": "Leaving Google has actively improved my life",
+    "author": null,
+    "publishedDate": "2026-02-27",
+    "addedDate": "2026-02-28",
+    "thoughts": "The case to DeGoggle",
+    "rating": 3
+  },
+  {
+    "url": "https://www.origami-robotics.com/blog/dexterity-deadlocks.html",
+    "title": "The Dexterity Deadlock",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-02-28",
+    "thoughts": "Super interesting",
+    "rating": 4
+  },
+  {
+    "url": "https://joelgouveia.substack.com/p/the-death-of-spotify-why-streaming",
+    "title": "The Death of Spotify: Why Streaming is Minutes Away From Being Obsolete",
+    "author": "Joel Gouveia",
+    "publishedDate": "2026-02-25",
+    "addedDate": "2026-02-28",
+    "thoughts": "Interesting take on the shift from Mass Audience to the Micro-Community",
+    "rating": 4
+  },
+  {
+    "url": "https://tomwojcik.com/posts/2026-02-15/finding-the-right-amount-of-ai/",
+    "title": "What AI coding costs you",
+    "author": "Tom Wojcik",
+    "publishedDate": "2026-02-15",
+    "addedDate": "2026-02-28",
+    "thoughts": "Reminder to stay cognitively engaged while coding with AI",
+    "rating": 4
+  },
+  {
+    "url": "https://lucijagregov.com/2026/02/26/the-future-of-ai/",
+    "title": "The Future of AI",
+    "author": "Lucija Gregov",
+    "publishedDate": "2026-02-26",
+    "addedDate": "2026-02-28",
+    "thoughts": "Interesting arguments for developing human wisdom in the race for AGI",
+    "rating": 5
+  },
+  {
+    "url": "https://www.jerpint.io/blog/2026-02-25-humans-md/",
+    "title": "HUMANS.md",
+    "author": null,
+    "publishedDate": "2026-02-25",
+    "addedDate": "2026-02-28",
+    "thoughts": "Not a bad shout",
+    "rating": 3
+  },
+  {
+    "url": "https://thelocalstack.eu/posts/linkedin-identity-verification-privacy/",
+    "title": "I Verified My LinkedIn Identity. Here's What I Actually Handed Over.",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-02-28",
+    "thoughts": "Insane how a simple ID check turns your face into training data for AI companies",
+    "rating": 4
+  },
+  {
+    "url": "https://susam.net/attention-media-vs-social-networks.html",
+    "title": "Attention Media ≠ Social Networks",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-02-28",
+    "thoughts": "Social media morphing into attention media justifies my decision to quit it all",
+    "rating": 4
+  },
+  {
+    "url": "https://www.hollywoodreporter.com/business/digital/super-bowl-commercials-ai-best-worst-video-1236500292/",
+    "title": "AI Companies Sold Us Their Vision of the Future at the Super Bowl. Here&#8217;s Why We Should Reject It",
+    "author": "Steven Zeitchik",
+    "publishedDate": "2026-02-09",
+    "addedDate": "2026-02-14",
+    "thoughts": "Super Bowl telecast hijacked by slop-makers for techno-capitalist parade",
+    "rating": 3
+  }
+]
