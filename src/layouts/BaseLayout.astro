@@ -21,7 +21,7 @@ const UMAMI_WEBSITE_ID = '';
 <html lang="en">
   <head>
     <SEOHead title={title} description={description} ogImage={ogImage} articleDate={articleDate} />
-    <ViewTransitions />
+    <ViewTransitions fallback="swap" />
     <!-- Theme init — runs before paint to prevent flash -->
     <script is:inline>
       (function () {
