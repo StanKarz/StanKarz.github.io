@@ -3,25 +3,10 @@ import ThemeToggle from './ThemeToggle.astro';
 import styles from './Header.module.css';
 import type { ReadingEntry } from '../types/components';
 import readingData from '../data/reading.json';
+import { latestReadingHref } from '../lib/reading';
 
-// Compute latest reading month slug at build time for direct navigation
-const entries: ReadingEntry[] = readingData as ReadingEntry[];
-let readingHref = '/reading';
-let latestKey = '';
-
-for (const entry of entries) {
-  const d = new Date(entry.addedDate + 'T00:00:00Z');
-  const sortKey = `${d.getUTCFullYear()}-${String(d.getUTCMonth()).padStart(2, '0')}`;
-  if (sortKey > latestKey) {
-    latestKey = sortKey;
-    const label = d.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      timeZone: 'UTC',
-    });
-    readingHref = `/reading/${label.toLowerCase().replace(/\s+/g, '-')}`;
-  }
-}
+// Latest reading month, trailing-slashed so the client router doesn't hit a redirect.
+const readingHref = latestReadingHref(readingData as ReadingEntry[]);
 ---
 
 <header class={styles.header}>
@@ -49,9 +34,9 @@ for (const entry of entries) {
     </div>
   </div>
   <nav class={styles.nav} id="nav-menu">
-    <a href="/blog" class={styles.link}>blog</a>
+    <a href="/blog/" class={styles.link}>blog</a>
     <a href={readingHref} class={styles.link}>reading</a>
-    <a href="/contact" class={styles.link}>contact</a>
+    <a href="/contact/" class={styles.link}>contact</a>
     <span class={styles.desktopOnly}><ThemeToggle /></span>
   </nav>
 </header>

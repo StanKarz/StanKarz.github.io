@@ -108,12 +108,12 @@ const { label, entries, prev, next } = Astro.props;
 
   <nav class="pagination">
     {prev ? (
-      <a href={`/reading/${prev.slug}`} class="pagination-link pagination-prev">
+      <a href={`/reading/${prev.slug}/`} class="pagination-link pagination-prev">
         &larr; {prev.label.toLowerCase()}
       </a>
     ) : <span />}
     {next ? (
-      <a href={`/reading/${next.slug}`} class="pagination-link pagination-next">
+      <a href={`/reading/${next.slug}/`} class="pagination-link pagination-next">
         {next.label.toLowerCase()} &rarr;
       </a>
     ) : <span />}

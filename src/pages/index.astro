@@ -3,6 +3,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import { getCollection } from 'astro:content';
 import { SITE } from '../types/components';
+import type { ReadingEntry } from '../types/components';
+import readingData from '../data/reading.json';
+import { latestReadingHref } from '../lib/reading';
 
 const allPosts = await getCollection('blog', ({ data }) => {
   return import.meta.env.PROD ? data.draft !== true : true;
@@ -11,6 +14,8 @@ const allPosts = await getCollection('blog', ({ data }) => {
 const recentPosts = allPosts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 5);
+
+const readingHref = latestReadingHref(readingData as ReadingEntry[]);
 ---
 
 <BaseLayout title={SITE.title} description={SITE.description}>
@@ -37,12 +42,12 @@ const recentPosts = allPosts
       </p>
       <p>
         Outside of tech, I'm better at tennis than my ranking suggests and an amateur
-        <a href="/photography">photographer</a>. I read more than I finish, usually about incentives
+        <a href="/photography/">photographer</a>. I read more than I finish, usually about incentives
         and why things are the way they are.
       </p>
       <p>
         I mostly write to think out loud and follow my interests wherever they lead. You can see what
-        I've been reading on the <a href="/reading">reading log</a>, and if you want to follow along,
+        I've been reading on the <a href={readingHref}>reading log</a>, and if you want to follow along,
         grab the <a href="/rss.xml">RSS feed</a>.
       </p>
     </div>
@@ -55,13 +60,13 @@ const recentPosts = allPosts
         {recentPosts.map((post) => (
           <PostCard
             title={post.data.title}
-            href={`/blog/${post.id}`}
+            href={`/blog/${post.id}/`}
             date={post.data.pubDate}
           />
         ))}
       </ul>
       {allPosts.length > 5 && (
-        <a href="/blog" class="archive-link">all posts &rarr;</a>
+        <a href="/blog/" class="archive-link">all posts &rarr;</a>
       )}
     </section>
   )}
