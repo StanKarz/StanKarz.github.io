@@ -12,9 +12,8 @@ interface Props extends SEOProps {}
 const { title, description, ogImage, articleDate } = Astro.props;
 
 // Umami website ID for the stankarz.github.io property. Empty = analytics disabled.
-// Create a NEW property for this site rather than reusing the one from the old blog —
-// a shared ID merges both sites' traffic into a single dashboard.
-const UMAMI_WEBSITE_ID = '';
+// This is a NEW property, distinct from the old blog's (431a9028…), so traffic stays separate.
+const UMAMI_WEBSITE_ID = '2e38a8b6-936d-4f93-9985-4022ba721577';
 ---
 
 <!doctype html>

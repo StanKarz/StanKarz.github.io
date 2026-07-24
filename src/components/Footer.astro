@@ -1,5 +1,8 @@
 ---
-import SubscribeForm from './SubscribeForm.astro';
+// PARKED 24 Jul 2026 — no posts yet, and BUTTONDOWN_HANDLE is still 'CHANGEME' so the form
+// would 404 on submit. To re-enable once posting is regular: uncomment this import and the
+// <SubscribeForm /> block below, then set the real handle in SubscribeForm.astro.
+// import SubscribeForm from './SubscribeForm.astro';
 import styles from './Footer.module.css';
 import FormattedDate from './FormattedDate.astro';
 import { getCollection } from 'astro:content';
@@ -24,9 +27,11 @@ const lastUpdated = latestBlogDate > latestReadingDate ? latestBlogDate : latest
 ---
 
 <footer class={styles.footer}>
+  {/* Parked until posting is regular — see the note in the frontmatter above.
   <div class={styles.subscribe}>
     <SubscribeForm />
   </div>
+  */}
   <div class={styles.bottom}>
     <div class={styles.links}>
       <a href="/rss.xml" class={styles.link}>rss</a>
