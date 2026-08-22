@@ -1,0 +1,66 @@
+---
+title: 'What I learned about game theory in one weekend'
+description: 'The culmination of a weekend reading about game theory, and what Golden Balls reveals about Nash equilibria, Pareto optimality and trust.'
+pubDate: 2026-08-22
+draft: true
+---
+
+import PayoffMatrix from '../../components/interactive/PayoffMatrix.tsx';
+
+Whenever I discuss the topic of rational decision making with friends, they always recommend I check out game theory. Now I confess I have been putting this off for weeks (maybe even months) because game theory always seemed a bit of a daunting topic for those not so mathematically inclined (me). But I finally sat down during an uneventful summer weekend in London and went through a few resources and challenged myself to learn as much as possible. So here's the culmination of this mini rabbit hole.
+
+## What is Game Theory?
+
+I like to think of game theory as a set of tools that help think through and analyse situations where an individual's best course of action is dependent on what others are expected to do. So why bother? Well, it allows us to better understand how people act in situations where they are interconnected (provided all players act rationally, fun fact: they don't always do so in the real world). In a strategic interaction how well you do inevitably depends on the actions of other participants as well as your own choices. Simply put: people's actions are influenced by their expectations of others' actions.
+
+However, we're able to circumvent the complexity of the real world with models; ideally they should be simple enough to capture important features of the problem and can even help us uncover details we previously overlooked.
+
+## Golden Balls
+
+If none of that made any sense, let's illustrate game theory at play with a real example: Golden Balls. It was a popular UK TV show where contestants would work together to build a cash jackpot and in the final round the last two remaining players are locked in a *near* prisoner's dilemma situation [^1].
+
+The two players each have the option to split or steal, if they both split they share the prize money, if they both steal they leave with a grand total of £0. However, if one player steals and the other chooses to split then the player who chose steal leaves with the entire pot while the split player leaves with nothing. Here's what the payoff matrix looks like:
+
+<PayoffMatrix client:visible pot={100} rowPlayer="Nick" colPlayer="Ibrahim" actions={['Split','Steal']} />
+
+## Nash Equilibrium & Pareto Optimal Scenarios
+
+Two core concepts in game theory are the Nash equilibrium and Pareto optimality.
+
+Nash equilibrium: I like to think of this as a scenario in which no player can be better off (i.e. achieve a higher payout) if they switch their action, given that the other player's action remains constant, typically referred to as a regret free strategy. In the case of split or steal there are three scenarios which satisfy the Nash equilibrium:
+
+- (steal, steal): if a player switches to split and the other player sticks with steal they are no better off.
+- (split, steal): in this case the split player could switch to steal but their payoff is still 0; the steal player could switch to split but their payout would be halved.
+- (steal, split): the above scenario flipped.
+
+Pareto optimal: This refers to scenarios in which no player can change their choice so that they are better off at the expense of the other player i.e. without making the other player worse off. In the context of our game (split, split), (split, steal) and (steal, split) meet these criteria. If either player steals the other is detrimentally worse off. Note that the only outcome that isn't Pareto optimal is the Nash equilibrium.
+
+## Real World Implications
+
+Connections between people arise in countless everyday situations; sometimes through cooperation with others we can achieve more than on our own. Other times conflict arises where an individual benefits at the expense of others, and in many situations there are benefits to cooperation but elements of conflict also exist.
+
+Prisoner's dilemma type games can be trivial to model as we've seen with a payoff matrix, however in the real world it's not always so simple and there are a number of factors we need to consider. For starters we only considered a single round of split or steal. In reality we repeatedly interact with everyone around us. Trust is often what keeps a relationship sailing smoothly and so we require the knowledge of possible repeat interactions before trust can be built. This adds a whole new dimension to game theory, for instance if the level of miscommunication is too high, trust breaks down, but when there is a small bit of miscommunication it pays to be more forgiving. Trust itself can be influenced by many things, for example reputation, shared values, contracts and cultural markers to name a few.
+
+The real world consists of many other complexities such as moral cost -- a player who would genuinely feel guilt for stealing has a different payoff matrix; that alone can shift the equilibrium towards cooperation.
+
+A growing problem today isn’t merely that people are losing trust, it’s that our collective environment breeds against the evolution of trust and arguably facilitates miscommunication too.
+
+## Limitations
+
+So where does game theory fall short? The prominent idea of bounded rationality, coined by Herbert Simon and illustrated by the economist Richard Thaler, is especially relevant here. In short it states "if you believe that others will stop at the first step of reasoning it is rational for you to stop at the second step". Hence, playing "rationally" may not always be straightforward as it requires a model of everyone else's rationality, which regresses. Real rationality is bounded by tractability, cognitive limits, time and how much the decision matters to you.
+
+Furthermore, reality is just too unpredictable to model; the odds in real world interactions can be easily shifted -- expressions, tone of voice, body language can not only give away our intentions but influence others to adapt their strategy; this infinite variety creates very complex situations that only muddies the waters.
+
+Creating a useful model is both a science and an art; a good model is simple enough to fully understand the incentives motivating players while simultaneously capturing vital elements of reality -- involving creative insight and judgement to determine the most relevant elements.
+
+## Changing the game
+
+While you can definitely achieve favourable outcomes from playing the game, maximising payout, cooperating etc it may seem strange that in some situations the best way to win is to redefine the game. Enter Nick from Golden Balls; usually participants will at least attempt to feel each other out, make a plea for why they should split (all the while having no intention of doing so), or why they deserve all the money but no, not Nick.
+
+In a big cojones move, this man announced flatly he would steal, while promising to split it privately after the show. His fellow finalist Ibrahim was shellshocked to say the least; he couldn't fathom why they wouldn't both just commit to splitting. Essentially, Nick threw all the back and forth psychological warfare out the window. He forced Ibrahim's hand, knowing that his opponent would steal for sure left Ibrahim with a payout of £0 or a maybe. The only logical option for Ibrahim was to split (spoiler: which he did) and to his relief so did Nick.
+
+<iframe src="https://www.youtube.com/embed/S0qjK3TWZE8" title="Golden Balls — the weirdest split or steal ever" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+In the end sometimes the best way to win the game is to redefine it. In the short run the game defines the players; in the long run players define the game.
+
+[^1]: A textbook prisoner's dilemma needs four payoffs in strict order, $T > R > P > S$ — temptation (you steal, they split), reward (both split), punishment (both steal) and sucker (you split, they steal). Golden Balls with a £100 pot gives $T = 100$, $R = 50$, $P = 0$, $S = 0$, so the order is really $T > R > P = S$. That last inequality collapses because £0 is the floor — you cannot be fined for being naive. In a true prisoner's dilemma being the sucker is strictly worse than mutual defection, so defecting strictly dominates and there is exactly one equilibrium. Here stealing only weakly dominates: when your opponent steals, you are indifferent.
