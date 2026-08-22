@@ -118,6 +118,19 @@
   margin-bottom: var(--space-xl);
 }
 
+/* Embeds — override the width/height attributes YouTube's copy-paste ships with,
+   which would otherwise blow past the prose column. */
+.prose iframe {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+
 /* Horizontal rules */
 .prose hr {
   border: none;
