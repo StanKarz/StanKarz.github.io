@@ -1,5 +1,130 @@
 [
   {
+    "url": "https://www.whatwetellai.com/",
+    "title": "What We Tell AI",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-08-31",
+    "thoughts": "AI is really reshaping human relationships in unintended ways",
+    "rating": 4
+  },
+  {
+    "url": "https://sparsethought.com/2026/08/19/no-agents-after-8pm/",
+    "title": "no agents after 8pm",
+    "author": "Gal Sapir",
+    "publishedDate": "2026-08-19",
+    "addedDate": "2026-08-31",
+    "thoughts": "A rule worth adopting",
+    "rating": 3
+  },
+  {
+    "url": "https://medium.com/freedomofthought/the-productivity-trap-nobody-talks-about-ca251f72b471",
+    "title": "The Productivity Trap Nobody Talks About",
+    "author": "Li Charlie",
+    "publishedDate": "2026-08-30",
+    "addedDate": "2026-08-31",
+    "thoughts": "More productivity = more work",
+    "rating": 3
+  },
+  {
+    "url": "https://www.bloodinthemachine.com/p/with-the-backlash-to-data-centers",
+    "title": "With the backlash to data centers, Flock and AI glasses, a mass opposition to big tech is underway. Silicon Valley is in denial.",
+    "author": "Brian Merchant",
+    "publishedDate": "2026-08-27",
+    "addedDate": "2026-08-28",
+    "thoughts": "Friendly reminder: Silicon Valley is disconnected from reality",
+    "rating": 3
+  },
+  {
+    "url": "https://www.gkogan.co/say-something-people-want/",
+    "title": "Say something people want",
+    "author": "Greg Kogan",
+    "publishedDate": "2026-08-25",
+    "addedDate": "2026-08-28",
+    "thoughts": "Solid advice with many real examples",
+    "rating": 4
+  },
+  {
+    "url": "https://earendil.com/posts/what-is-a-harness/",
+    "title": "What is a Harness?",
+    "author": null,
+    "publishedDate": "2026-08-20",
+    "addedDate": "2026-08-26",
+    "thoughts": "Might be time to setup my own harness",
+    "rating": 4
+  },
+  {
+    "url": "https://www.modelrepublic.org/articles/a16z-portfolio",
+    "title": "Andreessen Horowitz is shaping AI policy — while investing in a bleak vision of the future",
+    "author": null,
+    "publishedDate": "2026-01-08",
+    "addedDate": "2026-08-26",
+    "thoughts": "a16z making the world an exponentially worse place one million dollar investment at a time",
+    "rating": 5
+  },
+  {
+    "url": "https://rorz.io/writing/my-friend-aaron",
+    "title": "My Friend Aaron",
+    "author": "Rory McMeekin",
+    "publishedDate": "2026-08-21",
+    "addedDate": "2026-08-26",
+    "thoughts": "Insanely good short story about prediction markets",
+    "rating": 5
+  },
+  {
+    "url": "https://www.theatlantic.com/technology/2026/05/ai-wearable-surveillance-countermeasures/687203/",
+    "title": "A Surveillance ‘Cat-and-Mouse’ Game With AI",
+    "author": "Ross Andersen",
+    "publishedDate": "2026-05-18",
+    "addedDate": "2026-08-18",
+    "thoughts": "The age of capitalism surveillance only gets worse",
+    "rating": 4
+  },
+  {
+    "url": "https://laurentiugabriel.github.io/blog/articles/how-i-use-llms-to-learn/",
+    "title": "How I use LLMs to learn complex topics",
+    "author": "Laurentiu Raducu",
+    "publishedDate": "2026-08-09",
+    "addedDate": "2026-08-18",
+    "thoughts": "Yet another case for creating microworlds with AI to learn",
+    "rating": 3
+  },
+  {
+    "url": "https://blog.senko.net/code-was-never-the-hard-part-is-an-insult-to-all-programmers",
+    "title": "\"Code was never the hard part\" is an insult to all programmers",
+    "author": "Senko Rašić",
+    "publishedDate": "2026-08-08",
+    "addedDate": "2026-08-18",
+    "thoughts": "A more unique take than \"coding was always the easy part\"",
+    "rating": 3
+  },
+  {
+    "url": "https://www.experimental-history.com/p/incentives-are-for-losers",
+    "title": "Incentives are for losers",
+    "author": "Adam Mastroianni",
+    "publishedDate": "2026-08-05",
+    "addedDate": "2026-08-17",
+    "thoughts": "Maybe incentives aren't so important",
+    "rating": 4
+  },
+  {
+    "url": "https://www.geoffreylitt.com/2026/07/02/understanding-is-the-new-bottleneck",
+    "title": "Why understand?",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-08-17",
+    "thoughts": "Micro worlds + interactive demos for better understanding"
+  },
+  {
+    "url": "https://peterbloem.nl/blog/craft-coding",
+    "title": "AI coding without the vibes",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-08-17",
+    "thoughts": "craft coding it is",
+    "rating": 4
+  },
+  {
     "url": "https://rhonabwy.com/2026/08/15/software-engineering-fundamentals-matter-more-than-ever/",
     "title": "Software Engineering fundamentals matter more than ever",
     "author": "@heckj",
