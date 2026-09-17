@@ -1,5 +1,122 @@
 [
   {
+    "url": "https://secondthoughts.ai/p/14-reasons-robotics-is-hard",
+    "title": "14 Reasons Robotics is Hard",
+    "author": "Steve Newman",
+    "publishedDate": "2026-09-01",
+    "addedDate": "2026-09-17",
+    "thoughts": "Informative",
+    "rating": 4
+  },
+  {
+    "url": "https://www.effort.news/irregular",
+    "title": "A Single Firm is Behind OpenAI, Anthropic, and Meta Hacking Scandals",
+    "author": "Investigations Desk",
+    "publishedDate": "2026-09-14",
+    "addedDate": "2026-09-17",
+    "thoughts": "And the plot thickens with Israel Effective Alruist firm",
+    "rating": 3
+  },
+  {
+    "url": "https://pop.rdi.sh/dario-please/",
+    "title": "dario, please!",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-09-17",
+    "thoughts": "A level headed take on recent AI doomer drama",
+    "rating": 4
+  },
+  {
+    "url": "https://sufficientlyadvanced.blog/ai-is-not-going-to-kill-you/",
+    "title": "AI is not going to kill you",
+    "author": "Moho",
+    "publishedDate": "2026-09-15",
+    "addedDate": "2026-09-17",
+    "thoughts": "\"Never ask a barber if you need a haircut\"",
+    "rating": 5
+  },
+  {
+    "url": "https://yoshuabengio.org/en/blog/why-are-ai-agents-lying-cheating-and-coordinating",
+    "title": "Why are AI agents lying, cheating and coordinating?",
+    "author": "Yoshua Bengio",
+    "publishedDate": "2026-09-11",
+    "addedDate": "2026-09-17",
+    "thoughts": "Good plain english explanation of \"misalignment\"",
+    "rating": 4
+  },
+  {
+    "url": "https://railcode.dev/blog/vibe-coded-website",
+    "title": "How our vibe coded website looks like a designer made it",
+    "author": "Yakko Majuri",
+    "publishedDate": "2026-08-10",
+    "addedDate": "2026-09-17",
+    "thoughts": "Good design still exists in AI SaaS slop era",
+    "rating": 4
+  },
+  {
+    "url": "https://vivekaithal.co/posts/summer-at-comma-ai/",
+    "title": "Make Driving Chill",
+    "author": null,
+    "publishedDate": "2020-08-19",
+    "addedDate": "2026-09-13",
+    "thoughts": "Such an insane company",
+    "rating": 4
+  },
+  {
+    "url": "https://strategictree.bearblog.dev/i-think-i-hate-the-internet/",
+    "title": "I think I hate the internet",
+    "author": null,
+    "publishedDate": "2026-09-08",
+    "addedDate": "2026-09-11",
+    "thoughts": "\"The internet has stolen innocence, wonder and serendipity out of society.\"",
+    "rating": 4
+  },
+  {
+    "url": "https://www.hermit-tech.com/blog/ai-can-make-you-suck-faster-too",
+    "title": "AI Can Make You Suck Faster Too",
+    "author": "Jordan Andersen",
+    "publishedDate": null,
+    "addedDate": "2026-09-09",
+    "thoughts": "Rarely spoken about how AI can also make you 10x worse",
+    "rating": 4
+  },
+  {
+    "url": "https://mitchellh.com/writing/superlogical#user-content-fnref-1",
+    "title": "Superlogical",
+    "author": null,
+    "publishedDate": "2026-07-29",
+    "addedDate": "2026-09-09",
+    "thoughts": "Just building for the love of it",
+    "rating": 3
+  },
+  {
+    "url": "https://jvns.ca/blog/2019/10/03/sql-queries-don-t-start-with-select/",
+    "title": "SQL queries don't start with SELECT",
+    "author": "Julia Evans",
+    "publishedDate": "2019-10-03",
+    "addedDate": "2026-09-08",
+    "thoughts": "Clears up some concept gaps",
+    "rating": 4
+  },
+  {
+    "url": "https://www.anildash.com/2026/09/02/cancer-capital/",
+    "title": "VC isn’t VC anymore — understanding the rise of Cancer Capital",
+    "author": "Anil Dash",
+    "publishedDate": "2026-09-02",
+    "addedDate": "2026-09-04",
+    "thoughts": "VCs turning into political and social machines with detrimental effects on society",
+    "rating": 5
+  },
+  {
+    "url": "https://colossus.com/article/invisible-companies/",
+    "title": "Invisible Companies",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-09-04",
+    "thoughts": "Super insightful",
+    "rating": 5
+  },
+  {
     "url": "https://www.whatwetellai.com/",
     "title": "What We Tell AI",
     "author": null,
