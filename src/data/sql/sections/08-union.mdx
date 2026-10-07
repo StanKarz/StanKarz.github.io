@@ -1,0 +1,27 @@
+---
+title: Stacking results with UNION
+order: 8
+summary: Joins combine side by side; UNION stacks on top.
+---
+import Mistakes from '../../../components/sql/Mistakes.astro';
+import Planned from '../../../components/sql/Planned.astro';
+
+Joins put tables side by side. `UNION` stacks result sets on top of each other.
+
+```sql
+select surname from cd.members
+union
+select name from cd.facilities;
+```
+
+- Each SELECT needs the same number of columns, with compatible types. Columns are matched by **position**, not by name.
+- The output column names come from the first SELECT. The query above returns one column called `surname`, full of facility names too.
+- `UNION` removes duplicates: the three Smiths come out as one row. `UNION ALL` keeps them and skips the dedup work, so it's faster when duplicates don't matter.
+- `INTERSECT` keeps rows in both results; `EXCEPT` keeps rows in the first but not the second.
+- To sort the combined result, put one `ORDER BY` at the very end. It applies to the whole thing.
+
+<Planned title="Two lists, one column">
+  Both lists drop into a single column. Toggle UNION (duplicates merge) and UNION ALL (they stay). A contrast panel shows the 40-row grid the comma-in-FROM version produces instead.
+</Planned>
+
+<Mistakes section="union" />

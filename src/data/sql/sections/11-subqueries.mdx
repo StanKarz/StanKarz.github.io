@@ -1,0 +1,73 @@
+---
+title: Subqueries
+order: 11
+summary: Scalar, derived table, or existence check. And CTEs, which read better.
+---
+import Mistakes from '../../../components/sql/Mistakes.astro';
+import Planned from '../../../components/sql/Planned.astro';
+
+A subquery is a complete SELECT, with its own FROM, wrapped in parentheses. What it's allowed to return depends on where you put it.
+
+| Kind | Goes in | Returns | Example |
+|---|---|---|---|
+| Scalar | SELECT list, VALUES, a comparison | Exactly one value | Each member's recommender's name |
+| Derived table | FROM, with an alias | A whole result, used as a table | Compute `cost` once, filter `cost > 30` outside |
+| Set / existence | WHERE with `IN`, `NOT IN`, `EXISTS`, `NOT EXISTS` | A list, or true/false | Members not found in bookings |
+
+A **correlated** subquery refers to a column of the outer query, so conceptually it runs once per outer row. A non-correlated one runs once. A scalar subquery that returns more than one row is an error; one that returns no rows gives NULL.
+
+### Resolving a self-reference
+
+`recommendedby` is a memid. Turning it into a name means reading `members` a second time under another alias:
+
+```sql
+select concat(mems.firstname, ' ', mems.surname) as member,
+       (select concat(rec.firstname, ' ', rec.surname)
+        from cd.members rec
+        where rec.memid = mems.recommendedby) as recommender
+from cd.members mems
+order by member;
+```
+
+Members with no recommender get NULL, because the subquery finds no row. The [self join](#joins) does the same job.
+
+### Making an alias filterable
+
+A derived table is finished before the outer query starts, so its aliases are ordinary columns by then:
+
+```sql
+select member, facility, cost
+from (
+    select concat(mems.firstname, ' ', mems.surname) as member,
+           facs.name as facility,
+           case when mems.memid = 0 then bks.slots * facs.guestcost
+                else bks.slots * facs.membercost end as cost
+    from cd.members mems
+    join cd.bookings bks on bks.memid = mems.memid
+    join cd.facilities facs on facs.facid = bks.facid
+    where bks.starttime::date = '2012-09-14'
+) as bookings
+where cost > 30
+order by cost desc;
+```
+
+### CTEs
+
+`WITH name AS (…)` does the same job as a derived table, and reads top to bottom instead of inside out:
+
+```sql
+with costed as (
+    select bks.bookid,
+           case when bks.memid = 0 then bks.slots * facs.guestcost
+                else bks.slots * facs.membercost end as cost
+    from cd.bookings bks
+    join cd.facilities facs on facs.facid = bks.facid
+)
+select * from costed where cost > 30;
+```
+
+<Planned title="Correlated vs derived">
+  A correlated subquery: outer rows step down one at a time, and the inner query highlights the single row it finds, or comes back empty and produces NULL. A derived table: the inner query materialises into a labelled box that the outer query then reads like any other table.
+</Planned>
+
+<Mistakes section="subqueries" />

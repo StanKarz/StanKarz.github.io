@@ -1,0 +1,34 @@
+---
+import { Code } from 'astro:components';
+import { mistakesFor } from '../../data/sql/mistakes';
+import styles from './Mistakes.module.css';
+
+interface Props {
+  /** Section slug, e.g. "joins". */
+  section: string;
+}
+
+const items = mistakesFor(Astro.props.section);
+---
+
+{items.length > 0 && (
+  <aside class={styles.mistakes} aria-label="Common mistakes">
+    <h4 class={styles.heading}>Common mistakes</h4>
+    {items.map((m) => (
+      <details class={styles.item} id={`mistake-${m.id}`}>
+        <summary class={styles.summary}>
+          <span>{m.title}</span>
+          {m.error && <span class={styles.error}>{m.error}</span>}
+        </summary>
+        <div class={styles.body}>
+          <span class={styles.tag}>wrong</span>
+          <Code code={m.wrong} lang="sql" theme="css-variables" />
+          <p>{m.why}</p>
+          <span class={styles.tag}>fix</span>
+          {m.fix && <Code code={m.fix} lang="sql" theme="css-variables" />}
+          {m.fixText && <p>{m.fixText}</p>}
+        </div>
+      </details>
+    ))}
+  </aside>
+)}

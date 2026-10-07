@@ -1,0 +1,41 @@
+---
+title: Window functions and ranking
+order: 10
+summary: Compute across related rows without collapsing them. rank vs dense_rank vs row_number.
+---
+import RankTies from '../../../components/sql/RankTies.tsx';
+import Mistakes from '../../../components/sql/Mistakes.astro';
+import Planned from '../../../components/sql/Planned.astro';
+
+A window function computes a value across a set of related rows *without* collapsing them the way GROUP BY does. Every input row stays; it just gains a column.
+
+```sql
+function() over (partition by … order by …)
+```
+
+`partition by` splits the rows into independent windows (like GROUP BY, minus the collapsing). `order by` sets the order inside each window, which is what ranking and running totals need.
+
+<RankTies client:visible />
+
+| total | rank | dense_rank | row_number |
+|---|---|---|---|
+| 5 | 1 | 1 | 1 |
+| 5 | 1 | 1 | 2 |
+| 4 | 3 | 2 | 3 |
+
+- You can window over an aggregate: `rank() over (order by sum(slots) desc)`. The aggregate is computed first, at GROUP BY, then ranked.
+- Window functions run in the SELECT step, after WHERE, GROUP BY and HAVING. To filter on a rank, compute it in a subquery or CTE and filter outside.
+- If `row_number` needs to be repeatable, add a tie-breaker to the ORDER BY: `order by sum(slots) desc, memid`.
+
+```sql
+-- running total of slots per member, in booking order
+select memid, starttime, slots,
+       sum(slots) over (partition by memid order by starttime) as running_slots
+from cd.bookings;
+```
+
+<Planned title="Partition explorer">
+  The running-total query with each partition drawn as its own band, and the frame (which rows feed the current value) highlighted as you move down the rows.
+</Planned>
+
+<Mistakes section="window-functions" />

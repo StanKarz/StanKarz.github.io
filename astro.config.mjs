@@ -13,5 +13,7 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeKatex],
+    // Colours come from --astro-code-* tokens in prose.css, so code follows the theme toggle.
+    shikiConfig: { theme: 'css-variables' },
   },
 });

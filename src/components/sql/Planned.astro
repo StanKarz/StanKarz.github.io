@@ -1,0 +1,45 @@
+---
+/**
+ * Marks where a backlog interactive will go. Renders in `npm run dev` only, so
+ * the draft shows its gaps and production stays clean. The backlog itself is
+ * BACKLOG.md in ~/Desktop/projects/sql-cheat-sheet.
+ */
+interface Props {
+  title: string;
+}
+
+const isDev = import.meta.env.DEV;
+---
+
+{isDev && (
+  <div class="planned" role="note">
+    <span class="planned-label">planned interactive · dev only</span>
+    <strong>{Astro.props.title}</strong>
+    <slot />
+  </div>
+)}
+
+<style>
+  .planned {
+    margin: var(--space-xl) 0;
+    padding: var(--space-md) var(--space-lg);
+    border: 1px dashed var(--color-text-muted);
+    border-radius: 4px;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .planned strong {
+    display: block;
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .planned-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+</style>

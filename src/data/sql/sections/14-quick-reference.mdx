@@ -1,0 +1,63 @@
+---
+title: Quick reference
+order: 14
+summary: Templates to copy, and which syntax is Postgres-only.
+---
+
+### Templates
+
+```sql
+-- filter, conditional column, sort
+select col, case when cond then 'a' else 'b' end as label
+from t
+where col like '%text%'
+order by label;
+
+-- join
+select a.x, b.y
+from a
+left join b on b.a_id = a.id;
+
+-- anti-join: rows in a with no match in b
+select a.*
+from a
+left join b on b.a_id = a.id
+where b.a_id is null;
+
+-- aggregate with a group filter
+select key, sum(val) as total
+from t
+group by key
+having sum(val) > 100;
+
+-- rank over an aggregate
+select key, sum(val) as total,
+       rank() over (order by sum(val) desc) as rnk
+from t
+group by key;
+
+-- filter on a computed column
+select *
+from (select *, expr as calc from t) as sub
+where calc > 30;
+
+-- whole-day timestamp filter
+where ts >= '2012-09-21' and ts < '2012-09-22'
+```
+
+### Postgres-only, or Postgres-flavoured
+
+| Syntax | Meaning | Portable alternative |
+|---|---|---|
+| `x::date` | Cast | `cast(x as date)` |
+| `ilike` | Case-insensitive LIKE | `lower(col) like lower(…)` |
+| `~`, `~*` | Regex match | Varies by database |
+| `date_trunc`, `date_part` | Truncate or extract timestamp parts | `extract(…)` is standard |
+| `update … from` | Update using another table or row | Correlated subquery in SET |
+| `delete … using` | Join-style delete | `where exists / not exists` |
+| GROUP BY a SELECT alias | Convenience | Repeat the expression |
+| `concat()` vs `\|\|` | concat skips NULLs, `\|\|` propagates them | Varies |
+
+### Credits
+
+Every practice question, and the country club schema, comes from [pgexercises](https://pgexercises.com/) by Alisdair Owens. The data here is trimmed and adjusted to seed edge cases.

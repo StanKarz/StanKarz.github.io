@@ -1,0 +1,112 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import '../../../styles/prose.css';
+import styles from './sql.module.css';
+
+const entries = (await getCollection('sql')).sort((a, b) => a.data.order - b.data.order);
+
+// "03-joins" → "joins": the anchor each section and every cross-link uses.
+const slugOf = (id: string) => id.replace(/^\d+-/, '');
+
+const sections = await Promise.all(
+  entries.map(async (entry) => ({
+    slug: slugOf(entry.id),
+    num: String(entry.data.order).padStart(2, '0'),
+    ...entry.data,
+    Content: (await render(entry)).Content,
+  })),
+);
+
+const description =
+  'An interactive SQL reference built from working through pgexercises: joins, NULLs, grouping, windows, and the mistakes behind them.';
+---
+
+<BaseLayout title="SQL reference · Stan Karzhev" description={description}>
+  <article class={styles.page}>
+    <header class={styles.header}>
+      <p class={styles.kicker}><a href="/projects/">projects</a> / sql</p>
+      <h1 class={styles.title}>SQL, the parts I keep looking up</h1>
+      <p class={styles.lede}>
+        A reference I built while working through <a href="https://pgexercises.com/">pgexercises</a>. Each section
+        has a short explanation, something to poke at, and the mistakes that cost me time. Postgres syntax throughout,
+        with the Postgres-only bits flagged.
+      </p>
+      <p class={styles.lede}>
+        Stuck on a query right now? <a href="#symptoms">Start from the symptom.</a>
+      </p>
+    </header>
+
+    <nav class={styles.index} aria-label="Sections">
+      <ol>
+        {sections.map((s) => (
+          <li>
+            <a href={`#${s.slug}`}>
+              <span class={styles.num}>{s.num}</span>
+              <span class={styles.indexTitle}>{s.title}</span>
+              <span class={styles.indexSummary}>{s.summary}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <nav class={styles.rail} aria-label="Section rail">
+      {sections.map((s) => (
+        <a href={`#${s.slug}`} data-rail={s.slug} title={s.title}>
+          <span class={styles.railNum}>{s.num}</span>
+          <span class={styles.railTitle}>{s.title}</span>
+        </a>
+      ))}
+    </nav>
+
+    {sections.map((s) => (
+      <section class:list={['prose', styles.section]} id={s.slug} data-section>
+        <h2 class={styles.sectionTitle}>
+          <a href={`#${s.slug}`} class={styles.anchor}>
+            <span class={styles.num}>{s.num}</span>
+          </a>
+          {s.title}
+        </h2>
+        <s.Content />
+      </section>
+    ))}
+  </article>
+</BaseLayout>
+
+<script>
+  // Scroll-spy for the rail, and opening a mistake when the symptom index links to it.
+  // Re-run on every page load because the site uses View Transitions.
+  document.addEventListener('astro:page-load', () => {
+    const links = new Map(
+      [...document.querySelectorAll<HTMLAnchorElement>('[data-rail]')].map((a) => [a.dataset.rail!, a]),
+    );
+    if (links.size === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          links.forEach((a) => a.removeAttribute('aria-current'));
+          links.get(e.target.id)?.setAttribute('aria-current', 'true');
+        }
+      },
+      { rootMargin: '-30% 0px -65% 0px' },
+    );
+    document.querySelectorAll('[data-section]').forEach((el) => observer.observe(el));
+
+    // On load, and on clicks: the View Transitions router moves between anchors on
+    // the same page with pushState, which never fires hashchange.
+    const openDetails = (id: string) => {
+      const target = document.getElementById(id);
+      if (target instanceof HTMLDetailsElement) target.open = true;
+    };
+    if (location.hash) openDetails(location.hash.slice(1));
+  });
+
+  document.addEventListener('click', (e) => {
+    const link = (e.target as Element).closest<HTMLAnchorElement>('a[data-open-mistake]');
+    const target = link && document.getElementById(link.hash.slice(1));
+    if (target instanceof HTMLDetailsElement) target.open = true;
+  });
+</script>

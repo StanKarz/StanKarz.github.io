@@ -157,3 +157,28 @@
   font-weight: 600;
   background-color: var(--color-bg-raised);
 }
+
+/* Syntax highlighting — Shiki's css-variables theme, mapped onto the site palette.
+   Light values sit on :root, dark values follow [data-theme='dark']. */
+:root {
+  --astro-code-foreground: var(--color-text);
+  --astro-code-background: var(--color-code-bg);
+  --astro-code-token-keyword: #a8501f;
+  --astro-code-token-function: #7a5a1c;
+  --astro-code-token-string: #5b7034;
+  --astro-code-token-string-expression: #5b7034;
+  --astro-code-token-constant: #8a4a6b;
+  --astro-code-token-comment: #8f8170;
+  --astro-code-token-parameter: var(--color-text);
+  --astro-code-token-punctuation: var(--color-text-muted);
+  --astro-code-token-link: var(--color-accent);
+}
+
+[data-theme='dark'] {
+  --astro-code-token-keyword: #f09050;
+  --astro-code-token-function: #e0b866;
+  --astro-code-token-string: #a9c27a;
+  --astro-code-token-string-expression: #a9c27a;
+  --astro-code-token-constant: #d49ab8;
+  --astro-code-token-comment: #7d7062;
+}

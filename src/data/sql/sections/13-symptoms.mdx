@@ -1,0 +1,12 @@
+---
+title: Stuck? Start from the symptom
+order: 13
+summary: Every mistake on this page, grouped by what you see when it goes wrong.
+---
+import SymptomIndex from '../../../components/sql/SymptomIndex.astro';
+
+When a query goes wrong you rarely know which concept you've tripped on. You know what you're looking at: an error, an empty result, too many rows, numbers that are slightly off. Find your symptom and follow the link to the explanation.
+
+<SymptomIndex />
+
+Two checks catch most of the silent ones before you need this list. Count rows after every join and ask whether the number makes sense. And when there's no error, check the result against one row you can work out by hand.

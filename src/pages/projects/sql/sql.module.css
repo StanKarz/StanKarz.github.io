@@ -1,0 +1,166 @@
+.page {
+  position: relative;
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.kicker a {
+  color: inherit;
+}
+
+.title {
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-3xl);
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.lede {
+  margin-top: var(--space-md);
+  color: var(--color-text);
+}
+
+/* --- Index at the top: number, title, one-line summary --- */
+
+.index {
+  margin-top: var(--space-2xl);
+  border-top: 1px solid var(--color-border);
+}
+
+.index ol {
+  list-style: none;
+}
+
+.index a {
+  display: grid;
+  grid-template-columns: 2.25rem 1fr;
+  column-gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: var(--transition-color);
+}
+
+.index a:hover {
+  text-decoration: none;
+  color: var(--color-accent);
+}
+
+.index a:hover .num {
+  color: var(--color-accent);
+}
+
+.indexTitle {
+  font-weight: 600;
+}
+
+.indexSummary {
+  grid-column: 2;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 400;
+  color: var(--color-text-muted);
+  padding-top: 0.2rem;
+  transition: var(--transition-color);
+}
+
+/* --- Sections --- */
+
+.section {
+  scroll-margin-top: var(--space-lg);
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Markdown tables (truth tables, dialect notes) scroll on their own on phones
+   instead of pushing the whole page sideways. */
+.section :global(table) {
+  display: block;
+  overflow-x: auto;
+}
+
+.anchor {
+  text-decoration: none !important;
+}
+
+/* --- Rail: only where there is room beside the 640px column --- */
+
+.rail {
+  display: none;
+}
+
+/* Wide enough that the rail clears the 880px interactives, not just the prose. */
+@media (min-width: 1480px) {
+  .rail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    left: max(var(--space-lg), calc(50% - 440px - 12rem));
+    width: 10.5rem;
+  }
+
+  .rail a {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: baseline;
+    padding: 0.1rem 0;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: var(--transition-color);
+  }
+
+  .rail a:hover {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .railNum {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+  }
+
+  .railTitle {
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .rail:hover .railTitle,
+  .rail a[aria-current] .railTitle {
+    opacity: 1;
+    transform: none;
+  }
+
+  .rail a[aria-current] {
+    color: var(--color-accent);
+  }
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: var(--font-size-2xl);
+  }
+}

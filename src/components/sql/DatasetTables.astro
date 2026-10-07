@@ -1,0 +1,59 @@
+---
+import { bookings, facilities, members } from '../../data/sql/countryclub';
+import shared from './shared/shared.module.css';
+import styles from './DatasetTables.module.css';
+
+type Cell = string | number | null;
+const tables: { name: string; note: string; columns: string[]; rows: Cell[][] }[] = [
+  {
+    name: 'cd.members',
+    note: 'memid 0 is the GUEST account. recommendedby points at another memid.',
+    columns: ['memid', 'firstname', 'surname', 'recommendedby', 'joindate'],
+    rows: members.map((m) => [m.memid, m.firstname, m.surname, m.recommendedby, m.joindate]),
+  },
+  {
+    name: 'cd.facilities',
+    note: 'Costs are per half-hour slot. Guests pay guestcost.',
+    columns: ['facid', 'name', 'membercost', 'guestcost', 'initialoutlay', 'monthlymaintenance'],
+    rows: facilities.map((f) => [f.facid, f.name, f.membercost, f.guestcost, f.initialoutlay, f.monthlymaintenance]),
+  },
+  {
+    name: 'cd.bookings',
+    note: 'One row per booking. slots counts half-hours, so 3 slots is 1.5 hours.',
+    columns: ['bookid', 'facid', 'memid', 'starttime', 'slots'],
+    rows: bookings.map((b) => [b.bookid, b.facid, b.memid, b.starttime, b.slots]),
+  },
+];
+---
+
+<figure class={shared.figure}>
+  <div class={styles.tables}>
+    {tables.map((t) => (
+      <div class={styles.block}>
+        <div class={styles.head}>
+          <span class={shared.label}>{t.name}</span>
+          <span class={styles.count}>{t.rows.length} rows</span>
+        </div>
+        <p class={shared.note}>{t.note}</p>
+        <div class={shared.tableWrap}>
+          <table class={shared.table}>
+            <thead>
+              <tr>{t.columns.map((c) => <th>{c}</th>)}</tr>
+            </thead>
+            <tbody>
+              {t.rows.map((r) => (
+                <tr>
+                  {r.map((v) => (
+                    <td class={typeof v === 'number' ? shared.right : undefined}>
+                      {v === null ? <span class={shared.null}>NULL</span> : v}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    ))}
+  </div>
+</figure>

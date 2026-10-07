@@ -1,0 +1,114 @@
+.scroll {
+  overflow-x: auto;
+}
+
+.scrollInner {
+  min-width: 27rem;
+}
+
+.header,
+.row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 1.6fr) minmax(6rem, 1fr) repeat(3, minmax(3.5rem, 0.8fr));
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.header {
+  color: var(--color-text-muted);
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.board {
+  position: relative;
+  overflow: hidden;
+  margin-top: 0 !important;
+}
+
+.row {
+  position: absolute;
+  inset: 0 0 auto 0;
+  border-bottom: 1px dotted var(--color-border);
+  transition: transform 0.45s cubic-bezier(0.3, 0.7, 0.3, 1), background-color 0.3s ease;
+}
+
+.tied {
+  background: color-mix(in srgb, var(--color-accent) 9%, transparent);
+  box-shadow: inset 2px 0 0 var(--color-accent);
+}
+
+.name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+}
+
+.stepper b {
+  font-weight: 400;
+  min-width: 2ch;
+  text-align: center;
+}
+
+.stepper button {
+  width: 1.4rem;
+  height: 1.4rem;
+  line-height: 1;
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.stepper button:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.stepper button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+/* Re-keyed on change, so a number that changes flashes once. */
+.rank {
+  animation: flash 0.5s ease;
+}
+
+.arbitrary {
+  text-decoration: underline dotted var(--color-accent);
+  text-underline-offset: 3px;
+}
+
+@keyframes flash {
+  from {
+    color: var(--color-accent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    transition: none;
+  }
+
+  .rank {
+    animation: none;
+  }
+}

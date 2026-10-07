@@ -1,0 +1,88 @@
+.sources {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: var(--space-lg);
+}
+
+.tableHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xs);
+}
+
+.warn {
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.gridWrap {
+  overflow-x: auto;
+}
+
+.grid {
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+}
+
+.grid th {
+  font-weight: 400;
+  padding: 0.25rem 0.5rem;
+  white-space: nowrap;
+}
+
+.grid thead th {
+  text-align: center;
+}
+
+.grid tbody th {
+  text-align: right;
+}
+
+.gridSub {
+  display: block;
+  opacity: 0.7;
+}
+
+.grid td {
+  padding: 0.35rem 0.5rem;
+  text-align: center;
+}
+
+.dot {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 1px solid var(--color-text-muted);
+  border-radius: 2px;
+  animation: pop 0.3s ease both;
+}
+
+.dotMatch {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    animation: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .sources {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

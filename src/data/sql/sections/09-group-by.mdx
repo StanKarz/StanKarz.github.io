@@ -1,0 +1,31 @@
+---
+title: Aggregation and GROUP BY
+order: 9
+summary: One row per group. Group by the key, filter groups with HAVING.
+---
+import GroupByBuckets from '../../../components/sql/GroupByBuckets.tsx';
+import Mistakes from '../../../components/sql/Mistakes.astro';
+
+GROUP BY collapses rows that share a value into one row per group, and aggregates (`sum`, `count`, `avg`, `min`, `max`) summarise each group.
+
+<GroupByBuckets client:visible />
+
+- **Every column in SELECT is grouped or aggregated.** Otherwise Postgres doesn't know which of the group's values to show. The exception: group by a table's primary key and every other column of that table is allowed, because the key determines them. That's why `group by mems.memid` alone can still select `firstname` and `surname`.
+- **Group by the key, not the display name.** Grouping by name merges namesakes.
+- **WHERE filters rows before grouping. HAVING filters groups after.** A condition on an aggregate goes in HAVING.
+- **Mind the units.** `slots` are half-hours, so hours are `sum(slots) / 2.0`.
+- **Integer division truncates.** `7 / 2` is 3; `7 / 2.0` is 3.5.
+
+### Rounding to the nearest 10
+
+`round(x, -1)` rounds to the nearest 10. The pgexercises model answer does the same with integers only, by adding half the divisor before truncating:
+
+```sql
+-- hours, rounded to the nearest 10
+round(sum(slots) / 2.0, -1)
+
+-- the same with integer arithmetic: slots / 20 is tens of hours
+((sum(slots) + 10) / 20) * 10
+```
+
+<Mistakes section="group-by" />

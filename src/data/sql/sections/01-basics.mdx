@@ -1,0 +1,23 @@
+---
+title: Tables, keys and relationships
+order: 1
+summary: Primary keys, foreign keys, and the three tables every example uses.
+---
+import DatasetTables from '../../../components/sql/DatasetTables.astro';
+import Planned from '../../../components/sql/Planned.astro';
+
+Every example on this page runs against the same three tables, a trimmed copy of the [pgexercises](https://pgexercises.com/) country club. Learn them once here.
+
+<DatasetTables />
+
+A table stores one kind of thing, and each row is one of them. A **primary key** identifies a row uniquely: `members.memid`, `facilities.facid`, `bookings.bookid`. A **foreign key** is a column whose values point at a primary key somewhere else: `bookings.memid` points at `members.memid`, and `bookings.facid` at `facilities.facid`.
+
+- **One-to-many.** One member has many bookings; each booking has one member.
+- **Many-to-many.** A member books many facilities and a facility is booked by many members. Nothing stores that directly: `bookings` sits in the middle as a *linking table*, holding a foreign key to each side.
+- **A key that points at its own table.** `members.recommendedby` references `members.memid`. The same table plays two roles, the member and their recommender, so any query that resolves it needs two aliases for one table. It comes back in joins, subqueries and updates.
+
+Keys exist because names collide. There are two Darren Smiths in this data (memid 1 and 37), and only `memid` tells them apart. Several later sections lean on that.
+
+<Planned title="Schema explorer">
+  Hover a foreign key value to light up the row it points to. Click a booking to highlight its member and facility; toggle the recommendedby arrow looping back into members.
+</Planned>
