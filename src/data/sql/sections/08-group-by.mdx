@@ -1,0 +1,15 @@
+---
+title: Aggregation and GROUP BY
+order: 8
+summary: One row per group. Group by the key, filter groups with HAVING.
+---
+import GroupByBuckets from '../../../components/sql/GroupByBuckets.tsx';
+import Mistakes from '../../../components/sql/Mistakes.astro';
+
+<GroupByBuckets client:visible />
+
+- Every selected column is grouped or aggregated. Grouping by a primary key allows every other column of that table.
+- Group by the key, not the display name.
+- `slots` are half-hours: hours are `sum(slots) / 2.0`, and `round(x, -1)` rounds to the nearest 10.
+
+<Mistakes section="group-by" />

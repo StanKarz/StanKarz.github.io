@@ -1,0 +1,93 @@
+.layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-areas:
+    'members bookings'
+    'facilities bookings';
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+.members {
+  grid-area: members;
+}
+
+.facilities {
+  grid-area: facilities;
+}
+
+.bookings {
+  grid-area: bookings;
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0 var(--space-sm);
+  margin-bottom: var(--space-xs);
+}
+
+.note {
+  font-size: var(--font-size-xs);
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.layout .table th {
+  padding: 0.3rem 0.45rem;
+  vertical-align: bottom;
+}
+
+.layout .table td {
+  padding: 0.28rem 0.45rem;
+}
+
+.role {
+  display: block;
+  font-size: 0.625rem;
+  letter-spacing: 0.02em;
+}
+
+.pk {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.fk {
+  color: var(--color-accent);
+}
+
+.row {
+  cursor: pointer;
+}
+
+.row td {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.layout tr.related td {
+  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+}
+
+.layout tr.picked td {
+  background: color-mix(in srgb, var(--color-accent) 22%, transparent) !important;
+}
+
+.picked td:first-child {
+  box-shadow: inset 3px 0 0 var(--color-accent);
+}
+
+/* The key cells doing the linking. */
+.link {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'members' 'bookings' 'facilities';
+  }
+}

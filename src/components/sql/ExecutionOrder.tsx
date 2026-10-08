@@ -1,20 +1,20 @@
 import { useMemo, useState } from 'preact/hooks';
 import { bookings, members, GUEST_MEMID, type Booking, type Member } from '../../data/sql/countryclub';
 import { groupBy, join } from '../../lib/sql/engine';
-import { ResultTable, RowCount, SqlCode, cx, shared, type Column, type Row } from './shared/primitives';
+import { ResultTable, RowCount, Segmented, SqlCode, cx, shared, type Column, type Row } from './shared/primitives';
 import styles from './ExecutionOrder.module.css';
 
-const QUERY = `select mems.firstname, mems.surname, sum(bks.slots) as total
+const QUERY = `select distinct mems.surname, sum(bks.slots) as total
 from cd.members mems
 join cd.bookings bks on bks.memid = mems.memid
 where mems.memid <> 0
 group by mems.memid
 having sum(bks.slots) > 2
-order by total desc, mems.firstname
-limit 3;`;
+order by total desc, mems.surname
+limit 2;`;
 
 const HAVING_MIN = 2;
-const LIMIT = 3;
+const LIMIT = 2;
 
 interface Stage {
   name: string;
@@ -55,20 +55,20 @@ const STAGES: Stage[] = [
   },
   {
     name: 'DISTINCT',
-    lines: [],
+    lines: [0],
     caption:
-      'No DISTINCT in this query, so nothing happens. If there were one, duplicates would be removed here, after SELECT.',
+      'DISTINCT compares only the selected columns. Darren and Tracy are both Smith on 5, so two different people become one row.',
   },
   {
     name: 'ORDER BY',
     lines: [6],
     caption:
-      'ORDER BY runs after SELECT, which is why it can use the alias `total`. Ties on 5 are broken by first name.',
+      'ORDER BY runs after SELECT, so it can use the alias `total`. With DISTINCT it can only sort by selected columns: `mems.firstname` here is an error.',
   },
   {
     name: 'LIMIT',
     lines: [7],
-    caption: 'Finally, keep the first 3 rows. Without the ORDER BY, which 3 you get would be up to the planner.',
+    caption: 'Keep the first 2 rows. Without the ORDER BY, which 2 you get would be up to the planner.',
   },
 ];
 
@@ -91,7 +91,6 @@ const GROUP_COLUMNS: Column[] = [
 ];
 
 const OUTPUT_COLUMNS: Column[] = [
-  { key: 'firstname', label: 'firstname' },
   { key: 'surname', label: 'surname' },
   { key: 'total', label: 'total', align: 'right' },
 ];
@@ -135,12 +134,23 @@ function computeStages() {
   });
   const outRow = (g: G, state?: Row['state']): Row => ({
     key: `g${g.member.memid}`,
-    cells: { firstname: g.member.firstname, surname: g.member.surname, total: g.total },
+    cells: { surname: g.member.surname, total: g.total },
     state,
   });
 
   const kept = groups.filter((g) => g.total > HAVING_MIN);
-  const sorted = [...kept].sort((a, b) => b.total - a.total || a.member.firstname.localeCompare(b.member.firstname));
+  // DISTINCT on (surname, total): the first of each identical pair survives.
+  const seen = new Set<string>();
+  const isDuplicate = new Map(
+    kept.map((g) => {
+      const k = `${g.member.surname}|${g.total}`;
+      const dup = seen.has(k);
+      seen.add(k);
+      return [g, dup];
+    }),
+  );
+  const unique = kept.filter((g) => !isDuplicate.get(g));
+  const sorted = [...unique].sort((a, b) => b.total - a.total || a.member.surname.localeCompare(b.member.surname));
 
   // Within GROUP BY, show rows clustered by group with a rule between groups.
   const clustered: Row[] = [];
@@ -170,7 +180,12 @@ function computeStages() {
       unit: 'groups',
     },
     { columns: OUTPUT_COLUMNS, rows: kept.map((g) => outRow(g)), count: kept.length, unit: 'rows' },
-    { columns: OUTPUT_COLUMNS, rows: kept.map((g) => outRow(g)), count: kept.length, unit: 'rows' },
+    {
+      columns: OUTPUT_COLUMNS,
+      rows: kept.map((g) => outRow(g, isDuplicate.get(g) ? 'removed' : undefined)),
+      count: unique.length,
+      unit: 'rows',
+    },
     { columns: OUTPUT_COLUMNS, rows: sorted.map((g) => outRow(g)), count: sorted.length, unit: 'rows' },
     {
       columns: OUTPUT_COLUMNS,
@@ -204,6 +219,8 @@ export default function ExecutionOrder() {
     const at = stepOfLine(i);
     return at >= 0 && STAGES[at].lines[0] === i;
   };
+  // SELECT and DISTINCT share line 0, so a line can carry more than one badge.
+  const stagesStartingAt = (i: number) => STAGES.flatMap((s, at) => (s.lines[0] === i ? [at] : []));
 
   const lineClass = (i: number) => {
     if (aliasMode) {
@@ -224,8 +241,11 @@ export default function ExecutionOrder() {
         return <span class={styles.aliasTagMuted}>runs before it exists</span>;
       return null;
     }
-    if (!isFirstLineOfStage(i)) return null;
-    return <span class={cx(styles.badge, at === step && styles.badgeCurrent)}>{at + 1}</span>;
+    return stagesStartingAt(i).map((n) => (
+      <span key={n} class={cx(styles.badge, n === step && styles.badgeCurrent)}>
+        {n + 1}
+      </span>
+    ));
   };
 
   const rows = step === 2 && showGroupRows && data.before ? data.before : data.rows;
@@ -234,10 +254,16 @@ export default function ExecutionOrder() {
   return (
     <figure class={shared.figure}>
       <div class={shared.toolbar}>
-        <span class={shared.label}>Written order, with the order it runs in</span>
-        <button type="button" class={shared.button} aria-pressed={aliasMode} onClick={() => setAliasMode((v) => !v)}>
-          where can I use <code>total</code>?
-        </button>
+        <Segmented
+          label="View"
+          value={aliasMode ? 'alias' : 'order'}
+          onChange={(v) => setAliasMode(v === 'alias')}
+          options={[
+            { value: 'order', label: 'step through it' },
+            { value: 'alias', label: 'where can I use total?' },
+          ]}
+        />
+        <span class={shared.note}>written top to bottom; the badges are the order it runs in</span>
       </div>
 
       <SqlCode

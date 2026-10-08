@@ -88,6 +88,8 @@ export interface Row {
   /** Draws a rule above the row: used to show where one group ends. */
   groupStart?: boolean;
   tint?: boolean;
+  /** Where an outer join's row came from: only the left table, or only the right. */
+  tone?: 'left' | 'right';
 }
 
 interface ResultTableProps {
@@ -134,6 +136,8 @@ export function ResultTable({ columns, rows, emptyText = '0 rows', onRowHover, s
                 r.state === 'removed' && styles.rowRemoved,
                 r.groupStart && i > 0 && styles.groupStart,
                 r.tint && styles.groupTint,
+                r.tone === 'left' && styles.toneLeft,
+                r.tone === 'right' && styles.toneRight,
               )}
               style={{ animationDelay: `${Math.min(i * stagger, 400)}ms` }}
               onMouseEnter={onRowHover ? () => onRowHover(r.key) : undefined}

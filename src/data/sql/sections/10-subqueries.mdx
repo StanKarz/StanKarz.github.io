@@ -1,0 +1,30 @@
+---
+title: Subqueries and CTEs
+order: 10
+summary: A value per row, a table in FROM, or an existence check. CTEs read top to bottom.
+---
+import SubqueryStepper from '../../../components/sql/SubqueryStepper.tsx';
+import Mistakes from '../../../components/sql/Mistakes.astro';
+
+| Where | Must return | Use |
+|---|---|---|
+| SELECT list | one value | look something up per row |
+| FROM, with an alias | a table | make an alias filterable |
+| WHERE with `IN` / `EXISTS` | a list, or true/false | is it in there? |
+
+<SubqueryStepper client:visible />
+
+A CTE is a derived table moved to the top and given a name:
+
+```sql
+with costed as (
+    select bks.bookid,
+           case when bks.memid = 0 then bks.slots * facs.guestcost
+                else bks.slots * facs.membercost end as cost
+    from cd.bookings bks
+    join cd.facilities facs on facs.facid = bks.facid
+)
+select * from costed where cost > 30;
+```
+
+<Mistakes section="subqueries" />

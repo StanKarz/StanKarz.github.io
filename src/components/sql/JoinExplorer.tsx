@@ -12,10 +12,11 @@ const LEFT: Member[] = members.filter((m) => LEFT_IDS.includes(m.memid));
 const RIGHT: Booking[] = bookings.filter((b) => RIGHT_IDS.includes(b.bookid));
 
 type JoinOn = 'memid' | 'facid';
+type View = 'rows' | 'venn';
 
-const ON: Record<JoinOn, { sql: string; test: (m: Member, b: Booking) => boolean }> = {
-  memid: { sql: 'bks.memid = mems.memid', test: (m, b) => b.memid === m.memid },
-  facid: { sql: 'bks.facid = mems.memid', test: (m, b) => b.facid === m.memid },
+const ON: Record<JoinOn, { sql: string; col: 'memid' | 'facid'; test: (m: Member, b: Booking) => boolean }> = {
+  memid: { sql: 'bks.memid = mems.memid', col: 'memid', test: (m, b) => b.memid === m.memid },
+  facid: { sql: 'bks.facid = mems.memid', col: 'facid', test: (m, b) => b.facid === m.memid },
 };
 
 const KEYWORD: Record<JoinType, string> = {
@@ -26,30 +27,8 @@ const KEYWORD: Record<JoinType, string> = {
   cross: 'cross join',
 };
 
-const CAPTION: Record<JoinType, string> = {
-  inner:
-    'Only pairs that satisfy ON survive. The second Darren Smith (37) has no bookings, and booking 7 belongs to Gerald, who is not in this trimmed members table. Both vanish without a trace.',
-  left: 'Every member survives. Darren 37 has nothing to pair with, so every bookings column is padded with NULL.',
-  right:
-    "Every booking survives. Booking 7's member is not in the left table here, so the member columns are NULL. With the full tables and a foreign key every booking has a member, so this RIGHT JOIN would match the INNER one.",
-  full: 'Both sides survive: NULLs on whichever side is missing.',
-  cross:
-    'No ON at all: every member paired with every booking. An inner join is this grid filtered down to the cells where ON is true.',
-};
-
-const LEFT_COLUMNS: Column[] = [
-  { key: 'memid', label: 'memid', align: 'right' },
-  { key: 'name', label: 'name' },
-  { key: 'fan', label: '→ rows out', align: 'right' },
-];
-
-const RIGHT_COLUMNS: Column[] = [
-  { key: 'bookid', label: 'bookid', align: 'right' },
-  { key: 'memid', label: 'memid', align: 'right' },
-  { key: 'facid', label: 'facid', align: 'right' },
-  { key: 'slots', label: 'slots', align: 'right' },
-  { key: 'fan', label: '→ rows out', align: 'right' },
-];
+const KEEPS_LEFT: Record<JoinType, boolean> = { inner: false, left: true, right: false, full: true, cross: true };
+const KEEPS_RIGHT: Record<JoinType, boolean> = { inner: false, left: false, right: true, full: true, cross: true };
 
 const RESULT_COLUMNS: Column[] = [
   { key: 'mmemid', label: 'mems.memid', align: 'right' },
@@ -57,71 +36,36 @@ const RESULT_COLUMNS: Column[] = [
   { key: 'bookid', label: 'bks.bookid', align: 'right' },
   { key: 'bmemid', label: 'bks.memid', align: 'right' },
   { key: 'facid', label: 'bks.facid', align: 'right' },
-  { key: 'slots', label: 'bks.slots', align: 'right' },
 ];
 
-/** What the pointer is over: a source row on either side, or a result row. */
-type Hover = { side: 'left' | 'right' | 'result'; key: string } | null;
+/** Which rows find a partner, computed once per join condition. */
+function matching(on: JoinOn) {
+  const pairs: [number, number][] = [];
+  LEFT.forEach((m, i) => RIGHT.forEach((b, j) => ON[on].test(m, b) && pairs.push([i, j])));
+  const fanLeft = LEFT.map((_, i) => pairs.filter(([l]) => l === i).length);
+  const fanRight = RIGHT.map((_, j) => pairs.filter(([, r]) => r === j).length);
+  return { pairs, fanLeft, fanRight };
+}
 
 export default function JoinExplorer() {
-  const [type, setType] = useState<JoinType>('inner');
+  const [type, setType] = useState<JoinType>('left');
   const [on, setOn] = useState<JoinOn>('memid');
-  const [hover, setHover] = useState<Hover>(null);
+  const [view, setView] = useState<View>('rows');
+  const [hover, setHover] = useState<string | null>(null);
 
+  const match = useMemo(() => matching(on), [on]);
   const result = useMemo(
-    () =>
-      join(
-        LEFT,
-        RIGHT,
-        type,
-        ON[on].test,
-        (m) => String(m.memid),
-        (b) => String(b.bookid),
-      ),
+    () => join(LEFT, RIGHT, type, ON[on].test, (m) => String(m.memid), (b) => String(b.bookid)),
     [type, on],
   );
-  const correctCount = useMemo(
-    () =>
-      join(
-        LEFT,
-        RIGHT,
-        type,
-        ON.memid.test,
-        (m) => String(m.memid),
-        (b) => String(b.bookid),
-      ).length,
-    [type],
-  );
+  const correctCount = useMemo(() => join(LEFT, RIGHT, type, ON.memid.test, String, String).length, [type]);
 
-  const fanLeft = (m: Member) => result.filter((r) => r.left === m).length;
-  const fanRight = (b: Booking) => result.filter((r) => r.right === b).length;
+  const orphansLeft = match.fanLeft.filter((n) => n === 0).length;
+  const orphansRight = match.fanRight.filter((n) => n === 0).length;
 
-  // Which result keys light up for the current hover, and which source rows feed them.
-  const litResults = new Set(
-    result
-      .filter((r) => {
-        if (!hover) return false;
-        if (hover.side === 'result') return r.key === hover.key;
-        if (hover.side === 'left') return r.left !== null && String(r.left.memid) === hover.key;
-        return r.right !== null && String(r.right.bookid) === hover.key;
-      })
-      .map((r) => r.key),
-  );
-  const litLeft = new Set(result.filter((r) => litResults.has(r.key) && r.left).map((r) => String(r.left!.memid)));
-  const litRight = new Set(result.filter((r) => litResults.has(r.key) && r.right).map((r) => String(r.right!.bookid)));
-  if (hover?.side === 'left') litLeft.add(hover.key);
-  if (hover?.side === 'right') litRight.add(hover.key);
+  const isLit = (l: Member | null, r: Booking | null, key: string) =>
+    hover !== null && (hover === key || (l !== null && hover === `l${l.memid}`) || (r !== null && hover === `r${r.bookid}`));
 
-  const leftRows: Row[] = LEFT.map((m) => ({
-    key: String(m.memid),
-    cells: { memid: m.memid, name: fullName(m), fan: `× ${fanLeft(m)}` },
-    state: litLeft.has(String(m.memid)) ? 'highlight' : fanLeft(m) === 0 ? 'dim' : undefined,
-  }));
-  const rightRows: Row[] = RIGHT.map((b) => ({
-    key: String(b.bookid),
-    cells: { bookid: b.bookid, memid: b.memid, facid: b.facid, slots: b.slots, fan: `× ${fanRight(b)}` },
-    state: litRight.has(String(b.bookid)) ? 'highlight' : fanRight(b) === 0 ? 'dim' : undefined,
-  }));
   const resultRows: Row[] = result.map((r) => ({
     key: r.key,
     cells: {
@@ -130,9 +74,9 @@ export default function JoinExplorer() {
       bookid: r.right?.bookid ?? null,
       bmemid: r.right?.memid ?? null,
       facid: r.right?.facid ?? null,
-      slots: r.right?.slots ?? null,
     },
-    state: litResults.has(r.key) ? 'highlight' : undefined,
+    tone: r.right === null ? 'left' : r.left === null ? 'right' : undefined,
+    state: isLit(r.left, r.right, r.key) ? 'highlight' : undefined,
   }));
 
   const sql =
@@ -154,12 +98,12 @@ export default function JoinExplorer() {
         />
         {type !== 'cross' && (
           <Segmented
-            label="Join condition"
-            value={on}
-            onChange={setOn}
+            label="Picture"
+            value={view}
+            onChange={setView}
             options={[
-              { value: 'memid', label: 'on bks.memid' },
-              { value: 'facid', label: 'on bks.facid (bug)' },
+              { value: 'rows', label: 'rows' },
+              { value: 'venn', label: 'venn' },
             ]}
           />
         )}
@@ -167,68 +111,260 @@ export default function JoinExplorer() {
 
       <SqlCode code={sql} />
 
-      <div class={styles.sources}>
-        <div onMouseLeave={() => setHover(null)}>
-          <div class={styles.tableHead}>
-            <span class={shared.label}>cd.members mems</span>
-            <RowCount n={LEFT.length} />
-          </div>
-          <ResultTable
-            columns={LEFT_COLUMNS}
-            rows={leftRows}
-            onRowHover={(k) => setHover(k === null ? null : { side: 'left', key: k })}
-          />
-        </div>
-        <div onMouseLeave={() => setHover(null)}>
-          <div class={styles.tableHead}>
-            <span class={shared.label}>cd.bookings bks</span>
-            <RowCount n={RIGHT.length} />
-          </div>
-          <ResultTable
-            columns={RIGHT_COLUMNS}
-            rows={rightRows}
-            onRowHover={(k) => setHover(k === null ? null : { side: 'right', key: k })}
-          />
-        </div>
-      </div>
-
-      <p class={shared.caption}>
-        {CAPTION[type]}
-        {type !== 'cross' && on === 'facid' && (
-          <>
-            {' '}
-            <strong class={styles.warn}>
-              Joined on the wrong column: {result.length} rows instead of {correctCount}, and no error.
-            </strong>{' '}
-            Both are integers, so member 1 is matched to every booking at facility 1.
-          </>
-        )}
-      </p>
-
-      <div class={styles.tableHead}>
-        <span class={shared.label}>result</span>
-        <RowCount n={result.length} />
-      </div>
-
       {type === 'cross' ? (
         <CrossGrid />
       ) : (
-        <div onMouseLeave={() => setHover(null)}>
-          <ResultTable
-            columns={RESULT_COLUMNS}
-            rows={resultRows}
-            onRowHover={(k) => setHover(k === null ? null : { side: 'result', key: k })}
-          />
-        </div>
+        <>
+          {view === 'venn' ? (
+            <Venn type={type} match={match} />
+          ) : (
+            <Wiring type={type} on={on} match={match} hover={hover} setHover={setHover} />
+          )}
+          <Legend type={type} orphansLeft={orphansLeft} orphansRight={orphansRight} />
+          <div class={shared.toolbar}>
+            <span class={shared.label}>join on</span>
+            <Segmented
+              label="Join condition"
+              value={on}
+              onChange={setOn}
+              options={[
+                { value: 'memid', label: 'bks.memid' },
+                { value: 'facid', label: 'bks.facid (wrong)' },
+              ]}
+            />
+          </div>
+          {on === 'facid' && (
+            <p class={shared.caption}>
+              <strong class={styles.warn}>
+                {result.length} rows instead of {correctCount}, and no error.
+              </strong>{' '}
+              Both columns are integers, so member 1 is paired with every booking at facility 1.
+            </p>
+          )}
+        </>
       )}
 
-      <p class={shared.note}>
-        Hover any row to see where it came from or where it went. The → rows out column is the one to watch: a member
-        with two bookings comes out twice.
-      </p>
+      <div class={styles.resultHead}>
+        <span class={shared.label}>result</span>
+        <span class={styles.flow}>
+          <RowCount n={LEFT.length} label="members" />
+          <span aria-hidden="true">+</span>
+          <RowCount n={RIGHT.length} label="bookings" />
+          <span aria-hidden="true">→</span>
+          <RowCount n={result.length} />
+        </span>
+      </div>
+      {type === 'cross' ? (
+        <p class={shared.note}>
+          {LEFT.length} × {RIGHT.length} = {LEFT.length * RIGHT.length} rows, too many to list. An inner join is this
+          grid filtered down to the filled cells.
+        </p>
+      ) : (
+        <div onMouseLeave={() => setHover(null)}>
+          <ResultTable columns={RESULT_COLUMNS} rows={resultRows} onRowHover={setHover} />
+        </div>
+      )}
     </figure>
   );
 }
+
+/* ------------------------------------------------------------------ rows */
+
+const ROW_H = 36;
+
+type Match = ReturnType<typeof matching>;
+
+interface WiringProps {
+  type: JoinType;
+  on: JoinOn;
+  match: Match;
+  hover: string | null;
+  setHover: (k: string | null) => void;
+}
+
+/**
+ * Both tables as columns of cards, with a line for every pair that satisfies ON.
+ * Rows without a line are the whole story of outer joins: kept with NULLs, or dropped.
+ */
+function Wiring({ type, on, match, hover, setHover }: WiringProps) {
+  const height = Math.max(LEFT.length, RIGHT.length) * ROW_H;
+  const y = (i: number) => (i + 0.5) * ROW_H;
+
+  const pairLit = (i: number, j: number) =>
+    hover !== null &&
+    (hover === `l${LEFT[i].memid}` || hover === `r${RIGHT[j].bookid}` || hover === `${LEFT[i].memid}|${RIGHT[j].bookid}`);
+
+  const state = (fan: number, keeps: boolean) => (fan > 0 ? 'match' : keeps ? 'kept' : 'dropped');
+
+  return (
+    <div class={styles.wiring} onMouseLeave={() => setHover(null)}>
+      <div class={styles.columnHead}>
+        <span class={shared.label}>cd.members mems</span>
+      </div>
+      <span />
+      <div class={styles.columnHead}>
+        <span class={shared.label}>cd.bookings bks</span>
+      </div>
+
+      <ol class={styles.column} style={{ height: `${height}px` }}>
+        {LEFT.map((m, i) => {
+          const s = state(match.fanLeft[i], KEEPS_LEFT[type]);
+          return (
+            <li
+              key={m.memid}
+              class={cx(styles.card, styles[s], styles.sideLeft, hover === `l${m.memid}` && styles.lit)}
+              style={{ height: `${ROW_H}px` }}
+              onMouseEnter={() => setHover(`l${m.memid}`)}
+            >
+              <span class={styles.id}>{m.memid}</span>
+              <span class={styles.text}>{fullName(m)}</span>
+              <span class={styles.tag}>{s === 'match' ? `×${match.fanLeft[i]}` : s === 'kept' ? '+NULL' : 'gone'}</span>
+            </li>
+          );
+        })}
+      </ol>
+
+      <svg
+        class={styles.wires}
+        style={{ height: `${height}px` }}
+        viewBox={`0 0 100 ${height}`}
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        {match.pairs.map(([i, j]) => (
+          <path
+            key={`${on}-${i}-${j}`}
+            d={`M0,${y(i)} C55,${y(i)} 45,${y(j)} 100,${y(j)}`}
+            class={cx(styles.wire, pairLit(i, j) && styles.wireLit)}
+            pathLength={1}
+            vector-effect="non-scaling-stroke"
+          />
+        ))}
+      </svg>
+
+      <ol class={styles.column} style={{ height: `${height}px` }}>
+        {RIGHT.map((b, j) => {
+          const s = state(match.fanRight[j], KEEPS_RIGHT[type]);
+          return (
+            <li
+              key={b.bookid}
+              class={cx(styles.card, styles[s], styles.sideRight, hover === `r${b.bookid}` && styles.lit)}
+              style={{ height: `${ROW_H}px` }}
+              onMouseEnter={() => setHover(`r${b.bookid}`)}
+            >
+              <span class={styles.text}>bk {b.bookid}</span>
+              <span class={styles.key}>
+                {ON[on].col}={b[ON[on].col]}
+              </span>
+              <span class={styles.tag}>{s === 'match' ? '' : s === 'kept' ? '+NULL' : 'gone'}</span>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  );
+}
+
+function Legend({ type, orphansLeft, orphansRight }: { type: JoinType; orphansLeft: number; orphansRight: number }) {
+  return (
+    <ul class={styles.legend}>
+      <li>
+        <span class={cx(styles.swatch, styles.swatchMatch)} />
+        matched: one output row per line
+      </li>
+      <li>
+        <span class={cx(styles.swatch, styles.swatchLeft)} />
+        {orphansLeft} member{orphansLeft === 1 ? '' : 's'} with no booking:{' '}
+        <strong>{KEEPS_LEFT[type] ? 'kept, booking columns NULL' : 'dropped'}</strong>
+      </li>
+      <li>
+        <span class={cx(styles.swatch, styles.swatchRight)} />
+        {orphansRight} booking{orphansRight === 1 ? '' : 's'} with no member here:{' '}
+        <strong>{KEEPS_RIGHT[type] ? 'kept, member columns NULL' : 'dropped'}</strong>
+      </li>
+    </ul>
+  );
+}
+
+/* ------------------------------------------------------------------ venn */
+
+/**
+ * The usual picture, with real counts in each region. The note underneath is
+ * the point: the middle holds pairs, so it can hold the same member twice.
+ */
+function Venn({ type, match }: { type: JoinType; match: Match }) {
+  const leftOnly = match.fanLeft.filter((n) => n === 0).length;
+  const rightOnly = match.fanRight.filter((n) => n === 0).length;
+  const pairs = match.pairs.length;
+  const matchedMembers = match.fanLeft.filter((n) => n > 0).length;
+  const repeats = LEFT.filter((_, i) => match.fanLeft[i] > 1);
+
+  return (
+    <div class={styles.venn}>
+      <svg viewBox="0 0 400 220" role="img" aria-label={`Venn diagram for a ${type} join`}>
+        <defs>
+          <mask id="sql-venn-left-only">
+            <rect width="400" height="220" fill="black" />
+            <circle cx="160" cy="118" r="88" fill="white" />
+            <circle cx="240" cy="118" r="88" fill="black" />
+          </mask>
+          <mask id="sql-venn-right-only">
+            <rect width="400" height="220" fill="black" />
+            <circle cx="240" cy="118" r="88" fill="white" />
+            <circle cx="160" cy="118" r="88" fill="black" />
+          </mask>
+          <clipPath id="sql-venn-left-clip">
+            <circle cx="160" cy="118" r="88" />
+          </clipPath>
+        </defs>
+        <rect
+          width="400"
+          height="220"
+          mask="url(#sql-venn-left-only)"
+          class={cx(styles.region, styles.regionLeft, KEEPS_LEFT[type] && styles.regionOn)}
+        />
+        <rect
+          width="400"
+          height="220"
+          mask="url(#sql-venn-right-only)"
+          class={cx(styles.region, styles.regionRight, KEEPS_RIGHT[type] && styles.regionOn)}
+        />
+        <circle
+          cx="240"
+          cy="118"
+          r="88"
+          clip-path="url(#sql-venn-left-clip)"
+          class={cx(styles.region, styles.regionMatch, styles.regionOn)}
+        />
+        <circle cx="160" cy="118" r="88" class={styles.outline} />
+        <circle cx="240" cy="118" r="88" class={styles.outline} />
+
+        <text x="118" y="114" class={styles.vennCount}>{leftOnly}</text>
+        <text x="118" y="134" class={styles.vennSub}>{KEEPS_LEFT[type] ? '+NULL' : 'dropped'}</text>
+        <text x="200" y="114" class={styles.vennCount}>{pairs}</text>
+        <text x="200" y="134" class={styles.vennSub}>pairs</text>
+        <text x="282" y="114" class={styles.vennCount}>{rightOnly}</text>
+        <text x="282" y="134" class={styles.vennSub}>{KEEPS_RIGHT[type] ? '+NULL' : 'dropped'}</text>
+
+        <text x="110" y="16" class={styles.vennLabel}>mems: {LEFT.length}</text>
+        <text x="290" y="16" class={styles.vennLabel}>bks: {RIGHT.length}</text>
+      </svg>
+      <p class={shared.note}>
+        Where the picture stops being accurate: the middle holds {pairs} output rows but only {matchedMembers}{' '}
+        members.{' '}
+        {repeats.length > 0 && (
+          <>
+            {repeats.map((m) => m.firstname).join(' and ')} {repeats.length === 1 ? 'has' : 'each have'} more than one
+            booking, so {repeats.length === 1 ? 'appears' : 'appear'} more than once.{' '}
+          </>
+        )}
+        Circles hold things; a join outputs pairs of things. The rows view shows them.
+      </p>
+    </div>
+  );
+}
+
+/* ----------------------------------------------------------------- cross */
 
 /** Every pairing as a cell; the ones an inner join on memid would keep are filled. */
 function CrossGrid() {
@@ -253,13 +389,13 @@ function CrossGrid() {
                 {m.memid} {m.firstname}
               </th>
               {RIGHT.map((b, j) => {
-                const match = ON.memid.test(m, b);
+                const hit = ON.memid.test(m, b);
                 return (
                   <td key={b.bookid}>
                     <span
-                      class={cx(styles.dot, match && styles.dotMatch)}
+                      class={cx(styles.dot, hit && styles.dotMatch)}
                       style={{ animationDelay: `${(i * RIGHT.length + j) * 12}ms` }}
-                      title={match ? 'kept by an inner join on memid' : 'only exists in the cross join'}
+                      title={hit ? 'kept by an inner join on memid' : 'only exists in the cross join'}
                     />
                   </td>
                 );
@@ -268,11 +404,6 @@ function CrossGrid() {
           ))}
         </tbody>
       </table>
-      <p class={shared.note}>
-        {LEFT.length} × {RIGHT.length} = {LEFT.length * RIGHT.length} rows. Filled cells are the{' '}
-        {RIGHT.filter((b) => LEFT.some((m) => ON.memid.test(m, b))).length} pairs where{' '}
-        <code>bks.memid = mems.memid</code>.
-      </p>
     </div>
   );
 }

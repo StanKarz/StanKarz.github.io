@@ -1,0 +1,20 @@
+---
+title: Window functions and ranking
+order: 9
+summary: Compute across related rows without collapsing them. rank vs dense_rank vs row_number.
+---
+import RankTies from '../../../components/sql/RankTies.tsx';
+import PartitionExplorer from '../../../components/sql/PartitionExplorer.tsx';
+import Mistakes from '../../../components/sql/Mistakes.astro';
+
+`f() over (partition by … order by …)` adds a column computed across related rows, and keeps every row.
+
+<PartitionExplorer client:visible />
+
+Ranking is where ties matter:
+
+<RankTies client:visible />
+
+You can rank an aggregate, `rank() over (order by sum(slots) desc)`: GROUP BY has already run. For a repeatable `row_number`, add a tie-breaker to the ORDER BY.
+
+<Mistakes section="window-functions" />

@@ -28,12 +28,8 @@ const description =
       <p class={styles.kicker}><a href="/projects/">projects</a> / sql</p>
       <h1 class={styles.title}>SQL, the parts I keep looking up</h1>
       <p class={styles.lede}>
-        A reference I built while working through <a href="https://pgexercises.com/">pgexercises</a>. Each section
-        has a short explanation, something to poke at, and the mistakes that cost me time. Postgres syntax throughout,
-        with the Postgres-only bits flagged.
-      </p>
-      <p class={styles.lede}>
-        Stuck on a query right now? <a href="#symptoms">Start from the symptom.</a>
+        Built while working through <a href="https://pgexercises.com/">pgexercises</a>. Each section is the idea in a
+        line or two, something to poke at, and the mistakes that cost me time. Postgres syntax throughout.
       </p>
     </header>
 
@@ -75,7 +71,7 @@ const description =
 </BaseLayout>
 
 <script>
-  // Scroll-spy for the rail, and opening a mistake when the symptom index links to it.
+  // Scroll-spy for the rail.
   // Re-run on every page load because the site uses View Transitions.
   document.addEventListener('astro:page-load', () => {
     const links = new Map(
@@ -94,19 +90,5 @@ const description =
       { rootMargin: '-30% 0px -65% 0px' },
     );
     document.querySelectorAll('[data-section]').forEach((el) => observer.observe(el));
-
-    // On load, and on clicks: the View Transitions router moves between anchors on
-    // the same page with pushState, which never fires hashchange.
-    const openDetails = (id: string) => {
-      const target = document.getElementById(id);
-      if (target instanceof HTMLDetailsElement) target.open = true;
-    };
-    if (location.hash) openDetails(location.hash.slice(1));
-  });
-
-  document.addEventListener('click', (e) => {
-    const link = (e.target as Element).closest<HTMLAnchorElement>('a[data-open-mistake]');
-    const target = link && document.getElementById(link.hash.slice(1));
-    if (target instanceof HTMLDetailsElement) target.open = true;
   });
 </script>

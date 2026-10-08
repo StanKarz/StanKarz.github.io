@@ -6,25 +6,13 @@ summary: Written order is not run order, which is why aliases vanish in WHERE.
 import ExecutionOrder from '../../../components/sql/ExecutionOrder.tsx';
 import Mistakes from '../../../components/sql/Mistakes.astro';
 
-You write `SELECT` first, but it is evaluated almost last. Step through it:
+You write `SELECT` first; it runs fifth.
 
 <ExecutionOrder client:visible />
 
-| Written | Runs |
-|---|---|
-| `SELECT … FROM … JOIN … WHERE … GROUP BY … HAVING … ORDER BY … LIMIT` | `FROM/JOIN` → `WHERE` → `GROUP BY` → `HAVING` → `SELECT` → `DISTINCT` → `ORDER BY` → `LIMIT` |
-
-Most "why doesn't this work" questions fall out of that order:
-
-- **An alias doesn't exist in WHERE.** It is created in SELECT, four steps later. `where cost > 30` fails with `column "cost" does not exist`.
-- **ORDER BY can use it.** It runs after SELECT, so `order by cost` is fine. Postgres only allows the bare alias, though: `order by cost + 1` fails.
-- **Aggregates can't go in WHERE.** Rows haven't been grouped yet. Filter groups with HAVING.
-- **Window functions can't go in WHERE either.** They are computed in the SELECT step. Wrap the query in a subquery or CTE and filter outside.
-- **To reuse a computed value in a filter,** either repeat the expression in WHERE, or compute it once in a [derived table](#subqueries) and filter in the outer query.
-
-This is the *logical* order: it tells you what a query means and which queries are valid. The planner physically reorders work whenever the result stays the same, so it says nothing about speed.
-
-Postgres also accepts a SELECT alias in GROUP BY, as a convenience it rewrites behind the scenes. Other databases may not.
+- Anything that runs before SELECT can't see its aliases: WHERE, GROUP BY, HAVING. ORDER BY can.
+- Aggregates filter in HAVING, not WHERE. Window functions can't be filtered in either: wrap the query and filter outside.
+- This is the *logical* order. The planner reorders the physical work freely, so it says nothing about speed.
 
 Further reading: Julia Evans, [SQL queries don't start with SELECT](https://jvns.ca/blog/2019/10/03/sql-queries-don-t-start-with-select/).
 

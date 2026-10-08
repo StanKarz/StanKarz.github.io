@@ -1,40 +1,23 @@
 ---
 title: 'NULL'
 order: 4
-summary: Unknown, not zero. Three-valued logic and the NOT IN trap.
+summary: Unknown, not zero. Three-valued logic, COALESCE, and the NOT IN trap.
 ---
+import TruthTable from '../../../components/sql/TruthTable.tsx';
 import NotInTrap from '../../../components/sql/NotInTrap.tsx';
+import CoalesceToggle from '../../../components/sql/CoalesceToggle.tsx';
 import Mistakes from '../../../components/sql/Mistakes.astro';
-import Planned from '../../../components/sql/Planned.astro';
 
-NULL means unknown or missing. It is not 0 and it is not an empty string. Any comparison involving NULL, including `NULL = NULL`, is neither true nor false but **unknown**, and WHERE only keeps rows that are true. So you test for it with `IS NULL` and `IS NOT NULL`, never `= NULL`.
+Any comparison with NULL, including `NULL = NULL`, is **unknown**, and WHERE keeps only rows that are true. Test with `IS NULL`.
 
-| `AND` | TRUE | FALSE | UNKNOWN |
-|---|---|---|---|
-| **TRUE** | TRUE | FALSE | UNKNOWN |
-| **FALSE** | FALSE | FALSE | FALSE |
-| **UNKNOWN** | UNKNOWN | FALSE | UNKNOWN |
+<TruthTable client:visible />
 
-| `OR` | TRUE | FALSE | UNKNOWN |
-|---|---|---|---|
-| **TRUE** | TRUE | TRUE | TRUE |
-| **FALSE** | TRUE | FALSE | UNKNOWN |
-| **UNKNOWN** | TRUE | UNKNOWN | UNKNOWN |
-
-`NOT UNKNOWN` is still UNKNOWN. The one row of those tables that bites hardest is UNKNOWN inside an AND chain, which is exactly what NOT IN builds:
+NOT IN builds a chain of ANDs, one per value in the list. One NULL in the list makes the whole chain unknown:
 
 <NotInTrap client:visible />
 
-### Where NULLs come from, and what eats them
+Outer joins create NULLs, and aggregates skip them. `count(*)` counts rows, `count(col)` counts non-NULL values, and `sum` over nothing but NULLs is NULL:
 
-- **Outer joins create them** for unmatched rows.
-- **Aggregates skip them.** `COUNT(*)` counts rows; `COUNT(col)` counts non-null values. `SUM` over no non-null values is NULL, not 0.
-- **`COALESCE(a, b, …)`** returns its first non-null argument. The usual use is `coalesce(sum(slots), 0)`.
-- **A scalar subquery that finds no row returns NULL.** That's why members with no recommender get a blank recommender column with no special handling.
-- **`concat(a, ' ', b)`** treats NULL as an empty string. **`a || ' ' || b`** returns NULL if any piece is NULL.
-
-<Planned title="Clickable truth table, and a COALESCE toggle">
-  Click two operands to see AND / OR / NOT light up the result. A LEFT JOIN result with its NULL cells highlighted, and a COALESCE toggle that fills them in.
-</Planned>
+<CoalesceToggle client:visible />
 
 <Mistakes section="null" />

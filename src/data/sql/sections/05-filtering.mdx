@@ -3,33 +3,14 @@ title: 'Filtering: quotes, IN, LIKE'
 order: 5
 summary: Single vs double quotes, exact matches vs patterns, and AND before OR.
 ---
+import LikePlayground from '../../../components/sql/LikePlayground.tsx';
 import Mistakes from '../../../components/sql/Mistakes.astro';
-import Planned from '../../../components/sql/Planned.astro';
 
-| You write | It means |
-|---|---|
-| `'Tennis'` | A string literal |
-| `"Tennis"` | An identifier: a column or table called Tennis |
-| `name in ('Tennis Court 1', 'Tennis Court 2')` | Exact match against a list. Never searches inside a string. |
-| `name like '%Tennis%'` | Pattern match. `%` is any run of characters (including none), `_` is exactly one. |
-| `name ilike '%tennis%'` | Case-insensitive LIKE (Postgres) |
-| `name ~ 'Court [12]$'` | Regex match (Postgres). `~*` for case-insensitive. |
-| `strpos(name, 'Tennis') > 0` | Substring check without a pattern |
+`'Tennis'` is a string. `"Tennis"` is a column called Tennis. `IN (…)` matches exact values from a list; `LIKE` matches a pattern.
 
-Use the tightest filter that fits. If you know the exact values, `=` or `IN` says so; `LIKE '%Tennis%'` casts a wider net, and here it also catches the table tennis table.
+<LikePlayground client:visible />
 
-**AND binds tighter than OR.** `where a or b and c` means `a or (b and c)`. Parenthesise anything that mixes them.
-
-```sql
--- facilities with "Tennis" in the name: 3 rows, one of them Table Tennis
-select name from cd.facilities where name like '%Tennis%';
-
--- the two tennis courts and nothing else
-select name from cd.facilities where name in ('Tennis Court 1', 'Tennis Court 2');
-```
-
-<Planned title="LIKE playground">
-  Type a pattern and see which facility names match, with % and _ drawn as visible placeholders. A side-by-side toggle runs IN and LIKE against the same names.
-</Planned>
+- `~` is a regex match in Postgres, `~*` case-insensitive.
+- AND binds tighter than OR: `a or b and c` is `a or (b and c)`. Parenthesise anything that mixes them.
 
 <Mistakes section="filtering" />

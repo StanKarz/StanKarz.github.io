@@ -4,49 +4,20 @@ order: 7
 summary: There is no IF in a query. CASE is an expression that returns a value.
 ---
 import Mistakes from '../../../components/sql/Mistakes.astro';
-import Planned from '../../../components/sql/Planned.astro';
 
-A query has no `if … then` statement. `CASE` is an *expression*: it returns a value, so it goes anywhere a value can go, including SELECT, WHERE, ORDER BY, arithmetic and the inside of an aggregate.
-
-```sql
-case
-    when condition_1 then result_1
-    when condition_2 then result_2
-    else fallback
-end as alias
-```
-
-- Branches are checked top to bottom, and the first match wins.
-- With no ELSE, a row that matches nothing gets NULL.
-
-It does two jobs in practice. One is producing a label:
+CASE returns a value, so it goes anywhere a value can: SELECT, WHERE, ORDER BY, inside an aggregate. The first matching WHEN wins; no match and no ELSE gives NULL.
 
 ```sql
-select name,
-       case when monthlymaintenance > 100 then 'expensive'
-            else 'cheap' end as cost
-from cd.facilities;
-```
-
-The other is choosing which column to calculate with. Guests pay a different rate:
-
-```sql
+-- pick which column to calculate with
 select bks.bookid,
        case when bks.memid = 0 then bks.slots * facs.guestcost
             else bks.slots * facs.membercost end as cost
 from cd.bookings bks
 join cd.facilities facs on facs.facid = bks.facid;
-```
 
-And inside an aggregate, it counts or sums conditionally:
-
-```sql
+-- count conditionally
 select count(case when memid = 0 then 1 end) as guest_bookings
 from cd.bookings;
 ```
-
-<Planned title="Decision flow">
-  Rows travel one at a time through the WHEN branches and come out labelled, or with the computed cost filled in.
-</Planned>
 
 <Mistakes section="case" />

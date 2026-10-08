@@ -1,60 +1,58 @@
+/* A warning callout: tinted, with a thick accent rule, so it reads as
+   "stop and check this" rather than as a footnote. Breaks out to the same
+   width as the interactives so wrong and fix can sit side by side. */
+
 .mistakes {
-  margin-top: var(--space-xl);
-  border-top: 1px solid var(--color-border);
-  padding-top: var(--space-md);
+  --mistakes-width: min(880px, calc(100vw - 2 * var(--space-md)));
+  width: var(--mistakes-width);
+  margin: var(--space-xl) 0 0 calc((100% - var(--mistakes-width)) / 2);
+  padding: var(--space-md) var(--space-lg) var(--space-lg);
+  background: color-mix(in srgb, var(--color-accent) 7%, var(--color-bg));
+  border-left: 4px solid var(--color-accent);
+  border-radius: 0 4px 4px 0;
 }
 
-.mistakes .heading {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem !important;
-  font-weight: 400 !important;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-text-muted) !important;
-  margin-top: 0 !important;
-}
-
-.item {
-  margin-top: var(--space-sm);
-  border-left: 2px solid var(--color-border);
-  padding-left: var(--space-md);
-  transition: border-color 0.2s ease;
-}
-
-.item[open],
-.item:target {
-  border-left-color: var(--color-accent);
-}
-
-.summary {
+.heading {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.25rem 0.75rem;
-  cursor: pointer;
-  list-style: none;
-}
-
-.summary::-webkit-details-marker {
-  display: none;
-}
-
-.summary::before {
-  content: '+';
+  align-items: center;
+  gap: var(--space-sm);
+  margin: 0 !important;
   font-family: var(--font-mono);
-  color: var(--color-text-muted);
-  width: 1ch;
-}
-
-.item[open] > .summary::before {
-  content: '−';
-}
-
-.summary:hover {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--color-accent);
 }
 
+.mark {
+  display: inline-grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  font-size: 0.75rem;
+}
+
+.item {
+  margin-top: var(--space-md);
+  scroll-margin-top: var(--space-lg);
+}
+
+.item + .item {
+  padding-top: var(--space-md);
+  border-top: 1px dashed color-mix(in srgb, var(--color-accent) 35%, transparent);
+}
+
+.title {
+  margin: 0 !important;
+  font-weight: 600;
+}
+
 .error {
+  margin: 0.15rem 0 0 !important;
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--color-accent);
@@ -65,23 +63,53 @@
   opacity: 0.7;
 }
 
-.body {
-  padding: var(--space-sm) 0 var(--space-md);
+.pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-sm);
 }
 
-.body > * + * {
-  margin-top: var(--space-sm) !important;
+.pair pre {
+  margin: 0.25rem 0 0 !important;
+  padding: var(--space-sm) var(--space-md) !important;
+  font-size: 0.75rem !important;
 }
 
-.body pre {
-  padding: var(--space-md) !important;
-}
-
-.tag {
-  display: block;
+.tagWrong,
+.tagFix {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.tagWrong {
+  color: var(--color-accent);
+}
+
+.tagFix {
   color: var(--color-text-muted);
+}
+
+.fixText {
+  margin: 0.25rem 0 0 !important;
+  font-size: var(--font-size-sm);
+}
+
+.why {
+  margin: var(--space-sm) 0 0 !important;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+@media (max-width: 700px) {
+  .pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .mistakes {
+    padding: var(--space-md);
+  }
 }

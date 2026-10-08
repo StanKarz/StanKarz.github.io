@@ -1,0 +1,62 @@
+.tableWrap {
+  overflow-x: auto;
+}
+
+.row {
+  cursor: default;
+}
+
+.table .row td {
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.table tr.bandAlt td {
+  background: color-mix(in srgb, var(--color-text) 5%, transparent);
+}
+
+.table tr.partStart td {
+  border-top: 1px solid var(--color-text-muted);
+}
+
+.table tr.inFrame td {
+  background: color-mix(in srgb, var(--color-accent) 13%, transparent);
+}
+
+.table tr.current td {
+  background: color-mix(in srgb, var(--color-accent) 26%, transparent);
+}
+
+.table tr.current td:first-child {
+  box-shadow: inset 3px 0 0 var(--color-accent);
+}
+
+.summed {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.value {
+  font-weight: 700;
+}
+
+.tick {
+  display: inline-block;
+  animation: tick 0.4s ease;
+}
+
+@keyframes tick {
+  from {
+    transform: translateY(-40%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tick {
+    animation: none;
+  }
+}

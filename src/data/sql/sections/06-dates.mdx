@@ -3,33 +3,14 @@ title: Dates and timestamps
 order: 6
 summary: A timestamp compared with a date means midnight. Use half-open ranges.
 ---
+import BookingTimeline from '../../../components/sql/BookingTimeline.tsx';
 import Mistakes from '../../../components/sql/Mistakes.astro';
-import Planned from '../../../components/sql/Planned.astro';
 
-A `timestamp` is a date plus a time. Compare it with a bare date and the date is read as midnight, so `starttime = '2012-09-21'` matches only bookings at exactly 00:00:00. In this data that's one booking out of six that day.
+A bare date compared with a timestamp means midnight on that date.
 
-To match a whole day:
+<BookingTimeline client:visible />
 
-```sql
--- cast to a date: easiest to read
-where starttime::date = '2012-09-21'
-
--- half-open range: leaves the column alone, so an index on starttime can be used
-where starttime >= '2012-09-21' and starttime < '2012-09-22'
-```
-
-Prefer the half-open range to `BETWEEN`. BETWEEN includes both ends, so `between '2012-09-21' and '2012-09-22'` also catches a booking at midnight on the 22nd. There is one in this data.
-
-`::` (two colons) is the Postgres cast. The standard spelling is `cast(starttime as date)`.
-
-### Taking timestamps apart
-
-| Expression | For `2012-09-21 17:30` | Notes |
-|---|---|---|
-| `extract(month from starttime)` | `9` | Standard SQL |
-| `date_part('month', starttime)` | `9` | Postgres spelling of the same thing |
-| `date_trunc('month', starttime)` | `2012-09-01 00:00:00` | Keeps the year, so September 2012 and September 2013 stay separate when you group |
-| `starttime::date` | `2012-09-21` | Drops the time |
+`date_trunc` keeps the larger units, so grouping by `date_trunc('month', …)` keeps September 2012 and September 2013 apart. `extract(month …)` doesn't.
 
 ```sql
 -- slots booked per month
@@ -38,9 +19,5 @@ from cd.bookings
 group by 1
 order by 1;
 ```
-
-<Planned title="Booking timeline">
-  A 24-hour line for 21 September with each booking as a dot. The = version catches one point at midnight; switch to the cast or range version and the whole day lights up. A second panel shows extract, date_part and date_trunc for a picked timestamp.
-</Planned>
 
 <Mistakes section="dates" />

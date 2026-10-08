@@ -13,22 +13,26 @@ const items = mistakesFor(Astro.props.section);
 
 {items.length > 0 && (
   <aside class={styles.mistakes} aria-label="Common mistakes">
-    <h4 class={styles.heading}>Common mistakes</h4>
+    <p class={styles.heading}>
+      <span class={styles.mark} aria-hidden="true">!</span>
+      Common mistakes
+    </p>
     {items.map((m) => (
-      <details class={styles.item} id={`mistake-${m.id}`}>
-        <summary class={styles.summary}>
-          <span>{m.title}</span>
-          {m.error && <span class={styles.error}>{m.error}</span>}
-        </summary>
-        <div class={styles.body}>
-          <span class={styles.tag}>wrong</span>
-          <Code code={m.wrong} lang="sql" theme="css-variables" />
-          <p>{m.why}</p>
-          <span class={styles.tag}>fix</span>
-          {m.fix && <Code code={m.fix} lang="sql" theme="css-variables" />}
-          {m.fixText && <p>{m.fixText}</p>}
+      <div class={styles.item} id={`mistake-${m.id}`}>
+        <p class={styles.title}>{m.title}</p>
+        {m.error && <p class={styles.error}>{m.error}</p>}
+        <div class={styles.pair}>
+          <div>
+            <span class={styles.tagWrong}>wrong</span>
+            <Code code={m.wrong} lang="sql" theme="css-variables" />
+          </div>
+          <div>
+            <span class={styles.tagFix}>fix</span>
+            {m.fix ? <Code code={m.fix} lang="sql" theme="css-variables" /> : <p class={styles.fixText}>{m.fixText}</p>}
+          </div>
         </div>
-      </details>
+        <p class={styles.why}>{m.why}</p>
+      </div>
     ))}
   </aside>
 )}

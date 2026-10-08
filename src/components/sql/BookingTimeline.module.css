@@ -1,0 +1,91 @@
+.chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.band {
+  fill: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  transition: all 0.35s ease;
+}
+
+.instant {
+  stroke: var(--color-accent);
+  stroke-width: 2;
+}
+
+.openEnd {
+  stroke: var(--color-accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 3;
+}
+
+.axis {
+  stroke: var(--color-text-muted);
+  stroke-width: 1;
+}
+
+.tick {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-anchor: middle;
+  fill: var(--color-text-muted);
+}
+
+.tickDay {
+  font-weight: 700;
+  fill: var(--color-text);
+}
+
+.booking {
+  cursor: pointer;
+}
+
+.booking rect {
+  fill: var(--color-bg);
+  stroke: var(--color-text-muted);
+  stroke-width: 1;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+.booking text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--color-text-muted);
+}
+
+.on rect {
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
+}
+
+.on text {
+  fill: var(--color-text);
+  font-weight: 700;
+}
+
+.picked rect {
+  stroke: var(--color-text);
+  stroke-width: 2;
+}
+
+.caption {
+  flex: 1;
+  min-width: 14rem;
+  font-size: var(--font-size-sm);
+}
+
+.parts {
+  padding-top: var(--space-sm);
+  border-top: 1px dashed var(--color-border);
+}
+
+.partsTable {
+  width: auto !important;
+  margin-top: var(--space-xs);
+}
+
+.partsTable code {
+  font-family: var(--font-mono);
+}

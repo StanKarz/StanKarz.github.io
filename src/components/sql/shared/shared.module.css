@@ -2,6 +2,9 @@
    640px prose column on wide screens, because result tables need the room. */
 
 .figure {
+  /* Outer-join colours: rows that exist only on the left, or only on the right. */
+  --sql-left: #2e7470;
+  --sql-right: #8a4a7c;
   --figure-width: min(880px, calc(100vw - 2 * var(--space-md)));
   width: var(--figure-width);
   margin: var(--space-2xl) 0 var(--space-2xl) calc((100% - var(--figure-width)) / 2);
@@ -16,12 +19,14 @@
   margin-top: var(--space-md);
 }
 
+/* Names a table or a panel. Text colour and a little weight, so it reads as a
+   heading for what sits directly under it rather than as background. */
 .label {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-text);
 }
 
 .toolbar {
@@ -319,6 +324,11 @@
   }
 }
 
+:global([data-theme='dark']) .figure {
+  --sql-left: #6cbdb6;
+  --sql-right: #cf98c3;
+}
+
 /* --- Shield from .prose --- */
 /* The interactives sit inside a .prose section, whose table, pre and list rules
    have the same specificity as ours. Scope ours under .figure so they win. */
@@ -362,4 +372,20 @@
 
 .figure li {
   margin-top: 0;
+}
+
+.figure .toneLeft td {
+  background: color-mix(in srgb, var(--sql-left) 12%, transparent);
+}
+
+.figure .toneLeft td:first-child {
+  box-shadow: inset 3px 0 0 var(--sql-left);
+}
+
+.figure .toneRight td {
+  background: color-mix(in srgb, var(--sql-right) 12%, transparent);
+}
+
+.figure .toneRight td:first-child {
+  box-shadow: inset 3px 0 0 var(--sql-right);
 }

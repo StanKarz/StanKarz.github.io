@@ -1,33 +1,21 @@
 ---
 title: Joins
 order: 3
-summary: What happens to rows without a partner, and why joins multiply rows.
+summary: Which rows find a partner, what happens to the ones that don't, and why joins multiply rows.
 ---
 import JoinExplorer from '../../../components/sql/JoinExplorer.tsx';
+import JoinQuiz from '../../../components/sql/JoinQuiz.tsx';
 import Mistakes from '../../../components/sql/Mistakes.astro';
-import Planned from '../../../components/sql/Planned.astro';
 
-A join pairs rows from two tables using a condition. The join type only decides one thing: what happens to rows that find no partner.
+ON decides which rows pair up. The join type only decides what happens to rows that find no partner.
 
 <JoinExplorer client:visible />
 
-| Join | Keeps | Rows with no match |
-|---|---|---|
-| `INNER JOIN` | Pairs that match | Dropped, from both sides |
-| `LEFT JOIN` | Every left row | Right-hand columns are NULL |
-| `RIGHT JOIN` | Every right row | Left-hand columns are NULL. Rarely needed: swap the tables and use LEFT. |
-| `FULL JOIN` | Every row from both | NULL on whichever side is missing |
-| `CROSS JOIN` | Every row with every row | No condition; m × n rows |
+Count rows after every join, the way you would after a pandas merge. Joining from the many side to the one side on its key should never change the row count. If it does, the key isn't what you think.
 
-`OUTER` is optional: `LEFT JOIN` and `LEFT OUTER JOIN` are the same thing.
+<JoinQuiz client:visible />
 
-### Count the rows
-
-The Venn diagram picture of joins ("inner join is the intersection") is fine as a first intuition. It breaks as soon as one side has several matches. A join matches *rows*, and a one-to-many relationship multiplies them: a member with 50 bookings appears 50 times after joining to `bookings`. That is behind most surprise duplicates and inflated sums.
-
-The habit that catches it is the one you'd use on a pandas merge: know how many rows you expect, and check. Joining from the "many" side to the "one" side on its key should never change the row count. If it does, the key isn't what you think.
-
-### Patterns built from joins
+### Patterns
 
 ```sql
 -- anti-join: members with no bookings
@@ -36,22 +24,17 @@ from cd.members mems
 left join cd.bookings bks on bks.memid = mems.memid
 where bks.memid is null;
 
--- semi-join: members with at least one booking, without duplicating them
+-- semi-join: members with a booking, each once
 select mems.memid
 from cd.members mems
 where exists (select 1 from cd.bookings bks where bks.memid = mems.memid);
 
 -- self join: each member with their recommender
-select mems.firstname, mems.surname, rec.firstname as rec_firstname
+select mems.firstname, rec.firstname as recommender
 from cd.members mems
 left join cd.members rec on rec.memid = mems.recommendedby;
 ```
 
-- `FROM a, b` with a comma is an implicit cross join. Add a matching condition in WHERE and it becomes an old-style inner join. Prefer explicit `JOIN … ON`.
-- Join a foreign key to the primary key it references. If both columns are integers, joining the wrong pair raises no error and returns nonsense. Try `on bks.facid` above.
-
-<Planned title="Venn view, and a pick-the-join quiz">
-  A Venn toggle for the join explorer, with a note on where the picture stops being accurate. Then a quiz: given an output table, pick the join type that produces it.
-</Planned>
+`FROM a, b` is a cross join. RIGHT JOIN is LEFT JOIN with the tables swapped; prefer LEFT.
 
 <Mistakes section="joins" />

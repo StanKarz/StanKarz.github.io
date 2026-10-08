@@ -1,7 +1,7 @@
 ---
 title: Quick reference
-order: 14
-summary: Templates to copy, and which syntax is Postgres-only.
+order: 11
+summary: Templates to copy, UNION, and which syntax is Postgres-only.
 ---
 
 ### Templates
@@ -45,6 +45,18 @@ where calc > 30;
 where ts >= '2012-09-21' and ts < '2012-09-22'
 ```
 
+### Stacking results: UNION
+
+Joins put tables side by side; UNION stacks results on top of each other.
+
+```sql
+select surname from cd.members
+union
+select name from cd.facilities;
+```
+
+Columns match by **position**, not name, and take their names from the first SELECT. `UNION` removes duplicates, `UNION ALL` keeps them and is cheaper. `INTERSECT` and `EXCEPT` work the same way. One `ORDER BY` at the end sorts the lot.
+
 ### Postgres-only, or Postgres-flavoured
 
 | Syntax | Meaning | Portable alternative |
@@ -53,8 +65,6 @@ where ts >= '2012-09-21' and ts < '2012-09-22'
 | `ilike` | Case-insensitive LIKE | `lower(col) like lower(…)` |
 | `~`, `~*` | Regex match | Varies by database |
 | `date_trunc`, `date_part` | Truncate or extract timestamp parts | `extract(…)` is standard |
-| `update … from` | Update using another table or row | Correlated subquery in SET |
-| `delete … using` | Join-style delete | `where exists / not exists` |
 | GROUP BY a SELECT alias | Convenience | Repeat the expression |
 | `concat()` vs `\|\|` | concat skips NULLs, `\|\|` propagates them | Varies |
 
