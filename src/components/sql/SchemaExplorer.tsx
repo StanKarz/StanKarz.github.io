@@ -130,9 +130,11 @@ function describe(p: Pick) {
 }
 
 export default function SchemaExplorer() {
-  const [picked, setPicked] = useState<Pick>({ table: 'bookings', id: 3 });
+  // A click pins a row so it stays put while the pointer moves on; hover only previews.
+  const [pinned, setPinned] = useState<Pick | null>(null);
   const [hover, setHover] = useState<Pick | null>(null);
-  const active = hover ?? picked;
+  const active = pinned ?? hover ?? { table: 'bookings', id: 3 };
+  const same = (a: Pick | null, t: TableName, id: number) => a !== null && a.table === t && a.id === id;
   const rel = related(active);
 
   const table = (name: TableName) => (
@@ -162,14 +164,15 @@ export default function SchemaExplorer() {
           </thead>
           <tbody>
             {ROWS[name].map((r) => {
-              const isPicked = active.table === name && active.id === r.id;
+              const isPicked = same(active, name, r.id);
+              const isPinned = same(pinned, name, r.id);
               const isRelated = rel.rows.has(`${name}:${r.id}`);
               return (
                 <tr
                   key={r.id}
-                  class={cx(styles.row, isPicked && styles.picked, isRelated && styles.related)}
+                  class={cx(styles.row, isPicked && styles.picked, isPinned && styles.pinned, isRelated && styles.related)}
                   onMouseEnter={() => setHover({ table: name, id: r.id })}
-                  onClick={() => setPicked({ table: name, id: r.id })}
+                  onClick={() => setPinned(isPinned ? null : { table: name, id: r.id })}
                 >
                   {COLUMNS[name].map((c) => (
                     <td
@@ -201,7 +204,18 @@ export default function SchemaExplorer() {
       <p class={shared.caption} aria-live="polite">
         {describe(active)}
       </p>
-      <p class={shared.note}>Hover or tap any row. Highlighted cells are the keys that connect it.</p>
+      <div class={shared.toolbar}>
+        <p class={shared.note}>
+          {pinned
+            ? 'Pinned. Click it again to let go, or click another row to move the pin.'
+            : 'Hover a row to preview it, click to pin it. Highlighted cells are the keys that connect it.'}
+        </p>
+        {pinned && (
+          <button type="button" class={shared.button} onClick={() => setPinned(null)}>
+            unpin
+          </button>
+        )}
+      </div>
     </figure>
   );
 }

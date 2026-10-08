@@ -7,9 +7,12 @@ import '../styles/global.css';
 import type { SEOProps } from '../types/components';
 import styles from './BaseLayout.module.css';
 
-interface Props extends SEOProps {}
+interface Props extends SEOProps {
+  /** Widen the whole column (header included) to 880px, for pages built around interactives. */
+  wide?: boolean;
+}
 
-const { title, description, ogImage, articleDate } = Astro.props;
+const { title, description, ogImage, articleDate, wide = false } = Astro.props;
 
 // Umami website ID for the stankarz.github.io property. Empty = analytics disabled.
 // This is a NEW property, distinct from the old blog's (431a9028…), so traffic stays separate.
@@ -46,7 +49,7 @@ const UMAMI_WEBSITE_ID = '2e38a8b6-936d-4f93-9985-4022ba721577';
     )}
   </head>
   <body>
-    <div class={styles.wrapper}>
+    <div class:list={[styles.wrapper, wide && styles.wide]}>
       <Header />
       <main class={styles.main}>
         <slot />

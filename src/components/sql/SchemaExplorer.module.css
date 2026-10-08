@@ -75,6 +75,14 @@
   background: color-mix(in srgb, var(--color-accent) 22%, transparent) !important;
 }
 
+.layout tr.pinned td:first-child::before {
+  content: '●';
+  margin-right: 0.35rem;
+  font-size: 0.5rem;
+  vertical-align: middle;
+  color: var(--color-accent);
+}
+
 .picked td:first-child {
   box-shadow: inset 3px 0 0 var(--color-accent);
 }

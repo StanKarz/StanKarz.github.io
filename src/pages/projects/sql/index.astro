@@ -22,7 +22,7 @@ const description =
   'An interactive SQL reference built from working through pgexercises: joins, NULLs, grouping, windows, and the mistakes behind them.';
 ---
 
-<BaseLayout title="SQL reference · Stan Karzhev" description={description}>
+<BaseLayout title="SQL reference · Stan Karzhev" description={description} wide>
   <article class={styles.page}>
     <header class={styles.header}>
       <p class={styles.kicker}><a href="/projects/">projects</a> / sql</p>
@@ -56,8 +56,26 @@ const description =
       ))}
     </nav>
 
+    {/* Where the rail doesn't fit: a pill that always shows where you are and opens the list. */}
+    <details class={styles.jump} data-jump>
+      <summary class={styles.jumpPill}>
+        <span class={styles.jumpLabel}>contents</span>
+        <span class={styles.jumpCurrent} data-jump-current>{sections[0].num} {sections[0].title}</span>
+      </summary>
+      <ol class={styles.jumpList}>
+        {sections.map((s) => (
+          <li>
+            <a href={`#${s.slug}`} data-rail={s.slug}>
+              <span class={styles.railNum}>{s.num}</span>
+              {s.title}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </details>
+
     {sections.map((s) => (
-      <section class:list={['prose', styles.section]} id={s.slug} data-section>
+      <section class:list={['prose', styles.section]} id={s.slug} data-section data-title={`${s.num} ${s.title}`}>
         <h2 class={styles.sectionTitle}>
           <a href={`#${s.slug}`} class={styles.anchor}>
             <span class={styles.num}>{s.num}</span>
@@ -74,21 +92,33 @@ const description =
   // Scroll-spy for the rail.
   // Re-run on every page load because the site uses View Transitions.
   document.addEventListener('astro:page-load', () => {
-    const links = new Map(
-      [...document.querySelectorAll<HTMLAnchorElement>('[data-rail]')].map((a) => [a.dataset.rail!, a]),
-    );
-    if (links.size === 0) return;
+    const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-rail]')];
+    const current = document.querySelector<HTMLElement>('[data-jump-current]');
+    const jump = document.querySelector<HTMLDetailsElement>('[data-jump]');
+    if (links.length === 0) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
           if (!e.isIntersecting) continue;
-          links.forEach((a) => a.removeAttribute('aria-current'));
-          links.get(e.target.id)?.setAttribute('aria-current', 'true');
+          for (const a of links) {
+            if (a.dataset.rail === e.target.id) a.setAttribute('aria-current', 'true');
+            else a.removeAttribute('aria-current');
+          }
+          const title = (e.target as HTMLElement).dataset.title;
+          if (current && title) current.textContent = title;
         }
       },
       { rootMargin: '-30% 0px -65% 0px' },
     );
     document.querySelectorAll('[data-section]').forEach((el) => observer.observe(el));
+
+    // Picking a section closes the list; so does a click anywhere else.
+    jump?.addEventListener('click', (e) => {
+      if ((e.target as Element).closest('a')) jump.open = false;
+    });
+    document.addEventListener('click', (e) => {
+      if (jump?.open && !jump.contains(e.target as Node)) jump.open = false;
+    });
   });
 </script>

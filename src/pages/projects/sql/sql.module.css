@@ -122,14 +122,100 @@
   text-decoration: none !important;
 }
 
-/* --- Rail: only where there is room beside the 640px column --- */
+/* --- Rail: beside the column where there is room, a floating pill elsewhere --- */
 
 .rail {
   display: none;
 }
 
-/* Wide enough that the rail clears the 880px interactives, not just the prose. */
-@media (min-width: 1480px) {
+.jump {
+  position: fixed;
+  right: var(--space-md);
+  bottom: var(--space-md);
+  z-index: 20;
+  max-width: calc(100vw - 2 * var(--space-md));
+  font-size: var(--font-size-xs);
+}
+
+.jumpPill {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  max-width: 22rem;
+  padding: 0.5rem 0.9rem;
+  list-style: none;
+  cursor: pointer;
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.18);
+  transition: border-color 0.2s ease;
+}
+
+.jumpPill::-webkit-details-marker {
+  display: none;
+}
+
+.jumpPill:hover,
+.jump[open] .jumpPill {
+  border-color: var(--color-accent);
+}
+
+.jumpLabel {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+}
+
+.jumpCurrent {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--color-text);
+}
+
+.jumpList {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + var(--space-sm));
+  width: max-content;
+  max-width: calc(100vw - 2 * var(--space-md));
+  max-height: 70vh;
+  overflow-y: auto;
+  margin: 0;
+  padding: var(--space-sm) 0;
+  list-style: none;
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.22);
+}
+
+.jumpList a {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: baseline;
+  padding: 0.3rem var(--space-md);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.jumpList a:hover {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.jumpList a[aria-current] {
+  color: var(--color-accent);
+}
+
+/* The column is 880px plus padding, so the rail needs roughly 1360px to sit clear of it. */
+@media (min-width: 1360px) {
+  .jump {
+    display: none;
+  }
+
   .rail {
     display: flex;
     flex-direction: column;
@@ -137,7 +223,7 @@
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
-    left: max(var(--space-lg), calc(50% - 440px - 12rem));
+    left: max(var(--space-lg), calc(50% - 464px - 12rem));
     width: 10.5rem;
   }
 
@@ -155,11 +241,6 @@
   .rail a:hover {
     color: var(--color-text);
     text-decoration: none;
-  }
-
-  .railNum {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
   }
 
   .railTitle {
@@ -180,6 +261,11 @@
   .rail a[aria-current] {
     color: var(--color-accent);
   }
+}
+
+.railNum {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
 }
 
 @media (max-width: 600px) {
