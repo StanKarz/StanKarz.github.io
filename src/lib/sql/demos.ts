@@ -99,3 +99,53 @@ export function costedOn(day: string) {
       };
     });
 }
+
+/* ------------------------------------------------------------------- CASE */
+
+export interface CaseBranch {
+  sql: string;
+  label: string;
+  test: (membercost: number) => boolean;
+}
+
+export const PRICE_BRANCHES: CaseBranch[] = [
+  { sql: 'membercost = 0', label: 'free', test: (c) => c === 0 },
+  { sql: 'membercost < 10', label: 'cheap', test: (c) => c < 10 },
+  { sql: 'membercost < 30', label: 'mid', test: (c) => c < 30 },
+];
+
+export const PRICE_ELSE = 'pricey';
+
+/**
+ * Walk one value through CASE the way Postgres does: branches in order, stop
+ * at the first TRUE. Returns how many branches were tested and the result.
+ */
+export function evaluateCase(membercost: number, branches: CaseBranch[], elseLabel: string | null) {
+  for (let i = 0; i < branches.length; i++) {
+    if (branches[i].test(membercost)) return { tested: i + 1, hit: i as number | null, value: branches[i].label };
+  }
+  return { tested: branches.length, hit: null, value: elseLabel };
+}
+
+export function caseSql(branches: CaseBranch[], elseLabel: string | null): string {
+  const whens = branches.map((b) => `when ${b.sql} then '${b.label}'`).join('\n            ');
+  return `select name, membercost,
+       case ${whens}${elseLabel ? `\n            else '${elseLabel}'` : ''}
+       end as price_band
+from cd.facilities;`;
+}
+
+/* ---------------------------------------------------------------- set ops */
+
+export type SetOp = 'union' | 'union all' | 'intersect' | 'except';
+
+/** Set operations over two lists of values, sorted the way `order by 1` sorts them. */
+export function setOp(left: number[], right: number[], op: SetOp): number[] {
+  const asc = (a: number, b: number) => a - b;
+  const l = new Set(left);
+  const r = new Set(right);
+  if (op === 'union all') return [...left, ...right].sort(asc);
+  if (op === 'union') return [...new Set([...left, ...right])].sort(asc);
+  if (op === 'intersect') return [...l].filter((v) => r.has(v)).sort(asc);
+  return [...l].filter((v) => !r.has(v)).sort(asc);
+}

@@ -10,6 +10,8 @@ export default defineConfig({
   site: 'https://stankarz.github.io',
   trailingSlash: 'always',
   integrations: [sitemap(), mdx(), preact()],
+  // PGlite ships its own wasm and loads it itself; Vite's dependency pre-bundling breaks that in dev.
+  vite: { optimizeDeps: { exclude: ['@electric-sql/pglite'] } },
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeKatex],

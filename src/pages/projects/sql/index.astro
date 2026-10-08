@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import '../../../styles/prose.css';
+import QueryDrawer from '../../../components/sql/QueryDrawer.tsx';
 import styles from './sql.module.css';
 
 const entries = (await getCollection('sql')).sort((a, b) => a.data.order - b.data.order);
@@ -30,6 +31,10 @@ const description =
       <p class={styles.lede}>
         Built while working through <a href="https://pgexercises.com/">pgexercises</a>. Each section is the idea in a
         line or two, something to poke at, and the mistakes that cost me time. Postgres syntax throughout.
+      </p>
+      <p class={styles.lede}>
+        Every query marked <span class={styles.tryHint}>try it ▸</span> runs in a real Postgres in your browser. Or{' '}
+        <button type="button" class={styles.openBox} data-sql-try>open an empty query box</button>.
       </p>
     </header>
 
@@ -86,9 +91,32 @@ const description =
       </section>
     ))}
   </article>
+  <QueryDrawer client:idle />
 </BaseLayout>
 
 <script>
+  import { isRunnable, tryQuery } from '../../../lib/sql/try';
+
+  // Markdown code blocks get the same "try it" button as the interactives' code.
+  document.addEventListener('astro:page-load', () => {
+    for (const pre of document.querySelectorAll<HTMLPreElement>('[data-section] pre[data-language="sql"]')) {
+      if (pre.dataset.tryable) continue;
+      const code = pre.textContent ?? '';
+      if (!isRunnable(code)) continue;
+      pre.dataset.tryable = 'true';
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'sql-try';
+      button.textContent = 'try it ▸';
+      button.addEventListener('click', () => tryQuery(code.trim()));
+      const host = document.createElement('div');
+      host.className = 'sql-try-host';
+      pre.before(host);
+      host.append(button, pre);
+    }
+    document.querySelector('[data-sql-try]')?.addEventListener('click', () => tryQuery());
+  });
+
   // Scroll-spy for the rail.
   // Re-run on every page load because the site uses View Transitions.
   document.addEventListener('astro:page-load', () => {

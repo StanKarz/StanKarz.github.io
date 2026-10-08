@@ -1,0 +1,107 @@
+/* Docked to the bottom of the viewport so the example you came from stays in view above it. */
+.drawer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  max-height: 62vh;
+  overflow-y: auto;
+  background: var(--color-bg-raised);
+  border-top: 2px solid var(--color-accent);
+  box-shadow: 0 -10px 30px rgb(0 0 0 / 0.25);
+  font-size: var(--font-size-sm);
+  animation: rise 0.25s ease both;
+}
+
+.inner {
+  width: min(880px, calc(100vw - 2 * var(--space-md)));
+  margin: 0 auto;
+  padding: var(--space-md) 0 var(--space-lg);
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-md);
+}
+
+.status {
+  flex: 1;
+  font-size: var(--font-size-xs);
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.close {
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 0 0.4rem;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: var(--color-accent);
+}
+
+.editor {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  resize: vertical;
+  tab-size: 4;
+}
+
+.editor:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.run {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.error {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-accent);
+}
+
+.error::before {
+  content: 'ERROR: ';
+  opacity: 0.7;
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer {
+    animation: none;
+  }
+}

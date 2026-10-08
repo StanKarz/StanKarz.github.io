@@ -273,3 +273,55 @@
     font-size: var(--font-size-2xl);
   }
 }
+
+/* --- Query box hooks --- */
+
+.tryHint {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+.openBox {
+  font: inherit;
+  padding: 0;
+  color: var(--color-accent);
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Built by the page script around markdown code blocks; matches the interactives' button. */
+.section :global(.sql-try-host) {
+  position: relative;
+}
+
+.section :global(.sql-try) {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  padding: 0.15rem 0.5rem;
+  color: var(--color-accent);
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.section :global(.sql-try-host:hover .sql-try),
+.section :global(.sql-try:focus-visible) {
+  opacity: 1;
+  border-color: var(--color-accent);
+}
+
+/* Room at the bottom so the open query box never hides the last section. */
+.page {
+  padding-bottom: 4rem;
+}

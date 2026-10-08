@@ -1,5 +1,6 @@
 import { useRef } from 'preact/hooks';
 import type { ComponentChildren } from 'preact';
+import { isRunnable, tryQuery } from '../../../lib/sql/try';
 import styles from './shared.module.css';
 
 export type Value = string | number | null;
@@ -54,22 +55,29 @@ interface SqlCodeProps {
 /** A small SQL highlighter. Enough for keywords, strings, numbers and comments. */
 export function SqlCode({ code, lineClass, lineSuffix, onLineClick }: SqlCodeProps) {
   return (
-    <pre class={styles.code}>
-      <code>
-        {code.split('\n').map((line, i) => (
-          <span
-            key={i}
-            class={cx(styles.line, lineClass?.(i))}
-            onClick={onLineClick ? () => onLineClick(i) : undefined}
-            style={onLineClick ? { cursor: 'pointer' } : undefined}
-          >
-            {highlight(line)}
-            {lineSuffix?.(i)}
-            {'\n'}
-          </span>
-        ))}
-      </code>
-    </pre>
+    <div class={styles.codeWrap}>
+      {isRunnable(code) && (
+        <button type="button" class={styles.tryIt} onClick={() => tryQuery(code)}>
+          try it ▸
+        </button>
+      )}
+      <pre class={styles.code}>
+        <code>
+          {code.split('\n').map((line, i) => (
+            <span
+              key={i}
+              class={cx(styles.line, lineClass?.(i))}
+              onClick={onLineClick ? () => onLineClick(i) : undefined}
+              style={onLineClick ? { cursor: 'pointer' } : undefined}
+            >
+              {highlight(line)}
+              {lineSuffix?.(i)}
+              {'\n'}
+            </span>
+          ))}
+        </code>
+      </pre>
+    </div>
   );
 }
 
@@ -172,7 +180,7 @@ export function RowCount({ n, label = 'rows' }: { n: number; label?: string }) {
       <span key={n} class={styles.countValue}>
         {n}
       </span>
-      {label}
+      {label === 'rows' && n === 1 ? 'row' : label}
       {delta !== 0 && (
         <span class={cx(styles.countDelta, delta > 0 && styles.up)}>
           ({delta > 0 ? '+' : '−'}

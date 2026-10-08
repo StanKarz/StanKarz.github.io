@@ -3,6 +3,7 @@ title: Quick reference
 order: 11
 summary: Templates to copy, UNION, and which syntax is Postgres-only.
 ---
+import SetOps from '../../../components/sql/SetOps.tsx';
 
 ### Templates
 
@@ -47,15 +48,9 @@ where ts >= '2012-09-21' and ts < '2012-09-22'
 
 ### Stacking results: UNION
 
-Joins put tables side by side; UNION stacks results on top of each other.
+Joins put tables side by side; set operations stack one result on top of another.
 
-```sql
-select surname from cd.members
-union
-select name from cd.facilities;
-```
-
-Columns match by **position**, not name, and take their names from the first SELECT. `UNION` removes duplicates, `UNION ALL` keeps them and is cheaper. `INTERSECT` and `EXCEPT` work the same way. One `ORDER BY` at the end sorts the lot.
+<SetOps client:visible />
 
 ### Postgres-only, or Postgres-flavoured
 
