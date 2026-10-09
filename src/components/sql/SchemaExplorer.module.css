@@ -29,6 +29,36 @@
   margin-bottom: var(--space-xs);
 }
 
+.name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--font-size-sm);
+}
+
+/* Each table wears its own colour on its icon and on a rule above it. */
+.icon {
+  flex: none;
+  color: var(--table-colour);
+}
+
+.members {
+  --table-colour: var(--sql-left);
+}
+
+.facilities {
+  --table-colour: var(--sql-right);
+}
+
+.bookings {
+  --table-colour: var(--color-accent);
+}
+
+.block {
+  padding-top: var(--space-sm);
+  border-top: 3px solid var(--table-colour);
+}
+
 .note {
   font-size: var(--font-size-xs);
   font-style: italic;

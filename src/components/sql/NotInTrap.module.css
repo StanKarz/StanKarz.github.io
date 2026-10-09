@@ -1,146 +1,39 @@
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-  margin-top: var(--space-xs);
+.question {
+  margin: 0 !important;
+  font-weight: 600;
 }
 
-.chip {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  min-width: 2rem;
-  padding: 0.1rem 0.45rem;
-  text-align: center;
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 3px;
-  animation: drop 0.3s ease both;
+.grid {
+  width: auto !important;
 }
 
-.chipNull {
-  font-style: italic;
-  color: var(--color-accent);
-  border-color: var(--color-accent);
-  border-style: dashed;
+.nullHead {
+  color: var(--color-accent) !important;
 }
 
-.members {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
-  gap: 0.3rem;
-}
-
-.member {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-sm);
-  padding: 0.35rem 0.6rem;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--color-text);
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 3px;
-  cursor: pointer;
-  text-align: left;
-  transition: opacity 0.3s ease, border-color 0.2s ease;
-}
-
-.member:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-.memberSelected {
-  border-color: var(--color-accent);
-}
-
-.memberOut .memberName {
-  opacity: 0.45;
-  text-decoration: line-through;
-}
-
-.truth {
-  font-size: 0.625rem;
-  letter-spacing: 0.05em;
-  padding: 0.05rem 0.35rem;
-  border-radius: 2px;
-  animation: drop 0.3s ease both;
-}
-
-/* Three states, three treatments: solid, outline, hatched. Never colour alone. */
-.TRUE {
-  color: var(--color-bg);
-  background: var(--color-text);
-}
-
-.FALSE {
-  color: var(--color-text-muted);
-  border: 1px solid var(--color-border);
-}
-
-.UNKNOWN {
-  color: var(--color-accent);
-  background: repeating-linear-gradient(
-    -45deg,
-    transparent 0 3px,
-    color-mix(in srgb, var(--color-accent) 25%, transparent) 3px 4px
-  );
-}
-
-.term {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  padding: 0 0.25rem;
-  border-radius: 2px;
-  white-space: nowrap;
-}
-
-.term.TRUE {
-  color: var(--color-text);
-  background: color-mix(in srgb, var(--color-text) 8%, transparent);
-}
-
-.term.FALSE {
-  border: none;
-  text-decoration: line-through;
-}
-
-.and {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
+.id {
+  display: inline-block;
+  min-width: 2ch;
+  text-align: right;
   color: var(--color-text-muted);
 }
 
-strong.TRUE,
-strong.FALSE,
-strong.UNKNOWN {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  padding: 0.05rem 0.35rem;
-  border-radius: 2px;
+.grid tr.dropped td:first-child,
+.grid tr.dropped td.who {
+  opacity: 0.5;
 }
 
-.result {
-  font-family: var(--font-mono);
+.who {
   font-size: 0.75rem;
 }
 
-@keyframes drop {
-  from {
-    opacity: 0;
-    transform: translateY(-3px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+.verdict {
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .chip,
-  .truth {
-    animation: none;
-  }
+.caption {
+  flex: 1;
+  min-width: 15rem;
+  font-size: var(--font-size-sm);
 }

@@ -3,16 +3,16 @@ title: 'NULL'
 order: 4
 summary: Unknown, not zero. Three-valued logic, COALESCE, and the NOT IN trap.
 ---
-import TruthTable from '../../../components/sql/TruthTable.tsx';
+import NullFilter from '../../../components/sql/NullFilter.tsx';
 import NotInTrap from '../../../components/sql/NotInTrap.tsx';
 import CoalesceToggle from '../../../components/sql/CoalesceToggle.tsx';
 import Mistakes from '../../../components/sql/Mistakes.astro';
 
-Any comparison with NULL, including `NULL = NULL`, is **unknown**, and WHERE keeps only rows that are true. Test with `IS NULL`.
+SQL has a third truth value. Any comparison with NULL, even `NULL = NULL`, is neither TRUE nor FALSE but **UNKNOWN**, and WHERE keeps a row only when its condition is TRUE. Five members have no recommender:
 
-<TruthTable client:visible />
+<NullFilter client:visible />
 
-NOT IN builds a chain of ANDs, one per value in the list. One NULL in the list makes the whole chain unknown:
+The same thing breaks NOT IN. `x not in (1, 4, NULL)` is shorthand for `x <> 1 and x <> 4 and x <> NULL`, and that last part is UNKNOWN for every x:
 
 <NotInTrap client:visible />
 

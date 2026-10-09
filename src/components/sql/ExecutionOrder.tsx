@@ -330,7 +330,11 @@ export default function ExecutionOrder() {
               </button>
             )}
             <span class={styles.spacer} />
-            <RowCount n={showGroupRows ? rows.length : data.count} label={showGroupRows ? 'rows' : data.unit} />
+            <RowCount
+              n={showGroupRows ? rows.length : data.count}
+              label={showGroupRows ? 'rows' : data.unit}
+              delta={step === 0 || showGroupRows ? 0 : data.count - stages[step - 1].count}
+            />
           </div>
 
           <ResultTable columns={columns} rows={rows} />

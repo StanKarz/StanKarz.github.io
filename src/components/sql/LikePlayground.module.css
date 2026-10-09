@@ -7,6 +7,10 @@
   font-size: var(--font-size-sm);
 }
 
+.kw {
+  color: var(--astro-code-token-keyword);
+}
+
 .input {
   font-family: var(--font-mono);
   font-size: var(--font-size-sm);

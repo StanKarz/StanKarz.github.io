@@ -18,9 +18,20 @@ interface Question {
 }
 
 const run = (left: Member[], right: Booking[], type: JoinType) =>
-  join(left, right, type, (m, b) => b.memid === m.memid, (m) => String(m.memid), (b) => String(b.bookid));
+  join(
+    left,
+    right,
+    type,
+    (m, b) => b.memid === m.memid,
+    (m) => String(m.memid),
+    (b) => String(b.bookid),
+  );
 
-const signature = (rows: JoinedRow<Member, Booking>[]) => rows.map((r) => r.key).sort().join(',');
+const signature = (rows: JoinedRow<Member, Booking>[]) =>
+  rows
+    .map((r) => r.key)
+    .sort()
+    .join(',');
 
 /** Only ask questions with exactly one right answer. */
 function isFair(left: Member[], right: Booking[], answer: JoinType) {
@@ -31,7 +42,7 @@ function isFair(left: Member[], right: Booking[], answer: JoinType) {
 // A small deterministic generator, so the first question is the same on the server and in the browser.
 function rng(seed: number) {
   let s = seed;
-  return () => ((s = (s * 1664525 + 1013904223) % 2 ** 32) / 2 ** 32);
+  return () => (s = (s * 1664525 + 1013904223) % 2 ** 32) / 2 ** 32;
 }
 
 function pick<T>(pool: T[], n: number, rand: () => number): T[] {
@@ -107,7 +118,8 @@ export default function JoinQuiz() {
       bmemid: r.right?.memid ?? null,
     },
     // Tint only once answered: the colours would give the answer away.
-    tone: guess && q.answer !== 'cross' ? (r.right === null ? 'left' : r.left === null ? 'right' : undefined) : undefined,
+    tone:
+      guess && q.answer !== 'cross' ? (r.right === null ? 'left' : r.left === null ? 'right' : undefined) : undefined,
   }));
 
   return (
@@ -119,24 +131,24 @@ export default function JoinQuiz() {
         </span>
       </div>
 
-      <div class={styles.sources}>
-        <MiniTable
-          name="mems"
-          columns={['memid', 'firstname']}
-          rows={q.left.map((m) => [m.memid, m.firstname])}
-        />
-        <MiniTable
-          name="bks"
-          columns={['bookid', 'memid']}
-          rows={q.right.map((b) => [b.bookid, b.memid])}
-        />
+      <div class={styles.board}>
+        <div>
+          <div class={styles.sources}>
+            <MiniTable name="mems" columns={['memid', 'firstname']} rows={q.left.map((m) => [m.memid, m.firstname])} />
+            <MiniTable name="bks" columns={['bookid', 'memid']} rows={q.right.map((b) => [b.bookid, b.memid])} />
+          </div>
+          <p class={styles.on}>
+            <code>… join bks on bks.memid = mems.memid</code>
+          </p>
+        </div>
+        <span class={styles.arrow} aria-hidden="true">
+          →
+        </span>
+        <div>
+          <span class={shared.label}>result</span>
+          <ResultTable key={signature(q.result)} columns={RESULT_COLUMNS} rows={rows} stagger={40} />
+        </div>
       </div>
-
-      <p class={styles.on}>
-        <code>… join bks on bks.memid = mems.memid</code>
-      </p>
-
-      <ResultTable key={signature(q.result)} columns={RESULT_COLUMNS} rows={rows} stagger={40} />
 
       <div class={styles.choices} role="group" aria-label="Join type">
         {TYPES.map((t) => (

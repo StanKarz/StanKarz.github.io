@@ -3,12 +3,12 @@ title: Dates and timestamps
 order: 6
 summary: A timestamp compared with a date means midnight. Use half-open ranges.
 ---
-import BookingTimeline from '../../../components/sql/BookingTimeline.tsx';
+import DateFilter from '../../../components/sql/DateFilter.tsx';
 import Mistakes from '../../../components/sql/Mistakes.astro';
 
-A bare date compared with a timestamp means midnight on that date.
+`starttime` is a timestamp: a date *and* a time. A bare date compared with it means midnight on that date.
 
-<BookingTimeline client:visible />
+<DateFilter client:visible />
 
 `date_trunc` keeps the larger units, so grouping by `date_trunc('month', …)` keeps September 2012 and September 2013 apart. `extract(month …)` doesn't.
 

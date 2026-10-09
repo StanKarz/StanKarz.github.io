@@ -166,15 +166,19 @@ export function ResultTable({ columns, rows, emptyText = '0 rows', onRowHover, s
 
 /* --------------------------------------------------------------- row count */
 
-/** A live row count that ticks when it changes and shows the change. */
-export function RowCount({ n, label = 'rows' }: { n: number; label?: string }) {
+/**
+ * A live row count that ticks when it changes and shows the change. By default
+ * the change is from the last value shown; pass `delta` when a fixed baseline
+ * means more, such as the previous stage of a stepper.
+ */
+export function RowCount({ n, label = 'rows', delta: fixed }: { n: number; label?: string; delta?: number }) {
   const prev = useRef(n);
   const last = useRef(n);
   if (last.current !== n) {
     prev.current = last.current;
     last.current = n;
   }
-  const delta = n - prev.current;
+  const delta = fixed ?? n - prev.current;
   return (
     <span class={styles.count} aria-live="polite">
       <span key={n} class={styles.countValue}>
@@ -189,6 +193,15 @@ export function RowCount({ n, label = 'rows' }: { n: number; label?: string }) {
       )}
     </span>
   );
+}
+
+/* -------------------------------------------------------------- truth pill */
+
+export type Truth = 'TRUE' | 'FALSE' | 'UNKNOWN';
+
+/** TRUE filled, FALSE hollow, UNKNOWN hatched like NULL. `pop` replays a small animation on change. */
+export function TruthPill({ value, pop }: { value: Truth; pop?: boolean }) {
+  return <span class={cx(styles.truth, styles[`truth${value}`], pop && styles.truthPop)}>{value}</span>;
 }
 
 /* ------------------------------------------------------- segmented control */

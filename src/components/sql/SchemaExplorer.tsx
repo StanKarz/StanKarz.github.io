@@ -64,20 +64,24 @@ function related(p: Pick) {
     cells.add(`members:${b.memid}:memid`).add(`facilities:${b.facid}:facid`);
   } else if (p.table === 'members') {
     const m = memberById.get(p.id)!;
-    bookings.filter((b) => b.memid === m.memid).forEach((b) => {
-      add('bookings', b.bookid);
-      cells.add(`bookings:${b.bookid}:memid`);
-    });
+    bookings
+      .filter((b) => b.memid === m.memid)
+      .forEach((b) => {
+        add('bookings', b.bookid);
+        cells.add(`bookings:${b.bookid}:memid`);
+      });
     cells.add(`members:${m.memid}:memid`);
     if (m.recommendedby !== null) {
       add('members', m.recommendedby);
       cells.add(`members:${m.memid}:recommendedby`).add(`members:${m.recommendedby}:memid`);
     }
   } else {
-    bookings.filter((b) => b.facid === p.id).forEach((b) => {
-      add('bookings', b.bookid);
-      cells.add(`bookings:${b.bookid}:facid`);
-    });
+    bookings
+      .filter((b) => b.facid === p.id)
+      .forEach((b) => {
+        add('bookings', b.bookid);
+        cells.add(`bookings:${b.bookid}:facid`);
+      });
     cells.add(`facilities:${p.id}:facid`);
   }
   return { rows, cells };
@@ -123,8 +127,8 @@ function describe(p: Pick) {
   const n = bookings.filter((b) => b.facid === f.facid).length;
   return (
     <>
-      {f.name} ({f.facid}) appears in {n} booking{n === 1 ? '' : 's'}. Members and facilities never point at each
-      other: bookings links them, which is how a many-to-many relationship is stored.
+      {f.name} ({f.facid}) appears in {n} booking{n === 1 ? '' : 's'}. Members and facilities never point at each other:
+      bookings links them, which is how a many-to-many relationship is stored.
     </>
   );
 }
@@ -140,7 +144,10 @@ export default function SchemaExplorer() {
   const table = (name: TableName) => (
     <div class={cx(styles.block, styles[name])}>
       <div class={styles.head}>
-        <span class={shared.label}>cd.{name}</span>
+        <span class={cx(shared.label, styles.name)}>
+          <Icon table={name} />
+          cd.{name}
+        </span>
         <span class={styles.note}>{NOTES[name]}</span>
       </div>
       <div class={shared.tableWrap}>
@@ -170,7 +177,12 @@ export default function SchemaExplorer() {
               return (
                 <tr
                   key={r.id}
-                  class={cx(styles.row, isPicked && styles.picked, isPinned && styles.pinned, isRelated && styles.related)}
+                  class={cx(
+                    styles.row,
+                    isPicked && styles.picked,
+                    isPinned && styles.pinned,
+                    isRelated && styles.related,
+                  )}
                   onMouseEnter={() => setHover({ table: name, id: r.id })}
                   onClick={() => setPinned(isPinned ? null : { table: name, id: r.id })}
                 >
@@ -204,18 +216,43 @@ export default function SchemaExplorer() {
       <p class={shared.caption} aria-live="polite">
         {describe(active)}
       </p>
-      <div class={shared.toolbar}>
-        <p class={shared.note}>
-          {pinned
-            ? 'Pinned. Click it again to let go, or click another row to move the pin.'
-            : 'Hover a row to preview it, click to pin it. Highlighted cells are the keys that connect it.'}
-        </p>
-        {pinned && (
-          <button type="button" class={shared.button} onClick={() => setPinned(null)}>
-            unpin
-          </button>
-        )}
-      </div>
     </figure>
+  );
+}
+
+/** One glyph per table, so the three read as different kinds of thing at a glance. */
+function Icon({ table }: { table: TableName }) {
+  const common = {
+    class: styles.icon,
+    width: 18,
+    height: 18,
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    'stroke-width': 1.8,
+    'stroke-linecap': 'round' as const,
+    'stroke-linejoin': 'round' as const,
+    'aria-hidden': true,
+  };
+  if (table === 'members')
+    return (
+      <svg {...common}>
+        <circle cx="12" cy="8" r="3.5" />
+        <path d="M5 20c0-3.9 3.1-6.5 7-6.5s7 2.6 7 6.5" />
+      </svg>
+    );
+  if (table === 'facilities')
+    return (
+      <svg {...common}>
+        <rect x="3" y="5" width="18" height="14" rx="1" />
+        <path d="M12 5v14M3 12h18" />
+      </svg>
+    );
+  return (
+    <svg {...common}>
+      <rect x="3.5" y="5" width="17" height="15" rx="1.5" />
+      <path d="M3.5 10h17M8 3v4M16 3v4" />
+      <path d="M8 14h3" />
+    </svg>
   );
 }

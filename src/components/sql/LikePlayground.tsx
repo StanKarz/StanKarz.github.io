@@ -11,36 +11,40 @@ export default function LikePlayground() {
   const [op, setOp] = useState<Op>('like');
   const tokens = tokenizeLike(pattern);
   const re = likeRegex(tokens, op);
-  const results = facilities.map((f) => ({ name: f.name, m: re.exec(f.name) as (RegExpExecArray & { indices: [number, number][] }) | null }));
+  const results = facilities.map((f) => ({
+    name: f.name,
+    m: re.exec(f.name) as (RegExpExecArray & { indices: [number, number][] }) | null,
+  }));
   const hits = results.filter((r) => r.m).length;
   const hasWildcard = tokens.some((t) => t.kind !== 'text');
 
   return (
     <figure class={shared.figure}>
-      <div class={shared.toolbar}>
-        <code class={styles.query}>
-          where name{' '}
-          <Segmented
-            label="Operator"
-            value={op}
-            onChange={setOp}
-            options={[
-              { value: 'like', label: 'like' },
-              { value: 'ilike', label: 'ilike' },
-            ]}
-          />{' '}
-          '
-          <input
-            class={styles.input}
-            value={pattern}
-            onInput={(e) => setPattern((e.target as HTMLInputElement).value)}
-            spellcheck={false}
-            aria-label="LIKE pattern"
-            size={Math.max(8, pattern.length + 1)}
-          />
-          '
-        </code>
-      </div>
+      <Segmented
+        label="Case"
+        value={op}
+        onChange={setOp}
+        options={[
+          { value: 'like', label: 'like: case-sensitive' },
+          { value: 'ilike', label: 'ilike: ignores case' },
+        ]}
+      />
+
+      <code class={styles.query}>
+        <span>
+          <span class={styles.kw}>where</span> name <span class={styles.kw}>{op}</span>
+        </span>
+        '
+        <input
+          class={styles.input}
+          value={pattern}
+          onInput={(e) => setPattern((e.target as HTMLInputElement).value)}
+          spellcheck={false}
+          aria-label="LIKE pattern"
+          size={Math.max(8, pattern.length + 1)}
+        />
+        '
+      </code>
 
       <div class={styles.tokens} aria-hidden="true">
         {tokens.map((t, i) => (

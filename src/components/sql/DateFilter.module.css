@@ -1,0 +1,68 @@
+.list {
+  list-style: none;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 7rem auto 1fr;
+  align-items: center;
+  gap: var(--space-md);
+  margin: 0 !important;
+  padding: 0.35rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  background: var(--color-bg);
+  transition: opacity 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.id {
+  color: var(--color-text-muted);
+}
+
+/* The time part is the whole point, so it gets the emphasis. */
+.time {
+  padding: 0 0.25rem;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--color-text-muted) 18%, transparent);
+}
+
+.verdict {
+  justify-self: end;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.on {
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg));
+}
+
+.on .verdict {
+  color: var(--color-accent);
+}
+
+.off {
+  opacity: 0.45;
+}
+
+.caption {
+  flex: 1;
+  min-width: 15rem;
+  font-size: var(--font-size-sm);
+}
+
+@media (max-width: 520px) {
+  .item {
+    grid-template-columns: auto 1fr;
+  }
+
+  .id {
+    display: none;
+  }
+}

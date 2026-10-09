@@ -149,3 +149,50 @@ export function setOp(left: number[], right: number[], op: SetOp): number[] {
   if (op === 'intersect') return [...l].filter((v) => r.has(v)).sort(asc);
   return [...l].filter((v) => !r.has(v)).sort(asc);
 }
+
+/* ------------------------------------------------------------ NULL logic */
+
+export type Truth3 = 'TRUE' | 'FALSE' | 'UNKNOWN';
+
+const cmp = (ok: (v: number) => boolean) => (v: number | null): Truth3 => (v === null ? 'UNKNOWN' : ok(v) ? 'TRUE' : 'FALSE');
+const not3 = (t: Truth3): Truth3 => (t === 'UNKNOWN' ? t : t === 'TRUE' ? 'FALSE' : 'TRUE');
+const or3 = (ts: Truth3[]): Truth3 => (ts.includes('TRUE') ? 'TRUE' : ts.includes('UNKNOWN') ? 'UNKNOWN' : 'FALSE');
+
+export interface NullCondition {
+  sql: string;
+  /** The comparisons the condition is built from, each shown as its own column. */
+  parts: { sql: string; test: (v: number | null) => Truth3 }[];
+  combine: (parts: Truth3[]) => Truth3;
+}
+
+/** WHERE conditions on members.recommendedby, which is NULL for five of the eight members. */
+export const NULL_CONDITIONS: NullCondition[] = [
+  {
+    sql: 'recommendedby = 1',
+    parts: [{ sql: '= 1', test: cmp((v) => v === 1) }],
+    combine: ([a]) => a,
+  },
+  {
+    sql: 'recommendedby <> 1',
+    parts: [{ sql: '<> 1', test: cmp((v) => v !== 1) }],
+    combine: ([a]) => a,
+  },
+  {
+    sql: 'recommendedby = 1 or recommendedby <> 1',
+    parts: [
+      { sql: '= 1', test: cmp((v) => v === 1) },
+      { sql: '<> 1', test: cmp((v) => v !== 1) },
+    ],
+    combine: or3,
+  },
+  {
+    sql: 'not (recommendedby = 1)',
+    parts: [{ sql: '= 1', test: cmp((v) => v === 1) }],
+    combine: ([a]) => not3(a),
+  },
+  {
+    sql: 'recommendedby is null',
+    parts: [{ sql: 'is null', test: (v) => (v === null ? 'TRUE' : 'FALSE') }],
+    combine: ([a]) => a,
+  },
+];

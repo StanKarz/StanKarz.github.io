@@ -10,6 +10,19 @@
   color: var(--color-text);
 }
 
+.board {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+.arrow {
+  align-self: center;
+  font-size: var(--font-size-xl);
+  color: var(--color-text-muted);
+}
+
 .sources {
   display: flex;
   flex-wrap: wrap;
@@ -89,4 +102,18 @@
 
 .no {
   color: var(--color-text);
+}
+
+.on {
+  margin-top: var(--space-sm) !important;
+}
+
+@media (max-width: 760px) {
+  .board {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .arrow {
+    display: none;
+  }
 }
