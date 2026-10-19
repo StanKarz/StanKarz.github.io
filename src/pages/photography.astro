@@ -136,7 +136,7 @@ const photos = Object.entries(modules)
       const originals = [...track.children] as HTMLElement[];
       const perCopy = track.scrollWidth;
       let copyWidth = perCopy;
-      while (perCopy > 0 && copyWidth < window.innerWidth * 1.2) {
+      while (perCopy > 0 && copyWidth < wall.clientWidth * 1.2) {
         originals.forEach((t) => track.append(cloneQuiet(t)));
         copyWidth += perCopy;
       }
@@ -269,20 +269,16 @@ const photos = Object.entries(modules)
     border-radius: 2px;
   }
 
-  /* The wall runs edge to edge, out past the 640px text column. */
-  :global(body:has(.wall)) {
-    overflow-x: clip;
-  }
-
   :global(.wall) {
-    --row-height: 15rem;
+    --row-height: 10rem;
     --gap: var(--space-sm);
     display: flex;
     flex-direction: column;
     gap: var(--gap);
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    padding-block: var(--space-sm);
+    /* Room above and below for a hovered photo to grow into. */
+    padding-block: var(--space-md);
+    /* Photos fade in and out at the column's edges instead of being cut off. */
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
     opacity: 0;
     transition: opacity 0.4s ease;
   }
@@ -458,7 +454,7 @@ const photos = Object.entries(modules)
     }
 
     :global(.wall) {
-      --row-height: 10rem;
+      --row-height: 8rem;
     }
 
     .lightbox {
