@@ -9,7 +9,7 @@ const allPosts = await getCollection('blog', ({ data }) => {
 ---
 
 <BaseLayout title="Blog" description="All posts by Stan Karzhev.">
-  <h1 class="heading">Archive</h1>
+  <h1 class="heading">Blog</h1>
   {allPosts.length > 0 ? (
     <PostList posts={allPosts} />
   ) : (
