@@ -35,7 +35,7 @@ const photos = Object.entries(modules)
               src={photo}
               alt=""
               widths={[400, 800, 1600]}
-              sizes="(max-width: 600px) 60vw, 360px"
+              sizes="(max-width: 600px) 60vw, 420px"
               class="photo"
               loading="lazy"
             />
@@ -270,15 +270,13 @@ const photos = Object.entries(modules)
   }
 
   :global(.wall) {
-    --row-height: 10rem;
+    --row-height: 13rem;
     --gap: var(--space-sm);
     display: flex;
     flex-direction: column;
     gap: var(--gap);
     /* Room above and below for a hovered photo to grow into. */
     padding-block: var(--space-md);
-    /* Photos fade in and out at the column's edges instead of being cut off. */
-    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
     opacity: 0;
     transition: opacity 0.4s ease;
   }
@@ -454,7 +452,7 @@ const photos = Object.entries(modules)
     }
 
     :global(.wall) {
-      --row-height: 8rem;
+      --row-height: 10rem;
     }
 
     .lightbox {
