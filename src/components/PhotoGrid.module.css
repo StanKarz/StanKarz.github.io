@@ -1,0 +1,23 @@
+.grid {
+  display: flex;
+  gap: var(--space-sm);
+  margin: var(--space-xl) 0;
+}
+
+.cell {
+  min-width: 0;
+}
+
+/* Override the prose image margins; the grid owns the spacing. */
+.grid .photo {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    flex-direction: column;
+  }
+}

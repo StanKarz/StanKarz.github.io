@@ -75,14 +75,14 @@ interface Props {
 const { label, entries, prev, next } = Astro.props;
 ---
 
-<BaseLayout title="reading" description="Things I've been reading.">
+<BaseLayout title="Reading" description="Things I've been reading.">
   <section class="reading-header">
-    <h1 class="page-heading">reading log</h1>
+    <h1 class="page-heading">Reading</h1>
     <p class="page-desc">Articles, essays, and other things I've been reading.</p>
   </section>
 
   <section class="month-group">
-    <h2 class="month-heading">{label.toLowerCase()}</h2>
+    <h2 class="month-heading">{label}</h2>
     <ul class="entry-list">
       {entries.map((entry) => (
         <li class="entry">
@@ -109,12 +109,12 @@ const { label, entries, prev, next } = Astro.props;
   <nav class="pagination">
     {prev ? (
       <a href={`/reading/${prev.slug}/`} class="pagination-link pagination-prev">
-        &larr; {prev.label.toLowerCase()}
+        &larr; {prev.label}
       </a>
     ) : <span />}
     {next ? (
       <a href={`/reading/${next.slug}/`} class="pagination-link pagination-next">
-        {next.label.toLowerCase()} &rarr;
+        {next.label} &rarr;
       </a>
     ) : <span />}
   </nav>

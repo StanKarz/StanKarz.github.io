@@ -2,8 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 
-// Folder-driven gallery: every image in src/assets/photography shows up here,
-// sorted by filename. Curate by adding or removing files, no code changes needed.
+// Folder-driven gallery: every image in src/assets/photography shows up here.
+// Curate by adding or removing files, no code changes needed. The script below
+// shuffles them on each visit and lays them out as a moving wall.
 const modules = import.meta.glob<{ default: ImageMetadata }>(
   '../assets/photography/*.{jpg,jpeg,png,webp}',
   { eager: true },
@@ -20,15 +21,21 @@ const photos = Object.entries(modules)
   <section class="photography">
     <h1 class="heading">Photography</h1>
     <p class="intro">A few frames from wherever I've been carrying a camera.</p>
-    <div class="gallery">
+    <!-- Without JavaScript this stays a plain two-column grid. -->
+    <div class="gallery" id="gallery">
       {
         photos.map((photo) => (
-          <button type="button" class="thumb" aria-label="Enlarge photo">
+          <button
+            type="button"
+            class="thumb"
+            aria-label="Enlarge photo"
+            style={`--ratio: ${photo.width / photo.height}`}
+          >
             <Image
               src={photo}
               alt=""
               widths={[400, 800, 1600]}
-              sizes="(max-width: 600px) 100vw, 300px"
+              sizes="(max-width: 600px) 60vw, 420px"
               class="photo"
               loading="lazy"
             />
@@ -47,68 +54,170 @@ const photos = Object.entries(modules)
     hidden
   >
     <button type="button" class="lightbox-close" aria-label="Close">&times;</button>
+    <button type="button" class="lightbox-nav prev" aria-label="Previous photo">&#8249;</button>
     <img class="lightbox-img" alt="" />
+    <button type="button" class="lightbox-nav next" aria-label="Next photo">&#8250;</button>
+    <span class="lightbox-count" aria-live="polite"></span>
   </div>
 </BaseLayout>
 
 <script>
-  function initLightbox() {
-    const lightbox = document.getElementById('lightbox');
-    if (!lightbox) return;
-    const lightboxImg = lightbox.querySelector('.lightbox-img') as HTMLImageElement | null;
-    if (!lightboxImg) return;
+  /** Pixels per second each row drifts; uneven so the rows never line up. */
+  const ROW_SPEEDS = [26, 34, 30];
 
-    // Astro emits a srcset; pull the widest rendition for the enlarged view.
-    function largestSrc(img: HTMLImageElement): string {
-      const srcset = img.getAttribute('srcset');
-      if (!srcset) return img.currentSrc || img.src;
-      let best = img.src;
-      let bestW = 0;
-      for (const part of srcset.split(',')) {
-        const [url, descriptor] = part.trim().split(/\s+/);
-        const w = parseInt(descriptor, 10);
-        if (w > bestW) {
-          bestW = w;
-          best = url;
-        }
+  function shuffle<T>(items: T[]): T[] {
+    const out = [...items];
+    for (let i = out.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [out[i], out[j]] = [out[j], out[i]];
+    }
+    return out;
+  }
+
+  /** Deal photos to the row that's currently shortest, so every row loops at a similar length. */
+  function dealIntoRows(thumbs: HTMLElement[], rowCount: number): HTMLElement[][] {
+    const rows: HTMLElement[][] = Array.from({ length: rowCount }, () => []);
+    const lengths = new Array(rowCount).fill(0);
+    for (const thumb of thumbs) {
+      const i = lengths.indexOf(Math.min(...lengths));
+      rows[i].push(thumb);
+      lengths[i] += parseFloat(thumb.style.getPropertyValue('--ratio')) || 1;
+    }
+    return rows;
+  }
+
+  // Astro emits a srcset; pull the widest rendition for the enlarged view.
+  function largestSrc(img: HTMLImageElement): string {
+    const srcset = img.getAttribute('srcset');
+    if (!srcset) return img.currentSrc || img.src;
+    let best = img.src;
+    let bestW = 0;
+    for (const part of srcset.split(',')) {
+      const [url, descriptor] = part.trim().split(/\s+/);
+      const w = parseInt(descriptor, 10);
+      if (w > bestW) {
+        bestW = w;
+        best = url;
       }
-      return best;
+    }
+    return best;
+  }
+
+  /** A visual copy for the loop: hidden from screen readers and skipped by Tab. */
+  function cloneQuiet(thumb: HTMLElement): HTMLElement {
+    const copy = thumb.cloneNode(true) as HTMLElement;
+    copy.setAttribute('aria-hidden', 'true');
+    copy.tabIndex = -1;
+    return copy;
+  }
+
+  /** Swap the grid for drifting rows. Returns the photos in their shuffled order. */
+  function buildWall(gallery: HTMLElement): HTMLElement[] {
+    const thumbs = shuffle([...gallery.querySelectorAll<HTMLElement>('.thumb')]);
+    const rowCount = window.matchMedia('(max-width: 600px)').matches ? 2 : 3;
+    const wall = document.createElement('div');
+    wall.className = 'wall';
+
+    dealIntoRows(thumbs, rowCount).forEach((rowThumbs, i) => {
+      const row = document.createElement('div');
+      row.className = 'row';
+      const track = document.createElement('div');
+      track.className = i % 2 ? 'track rightward' : 'track';
+      track.append(...rowThumbs);
+      row.append(track);
+      wall.append(row);
+    });
+
+    gallery.replaceWith(wall);
+
+    // Each track holds its photos twice and slides by exactly one copy, so the loop has no seam.
+    // A short row is repeated first so that one copy is always wider than the screen.
+    wall.querySelectorAll<HTMLElement>('.track').forEach((track, i) => {
+      const originals = [...track.children] as HTMLElement[];
+      const perCopy = track.scrollWidth;
+      let copyWidth = perCopy;
+      while (perCopy > 0 && copyWidth < wall.clientWidth * 1.2) {
+        originals.forEach((t) => track.append(cloneQuiet(t)));
+        copyWidth += perCopy;
+      }
+      [...track.children].forEach((t) => track.append(cloneQuiet(t as HTMLElement)));
+      track.style.setProperty('--duration', `${copyWidth / ROW_SPEEDS[i % ROW_SPEEDS.length]}s`);
+    });
+
+    wall.classList.add('ready');
+    return thumbs;
+  }
+
+  function initGallery() {
+    const gallery = document.getElementById('gallery');
+    const lightbox = document.getElementById('lightbox');
+    if (!gallery || !lightbox) return;
+    const lightboxImg = lightbox.querySelector<HTMLImageElement>('.lightbox-img')!;
+    const counter = lightbox.querySelector<HTMLElement>('.lightbox-count')!;
+
+    // The lightbox steps through the shuffled order, the same order the wall shows.
+    const order = buildWall(gallery);
+    const sources = order.map((t) => largestSrc(t.querySelector('img')!));
+    let current = 0;
+    let opener: HTMLElement | null = null;
+
+    function show(i: number) {
+      current = (i + sources.length) % sources.length;
+      lightboxImg.src = sources[current];
+      counter.textContent = `${current + 1} / ${sources.length}`;
+    }
+
+    function open(i: number, from: HTMLElement, byKeyboard: boolean) {
+      // Hand focus back on close only to keyboard users; for a mouse it would hold the wall paused.
+      opener = byKeyboard ? from : null;
+      show(i);
+      lightbox!.hidden = false;
+      document.body.style.overflow = 'hidden';
+      document.documentElement.classList.add('lightbox-open');
+      lightbox!.querySelector<HTMLElement>('.lightbox-close')!.focus();
     }
 
     function close() {
       lightbox!.hidden = true;
-      lightboxImg!.src = '';
+      lightboxImg.src = '';
       document.body.style.overflow = '';
+      document.documentElement.classList.remove('lightbox-open');
+      opener?.focus({ preventScroll: true });
     }
 
-    document.querySelectorAll('.thumb').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const img = btn.querySelector('img');
-        if (!img) return;
-        lightboxImg!.src = largestSrc(img);
-        lightbox!.hidden = false;
-        document.body.style.overflow = 'hidden';
-      });
+    // Copies share an image with their original, so look each one up by its source.
+    document.querySelectorAll<HTMLElement>('.wall .thumb').forEach((thumb) => {
+      const src = largestSrc(thumb.querySelector('img')!);
+      // A click from Enter or Space reports no mouse presses (detail 0).
+      thumb.addEventListener('click', (e) => open(sources.indexOf(src), thumb, e.detail === 0));
     });
 
-    lightbox.addEventListener('click', close);
+    lightbox.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.prev')) show(current - 1);
+      else if (target.closest('.next')) show(current + 1);
+      else if (target !== lightboxImg) close();
+    });
 
-    // Bind the global Escape handler once, even across View Transition swaps.
-    if (!(window as any).__lightboxKeyBound) {
-      (window as any).__lightboxKeyBound = true;
-      document.addEventListener('keydown', (e) => {
-        const lb = document.getElementById('lightbox');
-        if (lb && e.key === 'Escape' && !lb.hidden) {
-          lb.hidden = true;
-          const im = lb.querySelector('.lightbox-img') as HTMLImageElement | null;
-          if (im) im.src = '';
-          document.body.style.overflow = '';
-        }
-      });
-    }
+    // Swipe left or right on a phone to step through.
+    let touchX: number | null = null;
+    lightbox.addEventListener('touchstart', (e) => (touchX = e.touches[0].clientX), { passive: true });
+    lightbox.addEventListener('touchend', (e) => {
+      if (touchX === null) return;
+      const dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1));
+      touchX = null;
+    });
+
+    // Focus sits inside the lightbox while it's open, so its own key handler is enough.
+    lightbox.onkeydown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowRight') show(current + 1);
+      else if (e.key === 'ArrowLeft') show(current - 1);
+    };
   }
 
-  document.addEventListener('astro:page-load', initLightbox);
+  document.addEventListener('astro:page-load', initGallery);
 </script>
 
 <style>
@@ -130,34 +239,129 @@ const photos = Object.entries(modules)
     margin-bottom: var(--space-xl);
   }
 
-  /* CSS-columns masonry keeps each photo's own aspect ratio, portrait and landscape alike. */
+  /* The no-JavaScript fallback: CSS-columns masonry keeps each photo's own aspect ratio. */
   .gallery {
     column-count: 2;
     column-gap: var(--space-md);
   }
 
-  .thumb {
-    display: block;
+  .gallery .thumb {
     width: 100%;
     margin: 0 0 var(--space-md);
+    break-inside: avoid;
+  }
+
+  .gallery .photo {
+    width: 100%;
+    height: auto;
+  }
+
+  .thumb {
+    display: block;
     padding: 0;
     border: 0;
     background: none;
     cursor: zoom-in;
-    break-inside: avoid;
   }
 
   .photo {
     display: block;
-    width: 100%;
-    height: auto;
     border-radius: 2px;
-    transition: opacity 0.2s ease;
   }
 
-  .thumb:hover .photo,
-  .thumb:focus-visible .photo {
-    opacity: 0.85;
+  :global(.wall) {
+    --row-height: 13rem;
+    --gap: var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+    /* Room above and below for a hovered photo to grow into. */
+    padding-block: var(--space-md);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  :global(.wall.ready) {
+    opacity: 1;
+  }
+
+  /* Clip sideways only, so a hovered photo can grow past the top and bottom of its row. */
+  :global(.wall .row) {
+    overflow-x: clip;
+  }
+
+  :global(.wall .row:has(.thumb:hover)),
+  :global(.wall .row:has(.thumb:focus-visible)) {
+    position: relative;
+    z-index: 1;
+  }
+
+  :global(.wall .track) {
+    display: flex;
+    width: max-content;
+    animation: drift var(--duration, 120s) linear infinite;
+  }
+
+  :global(.wall .track.rightward) {
+    animation-direction: reverse;
+  }
+
+  /* Hovering or focusing any photo stops the whole wall, and the lightbox does too. */
+  :global(.wall:has(.thumb:hover) .track),
+  :global(.wall:has(.thumb:focus-visible) .track),
+  :global(.lightbox-open .wall .track) {
+    animation-play-state: paused;
+  }
+
+  :global(.wall .thumb) {
+    position: relative;
+    flex: none;
+    height: var(--row-height);
+    aspect-ratio: var(--ratio);
+    margin-right: var(--gap);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  :global(.wall .photo) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: var(--color-bg-raised);
+  }
+
+  :global(.wall .thumb:hover),
+  :global(.wall .thumb:focus-visible) {
+    z-index: 1;
+    transform: scale(1.08);
+    box-shadow: 0 14px 30px -10px rgb(0 0 0 / 0.6);
+  }
+
+  :global(.wall .thumb:focus-visible) {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  @keyframes drift {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* No drift: each row scrolls sideways by hand instead. */
+    :global(.wall .row) {
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    :global(.wall .track) {
+      animation: none;
+    }
+
+    :global(.wall .thumb:hover),
+    :global(.wall .thumb:focus-visible) {
+      transform: none;
+    }
   }
 
   .lightbox[hidden] {
@@ -171,8 +375,8 @@ const photos = Object.entries(modules)
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-xl);
-    background: rgba(0, 0, 0, 0.88);
+    padding: var(--space-xl) 4rem;
+    background: rgba(0, 0, 0, 0.9);
     cursor: zoom-out;
   }
 
@@ -182,18 +386,60 @@ const photos = Object.entries(modules)
     object-fit: contain;
     border-radius: 2px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    cursor: default;
   }
 
-  .lightbox-close {
+  .lightbox-close,
+  .lightbox-nav {
     position: absolute;
-    top: var(--space-md);
-    right: var(--space-lg);
     border: 0;
     background: none;
     color: #fff;
-    font-size: 2rem;
     line-height: 1;
     cursor: pointer;
+    opacity: 0.8;
+  }
+
+  .lightbox-close:hover,
+  .lightbox-nav:hover {
+    opacity: 1;
+  }
+
+  .lightbox-close {
+    top: var(--space-md);
+    right: var(--space-lg);
+    font-size: 2rem;
+  }
+
+  .lightbox-nav {
+    top: 50%;
+    transform: translateY(-50%);
+    padding: var(--space-md);
+    font-size: 3rem;
+  }
+
+  .prev {
+    left: var(--space-xs);
+  }
+
+  .next {
+    right: var(--space-xs);
+  }
+
+  .lightbox-count {
+    position: absolute;
+    bottom: var(--space-md);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: rgb(255 255 255 / 0.7);
+  }
+
+  .lightbox-close:focus-visible,
+  .lightbox-nav:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
   }
 
   @media (max-width: 600px) {
@@ -203,6 +449,19 @@ const photos = Object.entries(modules)
 
     .gallery {
       column-count: 1;
+    }
+
+    :global(.wall) {
+      --row-height: 10rem;
+    }
+
+    .lightbox {
+      padding: var(--space-lg) var(--space-sm);
+    }
+
+    /* Swipe instead of tapping small arrows. */
+    .lightbox-nav {
+      display: none;
     }
   }
 </style>

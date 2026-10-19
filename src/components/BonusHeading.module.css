@@ -1,0 +1,29 @@
+/* A scrawled, etched-looking heading for an aside that sits outside the main post. */
+/* Beats the generic `.prose h2` rule on specificity. */
+:global(.prose) h2.bonus {
+  display: inline-block;
+  margin-top: var(--space-3xl);
+  padding: var(--space-xs) var(--space-sm) var(--space-sm);
+  font-family: 'Rock Salt', var(--font-serif);
+  font-size: var(--font-size-xl);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  color: var(--color-accent);
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-2deg);
+  transform-origin: left center;
+}
+
+:global(.prose) h2.bonus .initial {
+  display: inline-block;
+  width: auto;
+  height: 1.3em;
+  margin: 0 -0.08em 0 0;
+  vertical-align: -0.2em;
+}
+
+/* The B's navy outline vanishes on the dark background, so trace it in cream instead. */
+:global([data-theme='dark']) h2.bonus .initial {
+  filter: drop-shadow(0 0 0.5px #f4f1ea) drop-shadow(0 0 0.5px #f4f1ea);
+}

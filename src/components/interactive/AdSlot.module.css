@@ -1,0 +1,340 @@
+/* Registered so the lever's pull can be transitioned and animated like any number. */
+@property --pull {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+.wrapper {
+  --reel-item: 3.5rem;
+  /* Rows visible in each window, and how many sit above the payline. */
+  --reel-rows: 3;
+  --reel-half: 1;
+  --shaft: 7rem;
+  /* The cabinet is a physical object, so it keeps the same dark wood and brass in both themes. */
+  --bezel: #2a2219;
+  --bezel-edge: #47392a;
+  --bulb-on: #ffd27a;
+  --bulb-off: #5c4a33;
+  --marquee-text: #f7ead2;
+  margin: var(--space-2xl) 0;
+  padding: var(--space-sm) var(--space-sm) var(--space-md);
+  background: var(--bezel);
+  border: 2px solid var(--bezel-edge);
+  border-radius: 1.25rem 1.25rem 0.75rem 0.75rem;
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--color-accent) 35%, transparent),
+    0 10px 24px -12px rgb(0 0 0 / 0.5);
+}
+
+/* Marquee: the sign on top, framed by two rows of bulbs. */
+.marquee {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs) var(--space-md);
+  padding: var(--space-md) var(--space-md);
+  margin-bottom: var(--space-sm);
+  background: linear-gradient(#3a2d20, var(--bezel));
+  border-radius: 0.9rem 0.9rem 0.35rem 0.35rem;
+}
+
+.marquee::before,
+.marquee::after {
+  content: '';
+  position: absolute;
+  left: var(--space-sm);
+  right: var(--space-sm);
+  height: 8px;
+  /* Alternate lit and unlit bulbs; shifting by one bulb swaps them, which reads as a chase. */
+  background:
+    radial-gradient(circle at 4px 50%, var(--bulb-on) 0 2.5px, transparent 3px) 0 0 / 24px 8px repeat-x,
+    radial-gradient(circle at 16px 50%, var(--bulb-off) 0 2.5px, transparent 3px) 0 0 / 24px 8px repeat-x;
+}
+
+.marquee::before {
+  top: 4px;
+}
+
+.marquee::after {
+  bottom: 4px;
+}
+
+.spinning .marquee::before,
+.spinning .marquee::after {
+  animation: chase 240ms steps(1) infinite;
+}
+
+@keyframes chase {
+  50% {
+    background-position: 12px 0, -12px 0;
+  }
+}
+
+.title {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--marquee-text);
+  text-shadow:
+    0 0 6px color-mix(in srgb, var(--bulb-on) 55%, transparent),
+    0 0 1px var(--bulb-on);
+}
+
+/* An LED readout. */
+.counter {
+  padding: 0.2rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: #ff8a4c;
+  background: #140f0a;
+  border: 1px solid var(--bezel-edge);
+  border-radius: 4px;
+  text-shadow: 0 0 6px rgb(255 120 60 / 0.6);
+  font-variant-numeric: tabular-nums;
+}
+
+.cabinet {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm);
+}
+
+.machine {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1.6fr;
+  gap: var(--space-xs);
+  padding: var(--space-xs);
+  background: #140f0a;
+  border-radius: 0.6rem;
+  box-shadow: inset 0 2px 6px rgb(0 0 0 / 0.6);
+}
+
+.window {
+  position: relative;
+  height: calc(var(--reel-rows) * var(--reel-item));
+  overflow: hidden;
+  background: var(--color-bg);
+  border-radius: 0.4rem;
+}
+
+/* Shade the drum so the neighbours above and below curve away from the payline. */
+.window::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    rgb(0 0 0 / 0.45) 0%,
+    rgb(0 0 0 / 0.12) 30%,
+    transparent 36%,
+    transparent 64%,
+    rgb(0 0 0 / 0.12) 70%,
+    rgb(0 0 0 / 0.45) 100%
+  );
+}
+
+/* The payline. */
+.window::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: calc(var(--reel-half) * var(--reel-item)) 0 auto;
+  height: var(--reel-item);
+  pointer-events: none;
+  border-block: 2px solid color-mix(in srgb, var(--color-accent) 70%, transparent);
+}
+
+.landed .window::before {
+  animation: payline 300ms ease-in-out 3;
+}
+
+@keyframes payline {
+  50% {
+    border-color: var(--bulb-on);
+    background: color-mix(in srgb, var(--bulb-on) 18%, transparent);
+  }
+}
+
+.blurred .item {
+  filter: blur(1.2px);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--reel-item);
+  padding: 0 var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  line-height: 1.3;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.machine > .window:first-child .item {
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+/* The lever: a ball on a chrome shaft, pivoting at the base. --pull runs from 0 (up) to 1 (down). */
+.lever {
+  --travel: 0.8;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 3.5rem;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  transition: --pull 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dragging {
+  cursor: grabbing;
+  transition: none;
+}
+
+/* A click throws the lever all the way down and lets it spring back. */
+.throwing {
+  animation: throw 450ms ease-out;
+}
+
+@keyframes throw {
+  35% {
+    --pull: 1;
+  }
+  70% {
+    --pull: -0.06;
+  }
+  100% {
+    --pull: 0;
+  }
+}
+
+.knob {
+  position: relative;
+  z-index: 1;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-bottom: -0.4rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ff9a8a 0 10%, #d8342c 40%, #7a1410 100%);
+  box-shadow: 0 3px 6px rgb(0 0 0 / 0.45);
+  transform: translateY(calc(var(--pull) * var(--travel) * var(--shaft)));
+}
+
+.shaft {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: var(--shaft);
+  border-radius: 1rem 1rem 0 0;
+  background: linear-gradient(90deg, #7d7d7d, #f4f4f4 35%, #c9c9c9 60%, #6e6e6e);
+  transform-origin: bottom;
+  transform: scaleY(calc(1 - var(--pull) * var(--travel)));
+}
+
+/* The stoppage reads bottom to top along the shaft; long ones wrap onto a second line. */
+.shaftText {
+  max-height: calc(var(--shaft) - 0.6rem);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-transform: uppercase;
+  color: #1e1a14;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.base {
+  width: 3.5rem;
+  height: 1.1rem;
+  border-radius: 4px;
+  background: linear-gradient(#5a4a37, #2a2219);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.15);
+}
+
+.lever:disabled {
+  cursor: progress;
+}
+
+.lever:focus-visible {
+  outline: 2px solid var(--bulb-on);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs) var(--space-sm);
+  padding: 0 var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: #b7a68f;
+}
+
+@media (max-width: 600px) {
+  /* Stacked reels show one row each; three of them stand as tall as the lever. */
+  .wrapper {
+    --reel-rows: 1;
+    --reel-half: 0;
+  }
+
+  .marquee {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .machine {
+    grid-template-columns: 1fr;
+  }
+
+  .window::after,
+  .window::before {
+    display: none;
+  }
+
+  .landed .window {
+    animation: payline-box 300ms ease-in-out 3;
+  }
+}
+
+@keyframes payline-box {
+  50% {
+    box-shadow: inset 0 0 0 2px var(--bulb-on);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lever {
+    transition: none;
+  }
+
+  .throwing,
+  .spinning .marquee::before,
+  .spinning .marquee::after,
+  .landed .window,
+  .landed .window::before {
+    animation: none;
+  }
+}

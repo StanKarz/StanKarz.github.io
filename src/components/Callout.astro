@@ -1,0 +1,15 @@
+---
+import styles from './Callout.module.css';
+
+interface Props {
+  /** Shown as a tab on the box's top edge, e.g. "Disclaimer". */
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<aside class={styles.callout} aria-label={label}>
+  <span class={styles.label}>{label}</span>
+  <slot />
+</aside>
