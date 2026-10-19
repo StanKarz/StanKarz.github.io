@@ -51,3 +51,7 @@ export const SITE: SiteConfig = {
   siteUrl: 'https://stankarz.github.io',
   author: 'Stan Karzhev',
 };
+
+export interface PhotoGridProps {
+  photos: { src: ImageMetadata; alt: string }[];
+}

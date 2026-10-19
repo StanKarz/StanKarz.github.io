@@ -1,0 +1,47 @@
+---
+import styles from './ImageZoom.module.css';
+---
+
+<dialog class={styles.dialog} data-image-zoom aria-label="Enlarged image">
+  <img class={styles.image} alt="" />
+</dialog>
+
+<script>
+  /** The largest candidate in a srcset, so the zoomed view isn't an upscaled thumbnail. */
+  function largestSource(img: HTMLImageElement): string {
+    const candidates = img.srcset
+      .split(',')
+      .map((entry) => entry.trim().split(/\s+/))
+      .filter(([url, size]) => url && size?.endsWith('w'))
+      .map(([url, size]) => ({ url, width: parseInt(size, 10) }));
+    if (candidates.length === 0) return img.currentSrc || img.src;
+    return candidates.reduce((best, c) => (c.width > best.width ? c : best)).url;
+  }
+
+  const dialog = document.querySelector<HTMLDialogElement>('[data-image-zoom]');
+  const zoomed = dialog?.querySelector('img');
+
+  if (dialog && zoomed) {
+    const open = (img: HTMLImageElement) => {
+      zoomed.src = largestSource(img);
+      zoomed.alt = img.alt;
+      dialog.showModal();
+    };
+
+    document.querySelectorAll<HTMLImageElement>('.prose img').forEach((img) => {
+      if (img.closest('a') || img.hasAttribute('data-no-zoom')) return;
+      img.tabIndex = 0;
+      img.setAttribute('role', 'button');
+      img.setAttribute('aria-label', `Enlarge image: ${img.alt}`);
+      img.addEventListener('click', () => open(img));
+      img.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        open(img);
+      });
+    });
+
+    // Any click while open closes it: the image, the margin or the backdrop.
+    dialog.addEventListener('click', () => dialog.close());
+  }
+</script>

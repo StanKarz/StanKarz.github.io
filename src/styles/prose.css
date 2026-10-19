@@ -113,9 +113,38 @@
 
 /* Images */
 .prose img {
+  /* The global reset caps width but not height, so the width/height attributes would stretch it. */
+  height: auto;
   border-radius: 4px;
+  cursor: zoom-in;
   margin-top: var(--space-xl);
   margin-bottom: var(--space-xl);
+}
+
+.prose img[data-no-zoom] {
+  cursor: auto;
+}
+
+/* Sentient's font file puts its strikeout below the baseline, and Firefox trusts it, so a plain
+   line-through shows as an underline. Draw the strike instead: three thin, uneven pencil passes in
+   the accent colour, thin enough that the word underneath stays readable. */
+.prose del {
+  position: relative;
+  text-decoration: none;
+}
+
+.prose del::after {
+  content: '';
+  position: absolute;
+  left: -0.08em;
+  right: -0.08em;
+  top: 32%;
+  height: 0.45em;
+  pointer-events: none;
+  background: var(--color-accent);
+  opacity: 0.9;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 24' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round'%3E%3Cpath d='M2 14 L 18 12.5 L 35 13.5 L 52 11 L 70 12 L 98 9' stroke-width='1.3' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M97 12 L 80 13 L 61 15 L 44 13.5 L 24 16 L 4 15.5' stroke-width='1' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M5 18 L 27 17 L 49 18 L 72 15.5 L 95 15' stroke-width='0.9' stroke-opacity='0.8' vector-effect='non-scaling-stroke'/%3E%3C/g%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
 }
 
 /* Embeds — override the width/height attributes YouTube's copy-paste ships with,

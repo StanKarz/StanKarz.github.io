@@ -1,0 +1,21 @@
+---
+import { Image } from 'astro:assets';
+import styles from './BonusHeading.module.css';
+
+interface Props {
+  /** Anchor id, so the heading can still be linked to. */
+  id?: string;
+  /** Optional logo that stands in for the first letter, e.g. a team's B before "ONUS". */
+  initial?: ImageMetadata;
+  /** The letter the logo replaces, so the heading still reads correctly to screen readers. */
+  initialAlt?: string;
+}
+
+const { id = 'bonus', initial, initialAlt = '' } = Astro.props;
+---
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" />
+<h2 id={id} class={styles.bonus}>
+  {initial && <Image src={initial} alt={initialAlt} class={styles.initial} height={128} data-no-zoom />}<slot />
+</h2>

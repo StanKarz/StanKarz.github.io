@@ -1,0 +1,16 @@
+---
+import { Image } from 'astro:assets';
+import type { PhotoGridProps } from '../types/components';
+import styles from './PhotoGrid.module.css';
+
+const { photos } = Astro.props as PhotoGridProps;
+---
+
+<figure class={styles.grid}>
+  {photos.map(({ src, alt }) => (
+    // Growing each photo by its aspect ratio gives a row of equal heights without cropping.
+    <div class={styles.cell} style={`flex: ${src.width / src.height}`}>
+      <Image src={src} alt={alt} class={styles.photo} widths={[400, 800]} sizes="(max-width: 600px) 100vw, 340px" />
+    </div>
+  ))}
+</figure>

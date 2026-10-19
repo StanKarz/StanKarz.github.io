@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import ImageZoom from '../components/ImageZoom.astro';
 import styles from './PostLayout.module.css';
 import '../styles/prose.css';
 import 'katex/dist/katex.min.css';
@@ -32,4 +33,5 @@ const { title, description, pubDate, updatedDate } = Astro.props;
       <slot />
     </div>
   </article>
+  <ImageZoom />
 </BaseLayout>
