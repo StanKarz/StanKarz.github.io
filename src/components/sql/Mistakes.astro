@@ -1,0 +1,39 @@
+---
+import { Code } from 'astro:components';
+import { mistakesFor } from '../../data/sql/mistakes';
+import { sqlHtml } from '../../lib/sql/keywords';
+import styles from './Mistakes.module.css';
+
+interface Props {
+  /** Section slug, e.g. "joins". */
+  section: string;
+}
+
+const items = mistakesFor(Astro.props.section);
+---
+
+{items.length > 0 && (
+  <aside class={styles.mistakes} aria-label="Common mistakes">
+    <p class={styles.heading}>
+      <span class={styles.mark} aria-hidden="true">!</span>
+      Common mistakes
+    </p>
+    {items.map((m) => (
+      <div class={styles.item} id={`mistake-${m.id}`}>
+        <p class={styles.title} set:html={sqlHtml(m.title, styles.kw)} />
+        {m.error && <p class={styles.error}>{m.error}</p>}
+        <div class={styles.pair}>
+          <div>
+            <span class={styles.tagWrong}>wrong</span>
+            <Code code={m.wrong} lang="sql" theme="css-variables" />
+          </div>
+          <div>
+            <span class={styles.tagFix}>fix</span>
+            {m.fix ? <Code code={m.fix} lang="sql" theme="css-variables" /> : <p class={styles.fixText} set:html={sqlHtml(m.fixText ?? '', styles.kw)} />}
+          </div>
+        </div>
+        <p class={styles.why} set:html={sqlHtml(m.why, styles.kw)} />
+      </div>
+    ))}
+  </aside>
+)}

@@ -1,0 +1,39 @@
+.question {
+  margin: 0 !important;
+  font-weight: 600;
+}
+
+.grid {
+  width: auto !important;
+}
+
+.nullHead {
+  color: var(--color-accent) !important;
+}
+
+.id {
+  display: inline-block;
+  min-width: 2ch;
+  text-align: right;
+  color: var(--color-text-muted);
+}
+
+.grid tr.dropped td:first-child,
+.grid tr.dropped td.who {
+  opacity: 0.5;
+}
+
+.who {
+  font-size: 0.75rem;
+}
+
+.verdict {
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+}
+
+.caption {
+  flex: 1;
+  min-width: 15rem;
+  font-size: var(--font-size-sm);
+}

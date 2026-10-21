@@ -1,0 +1,23 @@
+---
+title: 'NULL'
+order: 4
+summary: Unknown, not zero. Three-valued logic, COALESCE, and the NOT IN trap.
+---
+import NullFilter from '../../../components/sql/NullFilter.tsx';
+import NotInTrap from '../../../components/sql/NotInTrap.tsx';
+import CoalesceToggle from '../../../components/sql/CoalesceToggle.tsx';
+import Mistakes from '../../../components/sql/Mistakes.astro';
+
+SQL has a third truth value. Any comparison with NULL, even `NULL = NULL`, is neither TRUE nor FALSE but **UNKNOWN**, and `WHERE` keeps a row only when its condition is TRUE. Five members have no recommender:
+
+<NullFilter client:visible />
+
+The same thing breaks `NOT IN`. `x not in (1, 4, NULL)` is shorthand for `x <> 1 and x <> 4 and x <> NULL`, and that last part is UNKNOWN for every x:
+
+<NotInTrap client:visible />
+
+Outer joins create NULLs, and aggregates skip them. `count(*)` counts rows, `count(col)` counts non-NULL values, and `sum` over nothing but NULLs is NULL:
+
+<CoalesceToggle client:visible />
+
+<Mistakes section="null" />

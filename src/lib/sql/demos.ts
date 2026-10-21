@@ -1,0 +1,175 @@
+/**
+ * Pure logic behind the newer interactives, kept out of the components so the
+ * verify script can check it against real Postgres.
+ */
+import { bookings, facilityById, memberById, GUEST_MEMID, type Booking } from '../../data/sql/countryclub';
+
+/* ------------------------------------------------------------------ LIKE */
+
+export type LikeOp = 'like' | 'ilike';
+export type LikeToken = { kind: 'text' | 'any' | 'one'; text: string };
+
+/** Split a LIKE pattern into literal runs, % and _. No escapes: none of the examples need them. */
+export function tokenizeLike(pattern: string): LikeToken[] {
+  const out: LikeToken[] = [];
+  for (const ch of pattern) {
+    const kind = ch === '%' ? 'any' : ch === '_' ? 'one' : 'text';
+    const last = out[out.length - 1];
+    if (kind === 'text' && last?.kind === 'text') last.text += ch;
+    else out.push({ kind, text: ch });
+  }
+  return out;
+}
+
+const escapeRegex = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/** LIKE as an anchored regex with one group per token, so each character can be traced to the token that matched it. */
+export function likeRegex(tokens: LikeToken[], op: LikeOp): RegExp {
+  const body = tokens
+    .map((t) => (t.kind === 'any' ? '(.*?)' : t.kind === 'one' ? '(.)' : `(${escapeRegex(t.text)})`))
+    .join('');
+  return new RegExp(`^${body}$`, op === 'ilike' ? 'ids' : 'ds');
+}
+
+/* ---------------------------------------------------------------- windows */
+
+/**
+ * sum(slots) over (...) for every non-guest booking, with the frame each value
+ * was summed over. With ORDER BY the default frame runs from the start of the
+ * partition to the current row and its ties (there are none here). Without it,
+ * the frame is the whole partition.
+ */
+export function windowSums(partition: boolean, ordered: boolean) {
+  const rows = bookings.filter((b) => b.memid !== GUEST_MEMID);
+  const sorted = [...rows].sort(
+    (a, b) => (partition ? a.memid - b.memid : 0) || a.starttime.localeCompare(b.starttime) || a.bookid - b.bookid,
+  );
+  return sorted.map((row: Booking, i) => {
+    const part = sorted.filter((r) => !partition || r.memid === row.memid);
+    const frame = ordered ? part.filter((r) => r.starttime <= row.starttime) : part;
+    return {
+      row,
+      index: i,
+      partStart: i === 0 || (partition && sorted[i - 1].memid !== row.memid),
+      frame: new Set(frame.map((r) => r.bookid)),
+      value: frame.reduce((a, r) => a + r.slots, 0),
+    };
+  });
+}
+
+/* ------------------------------------------------------------- subqueries */
+
+/** The derived table in the subquery stepper: each booking on one day with its cost. */
+export function costedOn(day: string) {
+  return bookings
+    .filter((b) => b.starttime.startsWith(day))
+    .map((b) => {
+      const f = facilityById.get(b.facid)!;
+      return {
+        bookid: b.bookid,
+        member: memberById.get(b.memid)!.firstname,
+        facility: f.name,
+        cost: b.slots * (b.memid === GUEST_MEMID ? f.guestcost : f.membercost),
+      };
+    });
+}
+
+/* ------------------------------------------------------------------- CASE */
+
+export interface CaseBranch {
+  sql: string;
+  label: string;
+  test: (membercost: number) => boolean;
+}
+
+export const PRICE_BRANCHES: CaseBranch[] = [
+  { sql: 'membercost = 0', label: 'free', test: (c) => c === 0 },
+  { sql: 'membercost < 10', label: 'cheap', test: (c) => c < 10 },
+  { sql: 'membercost < 30', label: 'mid', test: (c) => c < 30 },
+];
+
+export const PRICE_ELSE = 'pricey';
+
+/**
+ * Walk one value through CASE the way Postgres does: branches in order, stop
+ * at the first TRUE. Returns how many branches were tested and the result.
+ */
+export function evaluateCase(membercost: number, branches: CaseBranch[], elseLabel: string | null) {
+  for (let i = 0; i < branches.length; i++) {
+    if (branches[i].test(membercost)) return { tested: i + 1, hit: i as number | null, value: branches[i].label };
+  }
+  return { tested: branches.length, hit: null, value: elseLabel };
+}
+
+export function caseSql(branches: CaseBranch[], elseLabel: string | null): string {
+  const whens = branches.map((b) => `when ${b.sql} then '${b.label}'`).join('\n            ');
+  return `select name, membercost,
+       case ${whens}${elseLabel ? `\n            else '${elseLabel}'` : ''}
+       end as price_band
+from cd.facilities;`;
+}
+
+/* ---------------------------------------------------------------- set ops */
+
+export type SetOp = 'union' | 'union all' | 'intersect' | 'except';
+
+/** Set operations over two lists of values, sorted the way `order by 1` sorts them. */
+export function setOp(left: number[], right: number[], op: SetOp): number[] {
+  const asc = (a: number, b: number) => a - b;
+  const l = new Set(left);
+  const r = new Set(right);
+  if (op === 'union all') return [...left, ...right].sort(asc);
+  if (op === 'union') return [...new Set([...left, ...right])].sort(asc);
+  if (op === 'intersect') return [...l].filter((v) => r.has(v)).sort(asc);
+  return [...l].filter((v) => !r.has(v)).sort(asc);
+}
+
+/* ------------------------------------------------------------ NULL logic */
+
+export type Truth3 = 'TRUE' | 'FALSE' | 'UNKNOWN';
+
+const cmp =
+  (ok: (v: number) => boolean) =>
+  (v: number | null): Truth3 =>
+    v === null ? 'UNKNOWN' : ok(v) ? 'TRUE' : 'FALSE';
+const not3 = (t: Truth3): Truth3 => (t === 'UNKNOWN' ? t : t === 'TRUE' ? 'FALSE' : 'TRUE');
+const or3 = (ts: Truth3[]): Truth3 => (ts.includes('TRUE') ? 'TRUE' : ts.includes('UNKNOWN') ? 'UNKNOWN' : 'FALSE');
+
+export interface NullCondition {
+  sql: string;
+  /** The comparisons the condition is built from, each shown as its own column. */
+  parts: { sql: string; test: (v: number | null) => Truth3 }[];
+  combine: (parts: Truth3[]) => Truth3;
+}
+
+/** WHERE conditions on members.recommendedby, which is NULL for five of the eight members. */
+export const NULL_CONDITIONS: NullCondition[] = [
+  {
+    sql: 'recommendedby = 1',
+    parts: [{ sql: '= 1', test: cmp((v) => v === 1) }],
+    combine: ([a]) => a,
+  },
+  {
+    sql: 'recommendedby <> 1',
+    parts: [{ sql: '<> 1', test: cmp((v) => v !== 1) }],
+    combine: ([a]) => a,
+  },
+  {
+    sql: 'recommendedby = 1 or recommendedby <> 1',
+    parts: [
+      { sql: '= 1', test: cmp((v) => v === 1) },
+      { sql: '<> 1', test: cmp((v) => v !== 1) },
+    ],
+    combine: or3,
+  },
+  {
+    sql: 'not (recommendedby = 1)',
+    parts: [{ sql: '= 1', test: cmp((v) => v === 1) }],
+    combine: ([a]) => not3(a),
+  },
+  {
+    sql: 'recommendedby is null',
+    parts: [{ sql: 'is null', test: (v) => (v === null ? 'TRUE' : 'FALSE') }],
+    combine: ([a]) => a,
+  },
+];

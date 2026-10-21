@@ -1,0 +1,116 @@
+.current {
+  background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+  border-left-color: var(--color-accent);
+}
+
+.done {
+  opacity: 0.75;
+}
+
+.future {
+  opacity: 0.4;
+}
+
+.aliasDefined {
+  border-left-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+}
+
+.aliasVisible {
+  border-left-color: var(--color-accent);
+}
+
+.aliasBlind {
+  opacity: 0.45;
+}
+
+/* Step number in the margin of each clause: written order on the left,
+   execution order in the badges. */
+.badge {
+  display: inline-block;
+  margin-left: 0.75rem;
+  min-width: 1.25rem;
+  padding: 0 0.3rem;
+  font-size: 0.6875rem;
+  line-height: 1.25rem;
+  text-align: center;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  transition: var(--transition-color), border-color 0.2s ease;
+}
+
+.badgeCurrent {
+  color: var(--color-bg);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.aliasTag,
+.aliasTagMuted {
+  margin-left: 0.75rem;
+  font-size: 0.6875rem;
+  font-style: italic;
+}
+
+.aliasTag {
+  color: var(--color-accent);
+}
+
+.aliasTagMuted {
+  color: var(--color-text-muted);
+}
+
+.stages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  list-style: none;
+  padding: 0;
+}
+
+.stage {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  padding: 0.25rem 0.5rem;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: var(--transition-color), border-color 0.2s ease;
+}
+
+.stage:hover {
+  color: var(--color-text);
+}
+
+.stage:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.stageNum {
+  opacity: 0.7;
+}
+
+.stageDone {
+  color: var(--color-text);
+}
+
+.stageCurrent {
+  color: var(--color-bg);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.stageUnused {
+  border-style: dashed;
+}
+
+.spacer {
+  flex: 1;
+}

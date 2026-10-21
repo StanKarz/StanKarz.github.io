@@ -1,0 +1,38 @@
+---
+title: Joins
+order: 3
+summary: How ON pairs rows up, and what each join type does with the rows left over.
+---
+import JoinExplorer from '../../../components/sql/JoinExplorer.tsx';
+import JoinQuiz from '../../../components/sql/JoinQuiz.tsx';
+
+`ON` decides which rows pair up. The join type only decides what happens to rows that find no partner.
+
+<JoinExplorer client:visible />
+
+Count rows after every join, the way you would after a pandas merge. Joining from the many side to the one side on its key should never change the row count. If it does, the key isn't what you think.
+
+<JoinQuiz client:visible />
+
+### Patterns
+
+```sql
+-- anti-join: members with no bookings
+select mems.memid
+from cd.members mems
+left join cd.bookings bks on bks.memid = mems.memid
+where bks.memid is null;
+
+-- semi-join: members who have at least one booking, listed once each
+-- (a join would list a member once per booking)
+select mems.memid
+from cd.members mems
+where exists (select 1 from cd.bookings bks where bks.memid = mems.memid);
+
+-- self join: each member with their recommender
+select mems.firstname, rec.firstname as recommender
+from cd.members mems
+left join cd.members rec on rec.memid = mems.recommendedby;
+```
+
+Most joins you write are `LEFT` or `INNER`. `RIGHT JOIN` is a `LEFT JOIN` with the tables swapped, so it's rarely written; put the table you want to keep first and use `LEFT`. `CROSS JOIN` pairs every row with every row and is only for when you want every combination. A comma between tables, `FROM a, b`, is also a cross join, which is how a forgotten join condition quietly gives you m × n rows.

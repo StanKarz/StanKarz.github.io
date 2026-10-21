@@ -1,0 +1,24 @@
+---
+title: Conditional columns with CASE
+order: 6
+summary: There is no IF in a query. CASE is an expression that returns a value.
+---
+import CaseFlow from '../../../components/sql/CaseFlow.tsx';
+
+`CASE` returns a value, so it goes anywhere a value can: `SELECT`, `WHERE`, `ORDER BY`, inside an aggregate. The first matching `WHEN` wins; no match and no `ELSE` gives NULL.
+
+<CaseFlow client:visible />
+
+```sql
+-- pick which column to calculate with
+select bks.bookid,
+       case when bks.memid = 0 then bks.slots * facs.guestcost
+            else bks.slots * facs.membercost end as cost
+from cd.bookings bks
+join cd.facilities facs on facs.facid = bks.facid;
+
+-- count conditionally
+select count(case when memid = 0 then 1 end) as guest_bookings
+from cd.bookings;
+```
+

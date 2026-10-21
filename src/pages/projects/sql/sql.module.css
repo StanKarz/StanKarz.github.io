@@ -1,0 +1,345 @@
+.page {
+  position: relative;
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.kicker a {
+  color: inherit;
+}
+
+.title {
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-3xl);
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.lede {
+  margin-top: var(--space-md);
+  color: var(--color-text);
+}
+
+/* --- Index at the top: two columns, no rules --- */
+
+.index {
+  margin-top: var(--space-xl);
+}
+
+.index ol {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* Fill down the first column, then the second, so the numbers read top to bottom. */
+  grid-template-rows: repeat(var(--rows), auto);
+  grid-auto-flow: column;
+  gap: var(--space-sm) var(--space-lg);
+}
+
+.index a {
+  display: grid;
+  grid-template-columns: 1.75rem 1fr;
+  column-gap: var(--space-xs);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: var(--transition-color);
+}
+
+.index a:hover {
+  text-decoration: none;
+  color: var(--color-accent);
+}
+
+.index a:hover .num {
+  color: var(--color-accent);
+}
+
+.indexTitle {
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.indexSummary {
+  grid-column: 2;
+  font-size: var(--font-size-xs);
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 600px) {
+  .index ol {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-auto-flow: row;
+  }
+}
+
+.num {
+  color: var(--color-accent);
+}
+
+.indexTitle {
+  font-weight: 600;
+}
+
+.indexSummary {
+  grid-column: 2;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 400;
+  color: var(--color-text-muted);
+  padding-top: 0.2rem;
+  transition: var(--transition-color);
+}
+
+/* --- Sections --- */
+
+.section {
+  scroll-margin-top: var(--space-lg);
+  margin-top: var(--space-2xl);
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Markdown tables (truth tables, dialect notes) scroll on their own on phones
+   instead of pushing the whole page sideways. */
+.section :global(table) {
+  display: block;
+  overflow-x: auto;
+}
+
+.anchor {
+  text-decoration: none !important;
+}
+
+/* --- Rail: beside the column where there is room, a floating pill elsewhere --- */
+
+.rail {
+  display: none;
+}
+
+.jump {
+  position: fixed;
+  right: var(--space-md);
+  bottom: var(--space-md);
+  z-index: 20;
+  max-width: calc(100vw - 2 * var(--space-md));
+  font-size: var(--font-size-xs);
+}
+
+.jumpPill {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  max-width: 22rem;
+  padding: 0.5rem 0.9rem;
+  list-style: none;
+  cursor: pointer;
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.18);
+  transition: border-color 0.2s ease;
+}
+
+.jumpPill::-webkit-details-marker {
+  display: none;
+}
+
+.jumpPill:hover,
+.jump[open] .jumpPill {
+  border-color: var(--color-accent);
+}
+
+.jumpLabel {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+}
+
+.jumpCurrent {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--color-text);
+}
+
+.jumpList {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + var(--space-sm));
+  width: max-content;
+  max-width: calc(100vw - 2 * var(--space-md));
+  max-height: 70vh;
+  overflow-y: auto;
+  margin: 0;
+  padding: var(--space-sm) 0;
+  list-style: none;
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.22);
+}
+
+.jumpList a {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: baseline;
+  padding: 0.3rem var(--space-md);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.jumpList a:hover {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.jumpList a[aria-current] {
+  color: var(--color-accent);
+}
+
+/* The column is 880px plus padding, so the rail needs roughly 1360px to sit clear of it. */
+@media (min-width: 1360px) {
+  .jump {
+    display: none;
+  }
+
+  .rail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    left: max(var(--space-lg), calc(50% - 464px - 12rem));
+    width: 10.5rem;
+  }
+
+  .rail a {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: baseline;
+    padding: 0.1rem 0;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: var(--transition-color);
+  }
+
+  .rail a:hover {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .railTitle {
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .rail:hover .railTitle,
+  .rail a[aria-current] .railTitle {
+    opacity: 1;
+    transform: none;
+  }
+
+  .rail a[aria-current] {
+    color: var(--color-accent);
+  }
+}
+
+.railNum {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: var(--font-size-2xl);
+  }
+}
+
+/* --- Query box hooks --- */
+
+.tryHint {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+.openBox {
+  font: inherit;
+  padding: 0;
+  color: var(--color-accent);
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Built by the page script around markdown code blocks; matches the interactives' button. */
+.section :global(.sql-try-host) {
+  position: relative;
+}
+
+.section :global(.sql-try) {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  padding: 0.15rem 0.5rem;
+  color: var(--color-accent);
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.section :global(.sql-try-host:hover .sql-try),
+.section :global(.sql-try:focus-visible) {
+  opacity: 1;
+  border-color: var(--color-accent);
+}
+
+/* Room at the bottom so the open query box never hides the last section. */
+.page {
+  padding-bottom: 4rem;
+}
+
+/* Inline code that is an SQL keyword (tagged at build time) wears the keyword colour. */
+.section :global(code.sql-kw) {
+  color: var(--astro-code-token-keyword);
+}
+
+/* Mistake code blocks are half-width, so the button would cover the code. Lift it onto the
+   WRONG / FIX label line above the block instead. */
+.section :global(aside .sql-try) {
+  top: -1.45rem;
+  right: 0;
+  padding: 0 0.4rem;
+}

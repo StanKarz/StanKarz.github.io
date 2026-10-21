@@ -12,4 +12,15 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+// One MDX file per section of the SQL reference at /projects/sql/.
+const sql = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.mdx', base: './src/data/sql/sections' }),
+  schema: z.object({
+    title: z.string(),
+    order: z.number().int(),
+    /** One line for the index at the top of the page. */
+    summary: z.string(),
+  }),
+});
+
+export const collections = { blog, sql };

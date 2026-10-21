@@ -1,0 +1,153 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import '../../../styles/prose.css';
+import QueryDrawer from '../../../components/sql/QueryDrawer.tsx';
+import styles from './sql.module.css';
+
+const entries = (await getCollection('sql')).sort((a, b) => a.data.order - b.data.order);
+
+// "03-joins" → "joins": the anchor each section and every cross-link uses.
+const slugOf = (id: string) => id.replace(/^\d+-/, '');
+
+const sections = await Promise.all(
+  entries.map(async (entry) => ({
+    slug: slugOf(entry.id),
+    num: String(entry.data.order).padStart(2, '0'),
+    ...entry.data,
+    Content: (await render(entry)).Content,
+  })),
+);
+
+const description =
+  'An interactive SQL reference built from working through pgexercises: joins, NULLs, grouping, windows, and the mistakes behind them.';
+---
+
+<BaseLayout title="SQL reference · Stan Karzhev" description={description} wide>
+  <article class={styles.page}>
+    <header class={styles.header}>
+      <p class={styles.kicker}><a href="/projects/">projects</a> / sql</p>
+      <h1 class={styles.title}>SQL, the parts I keep looking up</h1>
+      <p class={styles.lede}>
+        Built while working through <a href="https://pgexercises.com/" target="_blank" rel="noopener noreferrer">pgexercises</a>. Each section is a concept in a
+        line or two, an interactive that shows it, and the mistakes that cost me time. Postgres syntax is used
+        throughout.
+      </p>
+      <p class={styles.lede}>
+        Every query marked <span class={styles.tryHint}>try it ▸</span> runs in a real Postgres in your browser. Or{' '}
+        <button type="button" class={styles.openBox} data-sql-try>open an empty query box</button>.
+      </p>
+    </header>
+
+    <nav class={styles.index} aria-label="Sections">
+      <ol style={`--rows: ${Math.ceil(sections.length / 2)}`}>
+        {sections.map((s) => (
+          <li>
+            <a href={`#${s.slug}`}>
+              <span class={styles.num}>{s.num}</span>
+              <span class={styles.indexTitle}>{s.title}</span>
+              <span class={styles.indexSummary}>{s.summary}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <nav class={styles.rail} aria-label="Section rail">
+      {sections.map((s) => (
+        <a href={`#${s.slug}`} data-rail={s.slug} title={s.title}>
+          <span class={styles.railNum}>{s.num}</span>
+          <span class={styles.railTitle}>{s.title}</span>
+        </a>
+      ))}
+    </nav>
+
+    {/* Where the rail doesn't fit: a pill that always shows where you are and opens the list. */}
+    <details class={styles.jump} data-jump>
+      <summary class={styles.jumpPill}>
+        <span class={styles.jumpLabel}>contents</span>
+        <span class={styles.jumpCurrent} data-jump-current>{sections[0].num} {sections[0].title}</span>
+      </summary>
+      <ol class={styles.jumpList}>
+        {sections.map((s) => (
+          <li>
+            <a href={`#${s.slug}`} data-rail={s.slug}>
+              <span class={styles.railNum}>{s.num}</span>
+              {s.title}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </details>
+
+    {sections.map((s) => (
+      <section class:list={['prose', styles.section]} id={s.slug} data-section data-title={`${s.num} ${s.title}`}>
+        <h2 class={styles.sectionTitle}>
+          <a href={`#${s.slug}`} class={styles.anchor}>
+            <span class={styles.num}>{s.num}</span>
+          </a>
+          {s.title}
+        </h2>
+        <s.Content />
+      </section>
+    ))}
+  </article>
+  <QueryDrawer client:idle />
+</BaseLayout>
+
+<script>
+  import { isRunnable, tryQuery } from '../../../lib/sql/try';
+
+  // Markdown code blocks get the same "try it" button as the interactives' code.
+  document.addEventListener('astro:page-load', () => {
+    for (const pre of document.querySelectorAll<HTMLPreElement>('[data-section] pre[data-language="sql"]')) {
+      if (pre.dataset.tryable) continue;
+      const code = pre.textContent ?? '';
+      if (!isRunnable(code)) continue;
+      pre.dataset.tryable = 'true';
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'sql-try';
+      button.textContent = 'try it ▸';
+      button.addEventListener('click', () => tryQuery(code.trim()));
+      const host = document.createElement('div');
+      host.className = 'sql-try-host';
+      pre.before(host);
+      host.append(button, pre);
+    }
+    document.querySelector('[data-sql-try]')?.addEventListener('click', () => tryQuery());
+  });
+
+  // Scroll-spy for the rail.
+  // Re-run on every page load because the site uses View Transitions.
+  document.addEventListener('astro:page-load', () => {
+    const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-rail]')];
+    const current = document.querySelector<HTMLElement>('[data-jump-current]');
+    const jump = document.querySelector<HTMLDetailsElement>('[data-jump]');
+    if (links.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          for (const a of links) {
+            if (a.dataset.rail === e.target.id) a.setAttribute('aria-current', 'true');
+            else a.removeAttribute('aria-current');
+          }
+          const title = (e.target as HTMLElement).dataset.title;
+          if (current && title) current.textContent = title;
+        }
+      },
+      { rootMargin: '-30% 0px -65% 0px' },
+    );
+    document.querySelectorAll('[data-section]').forEach((el) => observer.observe(el));
+
+    // Picking a section closes the list; so does a click anywhere else.
+    jump?.addEventListener('click', (e) => {
+      if ((e.target as Element).closest('a')) jump.open = false;
+    });
+    document.addEventListener('click', (e) => {
+      if (jump?.open && !jump.contains(e.target as Node)) jump.open = false;
+    });
+  });
+</script>

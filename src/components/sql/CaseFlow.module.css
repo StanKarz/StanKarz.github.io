@@ -1,0 +1,159 @@
+.flow {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr) minmax(0, 0.6fr);
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+.rows,
+.gates,
+.results {
+  list-style: none;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.rows li,
+.gates li,
+.results li {
+  margin: 0 !important;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: 0.35rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-align: left;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.row:hover {
+  border-color: var(--color-accent);
+}
+
+.rowCurrent {
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 16%, var(--color-bg));
+  box-shadow: inset 3px 0 0 var(--color-accent);
+}
+
+.rowDone {
+  opacity: 0.6;
+}
+
+.cost {
+  color: var(--color-text-muted);
+}
+
+.gate {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem var(--space-sm);
+  padding: 0.35rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  border: 1px dashed var(--color-border);
+  border-radius: 3px;
+  animation: check 0.3s ease both;
+}
+
+.flow .gate code {
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+  background: none;
+}
+
+.verdict {
+  font-weight: 700;
+}
+
+.false {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--color-text-muted);
+}
+
+.false .verdict {
+  text-decoration: none;
+}
+
+.true {
+  border-style: solid;
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+}
+
+.true .verdict {
+  color: var(--color-accent);
+}
+
+.skipped {
+  opacity: 0.35;
+  animation: none;
+}
+
+.output {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.result {
+  padding: 0.35rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  border-bottom: 1px dotted var(--color-border);
+}
+
+.resultCurrent {
+  color: var(--color-accent);
+  font-weight: 700;
+  animation: arrive 0.3s ease both;
+}
+
+@keyframes check {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gate,
+  .resultCurrent {
+    animation: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .flow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

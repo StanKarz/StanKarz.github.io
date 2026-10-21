@@ -1,0 +1,15 @@
+---
+title: Aggregation and GROUP BY
+order: 7
+summary: One row per group. Group by the key, filter groups with HAVING.
+---
+import GroupByBuckets from '../../../components/sql/GroupByBuckets.tsx';
+import Mistakes from '../../../components/sql/Mistakes.astro';
+
+<GroupByBuckets client:visible />
+
+- Every selected column is grouped or aggregated, so Postgres knows which single value to show per group. One exception: group by `mems.memid` and you can still select `firstname` and `surname` without grouping by them, because one memid means one member, so each group has only one name.
+- Group by the key, not the display name.
+- `slots` are half-hours: hours are `sum(slots) / 2.0`, and `round(x, -1)` rounds to the nearest 10.
+
+<Mistakes section="group-by" />
