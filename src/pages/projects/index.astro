@@ -2,11 +2,20 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 // Hand-maintained: a project earns a line here when it's something to use, not just read.
+// Newest first. `date` is when it was essentially done, not when it was started.
 const projects = [
   {
     href: '/projects/sql/',
     title: 'SQL reference',
+    date: 'October 2026',
     summary: 'Joins, NULLs, grouping and window functions, with interactives and the mistakes behind them.',
+  },
+  {
+    href: '/projects/mission-control/',
+    title: 'Mission control',
+    date: 'August 2026',
+    summary:
+      'A terminal dashboard for several projects at once, where the progress bar is computed from predicates rather than ticked by hand.',
   },
 ];
 ---
@@ -18,7 +27,10 @@ const projects = [
     {projects.map((p) => (
       <li>
         <a href={p.href}>
-          <span class="title">{p.title}</span>
+          <span class="row">
+            <span class="title">{p.title}</span>
+            <span class="date">{p.date}</span>
+          </span>
           <span class="summary">{p.summary}</span>
         </a>
       </li>
@@ -55,10 +67,24 @@ const projects = [
     color: var(--color-accent);
   }
 
+  /* Title and date on one line, the date pushed to the right margin. */
+  .row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-md);
+  }
+
   .title {
-    display: block;
     font-weight: 600;
     transition: var(--transition-color);
+  }
+
+  .date {
+    flex: none;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
   }
 
   .summary {
