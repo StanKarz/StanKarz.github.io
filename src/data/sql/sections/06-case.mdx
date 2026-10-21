@@ -1,10 +1,9 @@
 ---
 title: Conditional columns with CASE
-order: 7
+order: 6
 summary: There is no IF in a query. CASE is an expression that returns a value.
 ---
 import CaseFlow from '../../../components/sql/CaseFlow.tsx';
-import Mistakes from '../../../components/sql/Mistakes.astro';
 
 `CASE` returns a value, so it goes anywhere a value can: `SELECT`, `WHERE`, `ORDER BY`, inside an aggregate. The first matching `WHEN` wins; no match and no `ELSE` gives NULL.
 
@@ -23,4 +22,3 @@ select count(case when memid = 0 then 1 end) as guest_bookings
 from cd.bookings;
 ```
 
-<Mistakes section="case" />

@@ -31,32 +31,6 @@ export function likeRegex(tokens: LikeToken[], op: LikeOp): RegExp {
   return new RegExp(`^${body}$`, op === 'ilike' ? 'ids' : 'ds');
 }
 
-/* ------------------------------------------------------------------ dates */
-
-/** Hours since 2012-09-20 00:00, where the timeline's axis is anchored. */
-export function hoursOf(ts: string): number {
-  const ms = Date.parse(`${ts.replace(' ', 'T')}:00Z`) - Date.parse('2012-09-20T00:00:00Z');
-  return ms / 3_600_000;
-}
-
-export const DAY_START = 24; // 21 Sept, 00:00
-export const DAY_END = 48; // 22 Sept, 00:00
-
-export type DateFilter = 'equals' | 'cast' | 'range' | 'between';
-
-export const DATE_FILTERS: Record<DateFilter, { sql: string; keep: (h: number) => boolean }> = {
-  equals: { sql: `where starttime = '2012-09-21'`, keep: (h) => h === DAY_START },
-  cast: { sql: `where starttime::date = '2012-09-21'`, keep: (h) => h >= DAY_START && h < DAY_END },
-  range: {
-    sql: `where starttime >= '2012-09-21'\n  and starttime <  '2012-09-22'`,
-    keep: (h) => h >= DAY_START && h < DAY_END,
-  },
-  between: {
-    sql: `where starttime between '2012-09-21' and '2012-09-22'`,
-    keep: (h) => h >= DAY_START && h <= DAY_END,
-  },
-};
-
 /* ---------------------------------------------------------------- windows */
 
 /**
@@ -154,7 +128,10 @@ export function setOp(left: number[], right: number[], op: SetOp): number[] {
 
 export type Truth3 = 'TRUE' | 'FALSE' | 'UNKNOWN';
 
-const cmp = (ok: (v: number) => boolean) => (v: number | null): Truth3 => (v === null ? 'UNKNOWN' : ok(v) ? 'TRUE' : 'FALSE');
+const cmp =
+  (ok: (v: number) => boolean) =>
+  (v: number | null): Truth3 =>
+    v === null ? 'UNKNOWN' : ok(v) ? 'TRUE' : 'FALSE';
 const not3 = (t: Truth3): Truth3 => (t === 'UNKNOWN' ? t : t === 'TRUE' ? 'FALSE' : 'TRUE');
 const or3 = (ts: Truth3[]): Truth3 => (ts.includes('TRUE') ? 'TRUE' : ts.includes('UNKNOWN') ? 'UNKNOWN' : 'FALSE');
 

@@ -143,13 +143,13 @@ export default function GroupByBuckets() {
           <>
             Grouped by the key, the two Darrens stay apart. The <K>LEFT JOIN</K> keeps Darren 37, who never booked: one
             row, so <code>count(*)</code> is 1, but <code>count(bks.bookid)</code> is 0 and <code>sum</code> over
-            nothing is NULL. Wrap it in <code>coalesce(sum(bks.slots), 0)</code> if the question wants 0, or use an
-            inner join if it only wants members who booked.
+            nothing is NULL. Wrap it in <code>coalesce(sum(bks.slots), 0)</code> if you want members who never booked to
+            show 0, or use an inner join if you only want members who booked.
           </>
         ) : (
           <>
-            Grouped by the key with an inner join: one row per member who has booked, which is usually what the question
-            wants.
+            Grouped by the key with an inner join: one row per member who has booked. Usually what you want when the
+            question is about bookings.
           </>
         )}
       </p>

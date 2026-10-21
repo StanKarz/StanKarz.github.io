@@ -1,6 +1,6 @@
 ---
 title: Quick reference
-order: 11
+order: 10
 summary: Templates to copy, UNION, and which syntax is Postgres-only.
 ---
 import SetOps from '../../../components/sql/SetOps.tsx';
@@ -19,12 +19,6 @@ select a.x, b.y
 from a
 left join b on b.a_id = a.id;
 
--- anti-join: rows in a with no match in b
-select a.*
-from a
-left join b on b.a_id = a.id
-where b.a_id is null;
-
 -- aggregate with a group filter
 select key, sum(val) as total
 from t
@@ -42,7 +36,7 @@ select *
 from (select *, expr as calc from t) as sub
 where calc > 30;
 
--- whole-day timestamp filter
+-- whole-day timestamp filter (= '2012-09-21' would match only midnight)
 where ts >= '2012-09-21' and ts < '2012-09-22'
 ```
 

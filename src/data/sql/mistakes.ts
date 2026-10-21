@@ -85,31 +85,6 @@ where recommendedby = null;`,
     fix: `where name like '%Tennis%'`,
   },
 
-  // --- dates ---
-  {
-    id: 'between-timestamps',
-    section: 'dates',
-    title: 'BETWEEN two dates for a whole day',
-    wrong: `where starttime between '2012-09-21' and '2012-09-22'`,
-    why: 'BETWEEN includes both ends, so a booking at midnight on the 22nd sneaks in.',
-    fix: `where starttime >= '2012-09-21' and starttime < '2012-09-22'`,
-  },
-
-  // --- CASE ---
-  {
-    id: 'if-then',
-    section: 'case',
-    title: 'Writing IF ... THEN in a query',
-    wrong: `select name from cd.facilities
-if monthlymaintenance > 100 then cost = 'expensive' else 'cheap'`,
-    error: 'syntax error at or near "monthlymaintenance"',
-    why: 'Queries have no IF statement. A conditional value is a CASE expression, and it goes in the SELECT list as a column.',
-    fix: `select name,
-       case when monthlymaintenance > 100 then 'expensive'
-            else 'cheap' end as cost
-from cd.facilities;`,
-  },
-
   // --- GROUP BY ---
   {
     id: 'not-in-group-by',
@@ -120,14 +95,6 @@ from ... group by m.surname;`,
     error: 'column "m.firstname" must appear in the GROUP BY clause or be used in an aggregate function',
     why: 'One surname group holds several first names. Postgres will not pick one for you.',
     fixText: 'Group by the primary key (m.memid). Every other members column is then allowed.',
-  },
-  {
-    id: 'integer-division',
-    section: 'group-by',
-    title: 'Dividing two integers',
-    wrong: `sum(slots) / 2`,
-    why: 'Integer division truncates: 7 / 2 is 3.',
-    fix: `sum(slots) / 2.0`,
   },
 
   // --- window functions ---

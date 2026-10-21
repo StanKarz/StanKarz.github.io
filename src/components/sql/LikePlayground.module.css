@@ -100,3 +100,14 @@
   flex-wrap: wrap;
   gap: 0.35rem;
 }
+
+.legend {
+  margin: 0 !important;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  white-space: pre-wrap;
+}
+
+.legend .token {
+  margin-right: 0.25rem;
+}

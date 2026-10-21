@@ -49,10 +49,15 @@ export default function LikePlayground() {
       <div class={styles.tokens} aria-hidden="true">
         {tokens.map((t, i) => (
           <span key={i} class={cx(styles.token, styles[t.kind])}>
-            {t.kind === 'any' ? '% any run, even empty' : t.kind === 'one' ? '_ exactly one' : t.text}
+            {t.text}
           </span>
         ))}
       </div>
+
+      <p class={styles.legend}>
+        <span class={cx(styles.token, styles.any)}>%</span> any run of characters, even none{'  ·  '}
+        <span class={cx(styles.token, styles.one)}>_</span> exactly one character
+      </p>
 
       <ul class={styles.names}>
         {results.map(({ name, m }) => (
