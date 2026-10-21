@@ -1,5 +1,6 @@
 import { useRef } from 'preact/hooks';
 import type { ComponentChildren } from 'preact';
+import { splitSql } from '../../../lib/sql/keywords';
 import { isRunnable, tryQuery } from '../../../lib/sql/try';
 import styles from './shared.module.css';
 
@@ -193,6 +194,30 @@ export function RowCount({ n, label = 'rows', delta: fixed }: { n: number; label
       )}
     </span>
   );
+}
+
+/* ------------------------------------------------------------ caption text */
+
+/** Caption text with `backticks` drawn as code and SQL keywords drawn as keywords. */
+export function SqlText({ text }: { text: string }) {
+  return (
+    <>
+      {splitSql(text).map((s, i) =>
+        s.kind === 'text' ? (
+          s.value
+        ) : (
+          <code key={i} class={s.kind === 'keyword' ? styles.sqlKw : styles.inlineCode}>
+            {s.value}
+          </code>
+        ),
+      )}
+    </>
+  );
+}
+
+/** A keyword inside hand-written JSX, styled like SqlText's. */
+export function K({ children }: { children: ComponentChildren }) {
+  return <code class={styles.sqlKw}>{children}</code>;
 }
 
 /* -------------------------------------------------------------- truth pill */

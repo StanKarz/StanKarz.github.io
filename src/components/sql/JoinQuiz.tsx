@@ -1,10 +1,11 @@
 import { useState } from 'preact/hooks';
 import { bookings, members, type Booking, type Member } from '../../data/sql/countryclub';
 import { join, type JoinType, type JoinedRow } from '../../lib/sql/engine';
-import { ResultTable, cx, shared, type Column, type Row } from './shared/primitives';
+import { ResultTable, SqlText, cx, shared, type Column, type Row } from './shared/primitives';
 import styles from './JoinQuiz.module.css';
 
 const TYPES: JoinType[] = ['inner', 'left', 'right', 'full', 'cross'];
+const ROUND = 5;
 
 /** Pools to draw small tables from. Leaving member 5 out of the members pool lets booking 7 be an orphan. */
 const MEMBER_POOL = members.filter((m) => [1, 2, 3, 4, 37].includes(m.memid));
@@ -102,11 +103,14 @@ export default function JoinQuiz() {
     setScore((s) => ({ right: s.right + (t === q.answer ? 1 : 0), asked: s.asked + 1 }));
   };
 
+  const roundOver = guess !== null && score.asked === ROUND;
+
   const next = () => {
     const nextSeed = seed * 31 + 17 + score.asked;
     setSeed(nextSeed);
     setQ(makeQuestion(nextSeed, q.answer));
     setGuess(null);
+    if (roundOver) setScore({ right: 0, asked: 0 });
   };
 
   const rows: Row[] = q.result.map((r) => ({
@@ -127,7 +131,7 @@ export default function JoinQuiz() {
       <div class={styles.head}>
         <span class={shared.label}>Which join produced this?</span>
         <span class={styles.score}>
-          {score.right}/{score.asked}
+          question {Math.min(score.asked + (guess ? 0 : 1), ROUND)} of {ROUND} · {score.right} right
         </span>
       </div>
 
@@ -176,14 +180,24 @@ export default function JoinQuiz() {
             <strong class={guess === q.answer ? styles.yes : styles.no}>
               {guess === q.answer ? 'Right.' : `It was ${q.answer.toUpperCase()}.`}
             </strong>{' '}
-            {explain(q)}
+            <SqlText text={explain(q)} />
           </>
         )}
       </p>
 
+      {roundOver && (
+        <p class={styles.final}>
+          {score.right} of {ROUND}.{' '}
+          {score.right === ROUND
+            ? 'Every one.'
+            : score.right >= ROUND - 1
+              ? 'Nearly all.'
+              : 'Look at which side the NULLs are on, and whether unmatched rows survived.'}
+        </p>
+      )}
       {guess && (
         <button type="button" class={shared.button} onClick={next}>
-          another one →
+          {roundOver ? 'play another round' : 'next question →'}
         </button>
       )}
     </figure>

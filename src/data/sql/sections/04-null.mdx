@@ -8,11 +8,11 @@ import NotInTrap from '../../../components/sql/NotInTrap.tsx';
 import CoalesceToggle from '../../../components/sql/CoalesceToggle.tsx';
 import Mistakes from '../../../components/sql/Mistakes.astro';
 
-SQL has a third truth value. Any comparison with NULL, even `NULL = NULL`, is neither TRUE nor FALSE but **UNKNOWN**, and WHERE keeps a row only when its condition is TRUE. Five members have no recommender:
+SQL has a third truth value. Any comparison with NULL, even `NULL = NULL`, is neither TRUE nor FALSE but **UNKNOWN**, and `WHERE` keeps a row only when its condition is TRUE. Five members have no recommender:
 
 <NullFilter client:visible />
 
-The same thing breaks NOT IN. `x not in (1, 4, NULL)` is shorthand for `x <> 1 and x <> 4 and x <> NULL`, and that last part is UNKNOWN for every x:
+The same thing breaks `NOT IN`. `x not in (1, 4, NULL)` is shorthand for `x <> 1 and x <> 4 and x <> NULL`, and that last part is UNKNOWN for every x:
 
 <NotInTrap client:visible />
 

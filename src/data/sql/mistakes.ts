@@ -55,35 +55,6 @@ group by memid
 having sum(slots) > 4;`,
   },
 
-  // --- joins ---
-  {
-    id: 'inner-join-then-null',
-    section: 'joins',
-    title: 'INNER JOIN, then looking for the NULLs',
-    wrong: `select distinct mems.memid
-from cd.members mems
-inner join cd.bookings bks
-  on bks.memid = mems.memid
-where bks.slots is null;`,
-    why: 'The inner join already threw away members with no bookings, so there are no NULL rows left to find.',
-    fix: `select mems.memid
-from cd.members mems
-left join cd.bookings bks
-  on bks.memid = mems.memid
-where bks.memid is null;`,
-  },
-  {
-    id: 'fan-out-sum',
-    section: 'joins',
-    title: 'Summing a column after a one-to-many join',
-    wrong: `select sum(facs.monthlymaintenance)
-from cd.facilities facs
-join cd.bookings bks
-  on bks.facid = facs.facid;`,
-    why: 'Each facility appears once per booking, so its maintenance cost is counted once per booking.',
-    fixText: 'Aggregate before joining, or sum from the table that has one row per thing you are adding up.',
-  },
-
   // --- NULL ---
   {
     id: 'equals-null',

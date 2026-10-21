@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks';
 import { memberById } from '../../data/sql/countryclub';
 import { windowSums } from '../../lib/sql/demos';
-import { cx, shared, SqlCode } from './shared/primitives';
+import { K, SqlCode, SqlText, cx, shared } from './shared/primitives';
 import styles from './PartitionExplorer.module.css';
 
 export default function PartitionExplorer() {
@@ -79,14 +79,18 @@ where memid <> 0;`}
       <p class={shared.caption} aria-live="polite">
         Row for {memberById.get(cur.row.memid)!.firstname} at {cur.row.starttime.slice(5)}: summing the {cur.frame.size}{' '}
         highlighted row{cur.frame.size === 1 ? '' : 's'} gives <strong>{cur.value}</strong>.{' '}
-        {!ordered
-          ? `No ORDER BY, so the frame is the whole ${partition ? 'partition' : 'table'}: every row gets the same total.`
-          : partition
-            ? 'The frame starts at the top of this member’s partition and stops at the current row.'
-            : 'No partition, so the running total runs across every member.'}
+        <SqlText
+          text={
+            !ordered
+              ? `No ORDER BY, so the frame is the whole ${partition ? 'partition' : 'table'}: every row gets the same total.`
+              : partition
+                ? 'The frame starts at the top of this member’s partition and stops at the current row.'
+                : 'No partition, so the running total runs across every member.'
+          }
+        />
       </p>
       <p class={shared.note}>
-        Every input row is still here, which is the difference from GROUP BY. Hover a row to see its frame.
+        Every input row is still here, which is the difference from <K>GROUP BY</K>. Hover a row to see its frame.
       </p>
     </figure>
   );

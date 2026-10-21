@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks';
 import { facilities } from '../../data/sql/countryclub';
 import { PRICE_BRANCHES, PRICE_ELSE, caseSql, evaluateCase } from '../../lib/sql/demos';
-import { Cell, SqlCode, cx, shared } from './shared/primitives';
+import { Cell, SqlCode, SqlText, cx, shared } from './shared/primitives';
 import styles from './CaseFlow.module.css';
 
 const STEP_MS = 280;
@@ -138,15 +138,19 @@ export default function CaseFlow() {
       </div>
 
       <p class={shared.caption}>
-        {run.hit !== null && run.hit > 0
-          ? `${row.name}: ${run.hit} branch${run.hit === 1 ? '' : 'es'} came out false before one matched. Branches run top to bottom and the first TRUE wins.`
-          : run.hit === 0
-            ? swapped && row.membercost === 0
-              ? `${row.name} costs 0, which is also < 10. The cheap branch now comes first, so free facilities are never labelled free.`
-              : `${row.name} matched the first branch; the rest are never checked.`
-            : elseLabel
-              ? `Nothing matched ${row.name}, so ELSE supplies the value.`
-              : `Nothing matched ${row.name} and there is no ELSE, so the value is NULL. No error.`}
+        <SqlText
+          text={
+            run.hit !== null && run.hit > 0
+              ? `${row.name}: ${run.hit} branch${run.hit === 1 ? '' : 'es'} came out false before one matched. Branches run top to bottom and the first TRUE wins.`
+              : run.hit === 0
+                ? swapped && row.membercost === 0
+                  ? `${row.name} costs 0, which is also < 10. The cheap branch now comes first, so free facilities are never labelled free.`
+                  : `${row.name} matched the first branch; the rest are never checked.`
+                : elseLabel
+                  ? `Nothing matched ${row.name}, so ELSE supplies the value.`
+                  : `Nothing matched ${row.name} and there is no ELSE, so the value is NULL. No error.`
+          }
+        />
       </p>
     </figure>
   );

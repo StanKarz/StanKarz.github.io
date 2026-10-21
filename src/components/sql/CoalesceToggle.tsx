@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks';
 import { bookings, members } from '../../data/sql/countryclub';
 import { groupBy, join, sum } from '../../lib/sql/engine';
-import { ResultTable, SqlCode, shared, type Column, type Row } from './shared/primitives';
+import { K, ResultTable, SqlCode, shared, type Column, type Row } from './shared/primitives';
 
 const joined = join(
   members.filter((m) => m.memid !== 0),
@@ -60,8 +60,8 @@ group by mems.memid;`}
           </>
         ) : (
           <>
-            Darren 37 has no bookings. The LEFT JOIN gives him one row with NULL slots, and <code>sum</code> over nothing
-            but NULLs is NULL, not 0.
+            Darren 37 has no bookings. The <K>LEFT JOIN</K> gives him one row with NULL slots, and <code>sum</code> over
+            nothing but NULLs is NULL, not 0.
           </>
         )}
       </p>

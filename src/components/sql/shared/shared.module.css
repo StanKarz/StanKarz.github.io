@@ -286,6 +286,21 @@
   color: var(--color-text-muted);
 }
 
+/* --- Inline code and keywords in captions --- */
+
+.inlineCode,
+.sqlKw {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  background: var(--color-code-bg);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
+.sqlKw {
+  color: var(--astro-code-token-keyword);
+}
+
 /* --- Truth pill --- */
 
 .truth {

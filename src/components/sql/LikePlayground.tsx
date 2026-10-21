@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks';
 import { facilities } from '../../data/sql/countryclub';
 import { likeRegex, tokenizeLike, type LikeOp as Op, type LikeToken as Token } from '../../lib/sql/demos';
-import { RowCount, Segmented, cx, shared } from './shared/primitives';
+import { RowCount, Segmented, SqlText, cx, shared } from './shared/primitives';
 import styles from './LikePlayground.module.css';
 
 const PRESETS = ['%Tennis%', 'Tennis%', '%Court _', '%court%', 'Tennis Court 1'];
@@ -75,11 +75,15 @@ export default function LikePlayground() {
       </div>
 
       <p class={shared.caption}>
-        {!hasWildcard
-          ? 'No % or _, so this is an exact match, the same as =. To match exact values, IN says so more plainly.'
-          : op === 'like' && /[a-z]/.test(pattern) && hits === 0
-            ? 'LIKE is case-sensitive. Try ilike.'
-            : 'The whole name has to match the pattern, which is why a word in the middle needs % on both sides.'}
+        <SqlText
+          text={
+            !hasWildcard
+              ? 'No % or _, so this is an exact match, the same as =. To match exact values, IN says so more plainly.'
+              : op === 'like' && /[a-z]/.test(pattern) && hits === 0
+                ? 'LIKE is case-sensitive. Try ILIKE.'
+                : 'The whole name has to match the pattern, which is why a word in the middle needs % on both sides.'
+          }
+        />
       </p>
     </figure>
   );

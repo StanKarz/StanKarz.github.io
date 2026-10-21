@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks';
 import { members, memberById, fullName } from '../../data/sql/countryclub';
 import { costedOn } from '../../lib/sql/demos';
-import { ResultTable, RowCount, Segmented, SqlCode, cx, shared, type Column, type Row } from './shared/primitives';
+import { K, ResultTable, RowCount, Segmented, SqlCode, cx, shared, type Column, type Row } from './shared/primitives';
 import styles from './SubqueryStepper.module.css';
 
 type Mode = 'correlated' | 'derived';
@@ -76,7 +76,12 @@ function Correlated() {
     <>
       <SqlCode code={CORRELATED_SQL} lineClass={(i) => (i >= 1 && i <= 3 ? styles.inner : undefined)} />
       <div class={shared.toolbar}>
-        <button type="button" class={shared.button} onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0}>
+        <button
+          type="button"
+          class={shared.button}
+          onClick={() => setStep((s) => Math.max(0, s - 1))}
+          disabled={step === 0}
+        >
           ← back
         </button>
         <button
@@ -112,8 +117,8 @@ function Correlated() {
               </>
             ) : (
               <>
-                <code>memid = NULL</code> is never true, so no row matches and the subquery returns <strong>NULL</strong>.
-                No error, no special handling.
+                <code>memid = NULL</code> is never true, so no row matches and the subquery returns{' '}
+                <strong>NULL</strong>. No error, no special handling.
               </>
             )}
           </p>
@@ -131,8 +136,8 @@ function Correlated() {
         </div>
       </div>
       <p class={shared.note}>
-        It refers to <code>mems</code> from the outer query, so it runs once per outer row. If it ever found two rows
-        it would fail: a subquery in SELECT must return one value.
+        It refers to <code>mems</code> from the outer query, so it runs once per outer row. If it ever found two rows it
+        would fail: a subquery in <K>SELECT</K> must return one value.
       </p>
     </>
   );
@@ -151,7 +156,9 @@ function Derived() {
     <>
       <SqlCode
         code={DERIVED_SQL}
-        lineClass={(i) => (i >= 2 && i <= 8 ? (outerRan ? styles.innerDone : styles.inner) : outerRan ? styles.outerOn : undefined)}
+        lineClass={(i) =>
+          i >= 2 && i <= 8 ? (outerRan ? styles.innerDone : styles.inner) : outerRan ? styles.outerOn : undefined
+        }
       />
       <div class={shared.toolbar}>
         <Segmented
@@ -178,7 +185,7 @@ function Derived() {
         ) : (
           <>
             The inner query finishes first and its result is a table with a name. Inside it, <code>cost</code> is an
-            alias, and an alias can't be filtered in the same query's WHERE.
+            alias, and an alias can't be filtered in the same query's <K>WHERE</K>.
           </>
         )}
       </p>

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'preact/hooks';
 import { bookings, members, fullName, type Booking, type Member } from '../../data/sql/countryclub';
 import { join, type JoinType } from '../../lib/sql/engine';
-import { ResultTable, RowCount, Segmented, SqlCode, cx, shared, type Column, type Row } from './shared/primitives';
+import { K, ResultTable, RowCount, Segmented, SqlCode, cx, shared, type Column, type Row } from './shared/primitives';
 import styles from './JoinExplorer.module.css';
 
 /** Trimmed so the whole thing fits on screen, and so each join type has something to show. */
@@ -55,7 +55,15 @@ export default function JoinExplorer() {
 
   const match = useMemo(() => matching(on), [on]);
   const result = useMemo(
-    () => join(LEFT, RIGHT, type, ON[on].test, (m) => String(m.memid), (b) => String(b.bookid)),
+    () =>
+      join(
+        LEFT,
+        RIGHT,
+        type,
+        ON[on].test,
+        (m) => String(m.memid),
+        (b) => String(b.bookid),
+      ),
     [type, on],
   );
   const correctCount = useMemo(() => join(LEFT, RIGHT, type, ON.memid.test, String, String).length, [type]);
@@ -64,7 +72,8 @@ export default function JoinExplorer() {
   const orphansRight = match.fanRight.filter((n) => n === 0).length;
 
   const isLit = (l: Member | null, r: Booking | null, key: string) =>
-    hover !== null && (hover === key || (l !== null && hover === `l${l.memid}`) || (r !== null && hover === `r${r.bookid}`));
+    hover !== null &&
+    (hover === key || (l !== null && hover === `l${l.memid}`) || (r !== null && hover === `r${r.bookid}`));
 
   const resultRows: Row[] = result.map((r) => ({
     key: r.key,
@@ -155,9 +164,11 @@ export default function JoinExplorer() {
         </span>
       </div>
       {type === 'cross' ? (
-        <p class={shared.note}>
-          {LEFT.length} × {RIGHT.length} = {LEFT.length * RIGHT.length} rows, too many to list. An inner join is this
-          grid filtered down to the filled cells.
+        <p class={shared.caption}>
+          <K>CROSS JOIN</K> has no <K>ON</K>: every member is paired with every booking, {LEFT.length} × {RIGHT.length}{' '}
+          = {LEFT.length * RIGHT.length} rows, one per square above. It's for when you want every combination, such as
+          every member against every facility to build a usage grid you then fill in, or every date against every court
+          to find free slots. Write <code>FROM a, b</code> with a comma and you get the same thing, often by accident.
         </p>
       ) : (
         <div onMouseLeave={() => setHover(null)}>
@@ -192,7 +203,9 @@ function Wiring({ type, on, match, hover, setHover }: WiringProps) {
 
   const pairLit = (i: number, j: number) =>
     hover !== null &&
-    (hover === `l${LEFT[i].memid}` || hover === `r${RIGHT[j].bookid}` || hover === `${LEFT[i].memid}|${RIGHT[j].bookid}`);
+    (hover === `l${LEFT[i].memid}` ||
+      hover === `r${RIGHT[j].bookid}` ||
+      hover === `${LEFT[i].memid}|${RIGHT[j].bookid}`);
 
   const state = (fan: number, keeps: boolean) => (fan > 0 ? 'match' : keeps ? 'kept' : 'dropped');
 
@@ -339,19 +352,34 @@ function Venn({ type, match }: { type: JoinType; match: Match }) {
         <circle cx="160" cy="118" r="88" class={styles.outline} />
         <circle cx="240" cy="118" r="88" class={styles.outline} />
 
-        <text x="118" y="114" class={styles.vennCount}>{leftOnly}</text>
-        <text x="118" y="134" class={styles.vennSub}>{KEEPS_LEFT[type] ? '+NULL' : 'dropped'}</text>
-        <text x="200" y="114" class={styles.vennCount}>{pairs}</text>
-        <text x="200" y="134" class={styles.vennSub}>pairs</text>
-        <text x="282" y="114" class={styles.vennCount}>{rightOnly}</text>
-        <text x="282" y="134" class={styles.vennSub}>{KEEPS_RIGHT[type] ? '+NULL' : 'dropped'}</text>
+        <text x="118" y="114" class={styles.vennCount}>
+          {leftOnly}
+        </text>
+        <text x="118" y="134" class={styles.vennSub}>
+          {KEEPS_LEFT[type] ? '+NULL' : 'dropped'}
+        </text>
+        <text x="200" y="114" class={styles.vennCount}>
+          {pairs}
+        </text>
+        <text x="200" y="134" class={styles.vennSub}>
+          pairs
+        </text>
+        <text x="282" y="114" class={styles.vennCount}>
+          {rightOnly}
+        </text>
+        <text x="282" y="134" class={styles.vennSub}>
+          {KEEPS_RIGHT[type] ? '+NULL' : 'dropped'}
+        </text>
 
-        <text x="110" y="16" class={styles.vennLabel}>mems: {LEFT.length}</text>
-        <text x="290" y="16" class={styles.vennLabel}>bks: {RIGHT.length}</text>
+        <text x="110" y="16" class={styles.vennLabel}>
+          mems: {LEFT.length}
+        </text>
+        <text x="290" y="16" class={styles.vennLabel}>
+          bks: {RIGHT.length}
+        </text>
       </svg>
       <p class={shared.note}>
-        Where the picture stops being accurate: the middle holds {pairs} output rows but only {matchedMembers}{' '}
-        members.{' '}
+        Where the picture stops being accurate: the middle holds {pairs} output rows but only {matchedMembers} members.{' '}
         {repeats.length > 0 && (
           <>
             {repeats.map((m) => m.firstname).join(' and ')} {repeats.length === 1 ? 'has' : 'each have'} more than one
@@ -366,7 +394,7 @@ function Venn({ type, match }: { type: JoinType; match: Match }) {
 
 /* ----------------------------------------------------------------- cross */
 
-/** Every pairing as a cell; the ones an inner join on memid would keep are filled. */
+/** Every pairing as a cell: that is all a cross join is. */
 function CrossGrid() {
   return (
     <div class={styles.gridWrap}>
@@ -388,18 +416,15 @@ function CrossGrid() {
               <th scope="row">
                 {m.memid} {m.firstname}
               </th>
-              {RIGHT.map((b, j) => {
-                const hit = ON.memid.test(m, b);
-                return (
-                  <td key={b.bookid}>
-                    <span
-                      class={cx(styles.dot, hit && styles.dotMatch)}
-                      style={{ animationDelay: `${(i * RIGHT.length + j) * 12}ms` }}
-                      title={hit ? 'kept by an inner join on memid' : 'only exists in the cross join'}
-                    />
-                  </td>
-                );
-              })}
+              {RIGHT.map((b, j) => (
+                <td key={b.bookid}>
+                  <span
+                    class={styles.dot}
+                    style={{ animationDelay: `${(i * RIGHT.length + j) * 12}ms` }}
+                    title={`${m.firstname} with booking ${b.bookid}`}
+                  />
+                </td>
+              ))}
             </tr>
           ))}
         </tbody>

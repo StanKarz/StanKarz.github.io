@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks';
 import { members, fullName } from '../../data/sql/countryclub';
 import { NULL_CONDITIONS } from '../../lib/sql/demos';
-import { Cell, RowCount, SqlCode, TruthPill, cx, shared } from './shared/primitives';
+import { Cell, RowCount, SqlCode, SqlText, TruthPill, cx, shared } from './shared/primitives';
 import styles from './NullFilter.module.css';
 
 const CAPTIONS = [
@@ -76,7 +76,9 @@ export default function NullFilter() {
 
       <div class={shared.toolbar}>
         <RowCount n={kept} label={`of ${members.length} kept`} />
-        <span class={styles.caption}>{CAPTIONS[index]}</span>
+        <span class={styles.caption}>
+          <SqlText text={CAPTIONS[index]} />
+        </span>
       </div>
     </figure>
   );

@@ -3,7 +3,8 @@ title: Tables, keys and relationships
 order: 1
 summary: The three tables every example uses and how they're connected.
 ---
-import SchemaExplorer from '../../../components/sql/SchemaExplorer.tsx';
+
+import SchemaExplorer from "../../../components/sql/SchemaExplorer.tsx";
 
 Every example runs against a trimmed copy of the pgexercises country club.
 
@@ -11,4 +12,4 @@ Every example runs against a trimmed copy of the pgexercises country club.
 
 - A **primary key** (PK) identifies a row. Postgres enforces it: a second row with `memid 1` fails with `duplicate key value violates unique constraint "members_pkey"`, and a NULL key fails too. Names have no such rule, which is why there are two Darren Smiths (1 and 37) and only `memid` tells them apart.
 - A **foreign key** (FK) holds another row's primary key. `bookings` has two, so it links members to facilities: many members book many facilities, stored as a row per booking.
-- `recommendedby` is a foreign key into its *own* table: it points at another member. That is a self-reference, not a circular dependency; nothing breaks. But to show a recommender's name you read `members` twice, once as the member and once as the recommender, and give the two copies different aliases (`mems`, `rec`) so SQL knows which `firstname` you mean. Hover Janice above to see it.
+- `recommendedby` is a foreign key in its _own_ table: it points at another member, this is referred to as a self-reference (not a circular dependency). To show a recommender's name you read `members` twice, once as the member and once as the recommender, and give the two copies different aliases (`mems`, `rec`) so SQL knows which `firstname` you mean. Hover Janice above to see it.

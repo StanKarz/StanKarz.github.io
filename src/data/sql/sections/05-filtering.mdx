@@ -1,7 +1,7 @@
 ---
 title: 'Filtering: quotes, IN, LIKE'
 order: 5
-summary: Single vs double quotes, exact matches vs patterns, and AND before OR.
+summary: Single vs double quotes, exact matches vs patterns, AND before OR.
 ---
 import LikePlayground from '../../../components/sql/LikePlayground.tsx';
 import Mistakes from '../../../components/sql/Mistakes.astro';
@@ -11,6 +11,6 @@ import Mistakes from '../../../components/sql/Mistakes.astro';
 <LikePlayground client:visible />
 
 - `~` is a regex match in Postgres, `~*` case-insensitive.
-- AND binds tighter than OR: `a or b and c` is `a or (b and c)`. Parenthesise anything that mixes them.
+- `AND` binds tighter than `OR`: `a or b and c` is `a or (b and c)`. Parenthesise anything that mixes them.
 
 <Mistakes section="filtering" />

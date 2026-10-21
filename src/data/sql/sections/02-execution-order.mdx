@@ -10,9 +10,9 @@ You write `SELECT` first; it runs fifth.
 
 <ExecutionOrder client:visible />
 
-- Anything that runs before SELECT can't see its aliases: WHERE, GROUP BY, HAVING. ORDER BY can.
-- Aggregates filter in HAVING, not WHERE. Window functions can't be filtered in either: wrap the query and filter outside.
-- This is the *logical* order. The planner reorders the physical work freely, so it says nothing about speed.
+- Anything that runs before `SELECT` can't see its aliases: `WHERE`, `GROUP BY`, `HAVING`. `ORDER BY` can.
+- Aggregates filter in `HAVING`, not `WHERE`. Window functions can't be filtered in either: wrap the query and filter outside.
+- This order decides what a query *means*, not how fast it runs. Postgres's planner, the part that decides how to actually fetch the rows, is free to do the work in another order (filtering before joining, say) as long as the result comes out the same.
 
 Further reading: Julia Evans, [SQL queries don't start with SELECT](https://jvns.ca/blog/2019/10/03/sql-queries-don-t-start-with-select/).
 

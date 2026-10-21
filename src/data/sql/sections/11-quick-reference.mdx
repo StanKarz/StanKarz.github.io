@@ -46,7 +46,7 @@ where calc > 30;
 where ts >= '2012-09-21' and ts < '2012-09-22'
 ```
 
-### Stacking results: UNION
+### Stacking results: `UNION`
 
 Joins put tables side by side; set operations stack one result on top of another.
 
@@ -57,10 +57,10 @@ Joins put tables side by side; set operations stack one result on top of another
 | Syntax | Meaning | Portable alternative |
 |---|---|---|
 | `x::date` | Cast | `cast(x as date)` |
-| `ilike` | Case-insensitive LIKE | `lower(col) like lower(…)` |
+| `ilike` | Case-insensitive `LIKE` | `lower(col) like lower(…)` |
 | `~`, `~*` | Regex match | Varies by database |
 | `date_trunc`, `date_part` | Truncate or extract timestamp parts | `extract(…)` is standard |
-| GROUP BY a SELECT alias | Convenience | Repeat the expression |
+| `GROUP BY` a `SELECT` alias | Convenience | Repeat the expression |
 | `concat()` vs `\|\|` | concat skips NULLs, `\|\|` propagates them | Varies |
 
 ### Credits

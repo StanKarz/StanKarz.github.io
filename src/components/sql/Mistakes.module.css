@@ -113,3 +113,20 @@
     padding: var(--space-md);
   }
 }
+
+.title code,
+.why code,
+.fixText code {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  background: var(--color-code-bg);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
+.title .kw,
+.why .kw,
+.fixText .kw {
+  color: var(--astro-code-token-keyword);
+}

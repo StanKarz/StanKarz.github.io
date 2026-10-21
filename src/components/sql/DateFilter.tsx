@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks';
 import { bookings } from '../../data/sql/countryclub';
 import { DATE_FILTERS, hoursOf, type DateFilter as Filter } from '../../lib/sql/demos';
-import { RowCount, Segmented, SqlCode, cx, shared } from './shared/primitives';
+import { RowCount, Segmented, SqlCode, SqlText, cx, shared } from './shared/primitives';
 import styles from './DateFilter.module.css';
 
 /** Bookings from the evening of the 20th to midnight on the 22nd: enough to show both edges. */
@@ -55,7 +55,9 @@ export default function DateFilter() {
 
       <div class={shared.toolbar}>
         <RowCount n={kept} />
-        <span class={styles.caption}>{CAPTIONS[filter]}</span>
+        <span class={styles.caption}>
+          <SqlText text={CAPTIONS[filter]} />
+        </span>
       </div>
     </figure>
   );

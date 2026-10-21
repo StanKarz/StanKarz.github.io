@@ -29,7 +29,7 @@ const description =
       <p class={styles.kicker}><a href="/projects/">projects</a> / sql</p>
       <h1 class={styles.title}>SQL, the parts I keep looking up</h1>
       <p class={styles.lede}>
-        Built while working through <a href="https://pgexercises.com/">pgexercises</a>. Each section is a concept in a
+        Built while working through <a href="https://pgexercises.com/" target="_blank" rel="noopener noreferrer">pgexercises</a>. Each section is a concept in a
         line or two, an interactive that shows it, and the mistakes that cost me time. Postgres syntax is used
         throughout.
       </p>
@@ -40,7 +40,7 @@ const description =
     </header>
 
     <nav class={styles.index} aria-label="Sections">
-      <ol>
+      <ol style={`--rows: ${Math.ceil(sections.length / 2)}`}>
         {sections.map((s) => (
           <li>
             <a href={`#${s.slug}`}>

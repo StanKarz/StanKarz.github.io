@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks';
 import { members, fullName } from '../../data/sql/countryclub';
 import { notEquals, notIn, type Truth } from '../../lib/sql/engine';
-import { RowCount, Segmented, SqlCode, TruthPill, cx, shared } from './shared/primitives';
+import { RowCount, Segmented, SqlCode, SqlText, TruthPill, cx, shared } from './shared/primitives';
 import styles from './NotInTrap.module.css';
 
 type Mode = 'not-in' | 'filtered' | 'not-exists';
@@ -110,7 +110,9 @@ export default function NotInTrap() {
 
       <div class={shared.toolbar}>
         <RowCount n={kept} label={`of ${members.length} kept`} />
-        <span class={styles.caption}>{CAPTION[mode]}</span>
+        <span class={styles.caption}>
+          <SqlText text={CAPTION[mode]} />
+        </span>
       </div>
     </figure>
   );

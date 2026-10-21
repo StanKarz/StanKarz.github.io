@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'preact/hooks';
 import { bookings, members, fullName, GUEST_MEMID } from '../../data/sql/countryclub';
 import { groupBy, join, sum } from '../../lib/sql/engine';
-import { Cell, RowCount, Segmented, SqlCode, cx, shared } from './shared/primitives';
+import { Cell, K, RowCount, Segmented, SqlCode, cx, shared } from './shared/primitives';
 import styles from './GroupByBuckets.module.css';
 
 type Key = 'memid' | 'name';
@@ -141,10 +141,10 @@ export default function GroupByBuckets() {
           </>
         ) : kind === 'left' ? (
           <>
-            Grouped by the key, the two Darrens stay apart. The LEFT JOIN keeps Darren 37, who never booked: one row, so{' '}
-            <code>count(*)</code> is 1, but <code>count(bks.bookid)</code> is 0 and <code>sum</code> over nothing is
-            NULL. Wrap it in <code>coalesce(sum(bks.slots), 0)</code> if the question wants 0, or use an inner join if
-            it only wants members who booked.
+            Grouped by the key, the two Darrens stay apart. The <K>LEFT JOIN</K> keeps Darren 37, who never booked: one
+            row, so <code>count(*)</code> is 1, but <code>count(bks.bookid)</code> is 0 and <code>sum</code> over
+            nothing is NULL. Wrap it in <code>coalesce(sum(bks.slots), 0)</code> if the question wants 0, or use an
+            inner join if it only wants members who booked.
           </>
         ) : (
           <>

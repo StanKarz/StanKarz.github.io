@@ -6,7 +6,7 @@
 
 .score {
   font-family: var(--font-mono);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-xs);
   color: var(--color-text);
 }
 
@@ -116,4 +116,10 @@
   .arrow {
     display: none;
   }
+}
+
+.final {
+  margin: 0 !important;
+  font-weight: 600;
+  color: var(--color-accent);
 }

@@ -1,6 +1,7 @@
 ---
 import { Code } from 'astro:components';
 import { mistakesFor } from '../../data/sql/mistakes';
+import { sqlHtml } from '../../lib/sql/keywords';
 import styles from './Mistakes.module.css';
 
 interface Props {
@@ -19,7 +20,7 @@ const items = mistakesFor(Astro.props.section);
     </p>
     {items.map((m) => (
       <div class={styles.item} id={`mistake-${m.id}`}>
-        <p class={styles.title}>{m.title}</p>
+        <p class={styles.title} set:html={sqlHtml(m.title, styles.kw)} />
         {m.error && <p class={styles.error}>{m.error}</p>}
         <div class={styles.pair}>
           <div>
@@ -28,10 +29,10 @@ const items = mistakesFor(Astro.props.section);
           </div>
           <div>
             <span class={styles.tagFix}>fix</span>
-            {m.fix ? <Code code={m.fix} lang="sql" theme="css-variables" /> : <p class={styles.fixText}>{m.fixText}</p>}
+            {m.fix ? <Code code={m.fix} lang="sql" theme="css-variables" /> : <p class={styles.fixText} set:html={sqlHtml(m.fixText ?? '', styles.kw)} />}
           </div>
         </div>
-        <p class={styles.why}>{m.why}</p>
+        <p class={styles.why} set:html={sqlHtml(m.why, styles.kw)} />
       </div>
     ))}
   </aside>

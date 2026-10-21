@@ -5,6 +5,7 @@ import mdx from '@astrojs/mdx';
 import preact from '@astrojs/preact';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import rehypeLinksAndKeywords from './src/plugins/rehype-links-and-keywords.mjs';
 
 export default defineConfig({
   site: 'https://stankarz.github.io',
@@ -14,7 +15,7 @@ export default defineConfig({
   vite: { optimizeDeps: { exclude: ['@electric-sql/pglite'] } },
   markdown: {
     remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeKatex],
+    rehypePlugins: [rehypeKatex, rehypeLinksAndKeywords],
     // Colours come from --astro-code-* tokens in prose.css, so code follows the theme toggle.
     shikiConfig: { theme: 'css-variables' },
   },

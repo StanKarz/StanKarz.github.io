@@ -34,6 +34,9 @@
   list-style: none;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* Fill down the first column, then the second, so the numbers read top to bottom. */
+  grid-template-rows: repeat(var(--rows), auto);
+  grid-auto-flow: column;
   gap: var(--space-sm) var(--space-lg);
 }
 
@@ -70,6 +73,8 @@
 @media (max-width: 600px) {
   .index ol {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-auto-flow: row;
   }
 }
 
@@ -324,4 +329,17 @@
 /* Room at the bottom so the open query box never hides the last section. */
 .page {
   padding-bottom: 4rem;
+}
+
+/* Inline code that is an SQL keyword (tagged at build time) wears the keyword colour. */
+.section :global(code.sql-kw) {
+  color: var(--astro-code-token-keyword);
+}
+
+/* Mistake code blocks are half-width, so the button would cover the code. Lift it onto the
+   WRONG / FIX label line above the block instead. */
+.section :global(aside .sql-try) {
+  top: -1.45rem;
+  right: 0;
+  padding: 0 0.4rem;
 }

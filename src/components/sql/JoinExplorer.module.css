@@ -312,7 +312,8 @@
   display: inline-block;
   width: 0.7rem;
   height: 0.7rem;
-  border: 1px solid var(--color-text-muted);
+  background: color-mix(in srgb, var(--color-accent) 55%, transparent);
+  border: 1px solid var(--color-accent);
   border-radius: 2px;
   animation: pop 0.3s ease both;
 }

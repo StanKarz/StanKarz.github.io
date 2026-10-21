@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks';
 import { bookings, members } from '../../data/sql/countryclub';
 import { setOp, type SetOp } from '../../lib/sql/demos';
-import { RowCount, Segmented, SqlCode, cx, shared } from './shared/primitives';
+import { K, RowCount, Segmented, SqlCode, SqlText, cx, shared } from './shared/primitives';
 import styles from './SetOps.module.css';
 
 const LEFT = members.map((m) => m.memid);
@@ -76,10 +76,12 @@ export default function SetOps() {
         </div>
       </div>
 
-      <p class={shared.caption}>{CAPTION[op]}</p>
+      <p class={shared.caption}>
+        <SqlText text={CAPTION[op]} />
+      </p>
       <p class={shared.note}>
-        Columns are matched by position, not by name, and the output takes its column names from the first SELECT. One
-        ORDER BY at the end sorts the combined result.
+        Columns are matched by position, not by name, and the output takes its column names from the first <K>SELECT</K>
+        . One <K>ORDER BY</K> at the end sorts the combined result.
       </p>
     </figure>
   );

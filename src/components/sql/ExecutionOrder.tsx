@@ -1,7 +1,18 @@
 import { useMemo, useState } from 'preact/hooks';
 import { bookings, members, GUEST_MEMID, type Booking, type Member } from '../../data/sql/countryclub';
 import { groupBy, join } from '../../lib/sql/engine';
-import { ResultTable, RowCount, Segmented, SqlCode, cx, shared, type Column, type Row } from './shared/primitives';
+import {
+  K,
+  ResultTable,
+  RowCount,
+  Segmented,
+  SqlCode,
+  SqlText,
+  cx,
+  shared,
+  type Column,
+  type Row,
+} from './shared/primitives';
 import styles from './ExecutionOrder.module.css';
 
 const QUERY = `select distinct mems.surname, sum(bks.slots) as total
@@ -34,7 +45,7 @@ const STAGES: Stage[] = [
     name: 'WHERE',
     lines: [3],
     caption:
-      'WHERE filters individual rows. The two guest bookings go. It cannot see `total`: that name is invented four steps later.',
+      'WHERE filters individual rows. The two guest bookings go. It cannot see `total`: that name is introduced four steps later.',
   },
   {
     name: 'GROUP BY',
@@ -63,12 +74,12 @@ const STAGES: Stage[] = [
     name: 'ORDER BY',
     lines: [6],
     caption:
-      'ORDER BY runs after SELECT, so it can use the alias `total`. With DISTINCT it can only sort by selected columns: `mems.firstname` here is an error.',
+      'ORDER BY runs after SELECT, so it can use the alias `total`. With DISTINCT it can only sort by selected columns: using `mems.firstname` here throws an error.',
   },
   {
     name: 'LIMIT',
     lines: [7],
-    caption: 'Keep the first 2 rows. Without the ORDER BY, which 2 you get would be up to the planner.',
+    caption: 'Keep the first 2 rows.',
   },
 ];
 
@@ -263,7 +274,6 @@ export default function ExecutionOrder() {
             { value: 'alias', label: 'where can I use total?' },
           ]}
         />
-        <span class={shared.note}>written top to bottom; the badges are the order it runs in</span>
       </div>
 
       <SqlCode
@@ -275,10 +285,10 @@ export default function ExecutionOrder() {
 
       {aliasMode ? (
         <p class={shared.caption}>
-          An alias is born in SELECT. Everything that runs earlier (FROM, WHERE, GROUP BY, HAVING) has never heard of
-          it, so referencing <code>total</code> there fails with <code>column "total" does not exist</code>. ORDER BY
-          runs later and can use it. Postgres also lets GROUP BY name an output column as a convenience, but you can't
-          group by an aggregate anyway.
+          An alias is born in <K>SELECT</K>. Everything that runs earlier (<K>FROM</K>, <K>WHERE</K>, <K>GROUP BY</K>,{' '}
+          <K>HAVING</K>) has never heard of it, so referencing <code>total</code> there fails with{' '}
+          <code>column "total" does not exist</code>. <K>ORDER BY</K> runs later and can use it. Postgres also lets{' '}
+          <K>GROUP BY</K> name an output column as a convenience, but you can't group by an aggregate anyway.
         </p>
       ) : (
         <>
@@ -304,7 +314,7 @@ export default function ExecutionOrder() {
           </ol>
 
           <p class={shared.caption} key={step}>
-            {renderCaption(stage.caption)}
+            <SqlText text={stage.caption} />
           </p>
 
           <div class={shared.toolbar}>
@@ -342,9 +352,4 @@ export default function ExecutionOrder() {
       )}
     </figure>
   );
-}
-
-/** Captions use `backticks` for inline code, like the prose around them. */
-function renderCaption(text: string) {
-  return text.split(/`([^`]+)`/).map((part, i) => (i % 2 ? <code key={i}>{part}</code> : part));
 }
