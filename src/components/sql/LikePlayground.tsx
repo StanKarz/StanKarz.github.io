@@ -46,17 +46,8 @@ export default function LikePlayground() {
         '
       </code>
 
-      <div class={styles.tokens} aria-hidden="true">
-        {tokens.map((t, i) => (
-          <span key={i} class={cx(styles.token, styles[t.kind])}>
-            {t.text}
-          </span>
-        ))}
-      </div>
-
-      <p class={styles.legend}>
-        <span class={cx(styles.token, styles.any)}>%</span> any run of characters, even none{'  ·  '}
-        <span class={cx(styles.token, styles.one)}>_</span> exactly one character
+      <p class={styles.reading}>
+        <span class={styles.readingLabel}>reads as</span> {readAloud(tokens)}
       </p>
 
       <ul class={styles.names}>
@@ -106,4 +97,21 @@ function paint(name: string, tokens: Token[], indices: [number, number][]) {
       </span>
     );
   });
+}
+
+/** The pattern in plain words: % is "anything", _ is "one character", the rest is quoted. */
+function readAloud(tokens: Token[]) {
+  if (tokens.length === 0) return <>an empty name only</>;
+  return tokens.map((t, i) => (
+    <span key={i}>
+      {i > 0 && ', then '}
+      {t.kind === 'any' ? (
+        <span class={styles.any}>anything (or nothing)</span>
+      ) : t.kind === 'one' ? (
+        <span class={styles.one}>exactly one character</span>
+      ) : (
+        <strong class={styles.text}>"{t.text}"</strong>
+      )}
+    </span>
+  ));
 }

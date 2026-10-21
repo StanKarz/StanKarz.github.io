@@ -40,25 +40,33 @@
   border-radius: 3px;
 }
 
-/* Literal text, any-run and exactly-one each get a look, used in the tokens and in the matched names. */
+/* In the reading and in the matched names: literal text is the accent, what % covered is
+   greyed out (it could have been anything), and what _ covered is underlined. */
 .text {
   color: var(--color-accent);
   font-weight: 700;
 }
 
-.token.text {
-  border: 1px solid var(--color-accent);
-}
-
 .any {
-  background: color-mix(in srgb, var(--sql-left) 20%, transparent);
-  color: var(--color-text);
-  border-bottom: 2px dotted var(--sql-left);
+  color: var(--color-text-muted);
 }
 
 .one {
-  background: color-mix(in srgb, var(--sql-right) 25%, transparent);
-  outline: 1px solid var(--sql-right);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 3px;
+}
+
+.reading {
+  margin: 0 !important;
+  font-size: var(--font-size-sm);
+}
+
+.readingLabel {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+  margin-right: 0.35rem;
 }
 
 .names {
@@ -99,15 +107,4 @@
   display: inline-flex;
   flex-wrap: wrap;
   gap: 0.35rem;
-}
-
-.legend {
-  margin: 0 !important;
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
-  white-space: pre-wrap;
-}
-
-.legend .token {
-  margin-right: 0.25rem;
 }
