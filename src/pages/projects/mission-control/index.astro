@@ -5,6 +5,7 @@ import '../../../styles/prose.css';
 import styles from './mission-control.module.css';
 import roster from '../../../assets/projects/mission-control/roster.svg';
 import detail from '../../../assets/projects/mission-control/detail.svg';
+import week from '../../../assets/projects/mission-control/week.svg';
 
 const repo = 'https://github.com/StanKarz/mission-control';
 
@@ -23,9 +24,15 @@ const description =
         Code session is running in it right now.
       </p>
       <p class={styles.meta}>
-        Python, <a href="https://textual.textualize.io/" target="_blank" rel="noopener noreferrer"
-          >Textual</a
-        >, 112 tests. <a href={repo} target="_blank" rel="noopener noreferrer">Source on GitHub</a>.
+        <span class={styles.date}>August 2026</span>
+        Built with Python 3.12 and <a
+          href="https://textual.textualize.io/"
+          target="_blank"
+          rel="noopener noreferrer">Textual</a
+        > for the screens, tomlkit so hand-written config keeps its comments through a round trip, and
+        <a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener noreferrer">uv</a> for packaging.
+        It drives git and tmux rather than wrapping them.
+        <a href={repo} target="_blank" rel="noopener noreferrer">Source on GitHub</a>.
       </p>
     </header>
 
@@ -110,6 +117,14 @@ done  = false`}</code></pre>
         </li>
       </ul>
 
+      <figure class={styles.figure}>
+        <img src={week.src} alt="The weekly report: three projects, each in its own colour, listing the commits pushed, the session titles worked on, and where the checks stand. A quiet list at the bottom names projects with no activity." />
+        <figcaption>
+          <code>mc week</code> and <code>mc month</code>, one colour per project so a long report
+          stays readable. The commit message is the summary, written by whoever made the change.
+        </figcaption>
+      </figure>
+
       <h2>Try it</h2>
 
       <pre><code>{`uv tool install git+https://github.com/StanKarz/mission-control
@@ -120,6 +135,13 @@ mc doctor        # finds every directory with Claude sessions`}</code></pre>
         Requires Python 3.12 or newer. tmux is optional and only the launcher needs it. The code,
         a longer guide and the gotchas are
         <a href={repo} target="_blank" rel="noopener noreferrer">on GitHub</a>.
+      </p>
+
+      <p>
+        112 tests, weighted towards where a bug is silent and expensive: slug encoding, the checks
+        engine, period arithmetic, tmux target resolution. New behaviour worth trusting gets
+        verified by breaking it on purpose and confirming a test fails, which has caught a test
+        that asserted more than the code guaranteed more than once.
       </p>
     </div>
   </article>
