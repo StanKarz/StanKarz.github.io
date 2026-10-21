@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ImageZoom from '../../../components/ImageZoom.astro';
+import '../../../styles/prose.css';
+import styles from './mission-control.module.css';
+import roster from '../../../assets/projects/mission-control/roster.svg';
+import detail from '../../../assets/projects/mission-control/detail.svg';
+
+const repo = 'https://github.com/StanKarz/mission-control';
+
+const description =
+  'A terminal dashboard for tracking several Claude Code projects at once, where the progress bar is computed from predicates rather than ticked by hand.';
+---
+
+<BaseLayout title="Mission control" description={description} wide>
+  <article class={styles.page}>
+    <header class={styles.header}>
+      <p class={styles.kicker}><a href="/projects/">projects</a> / mission control</p>
+      <h1 class={styles.title}>Mission control</h1>
+      <p class={styles.lede}>
+        A terminal dashboard for keeping track of several projects at once. One row each: how far
+        through it is, what the next unmet goal is, when it was last touched, and whether a Claude
+        Code session is running in it right now.
+      </p>
+      <p class={styles.meta}>
+        Python, <a href="https://textual.textualize.io/" target="_blank" rel="noopener noreferrer"
+          >Textual</a
+        >, 112 tests. <a href={repo} target="_blank" rel="noopener noreferrer">Source on GitHub</a>.
+      </p>
+    </header>
+
+    <div class="prose">
+      <p>
+        I had five projects on the go and nowhere that tracked where any of them stood. Opening one
+        meant reading the last commit, trying to remember what "done" was supposed to mean, and
+        losing ten minutes before any work started. The ones I had not touched in a fortnight
+        quietly stopped existing.
+      </p>
+
+      <figure class={styles.figure}>
+        <img src={roster.src} alt="The roster: one row per project, each with a status glyph, a progress bar, a week of session activity, and when it was last touched. The highlighted row expands to show its next unmet check and last commit." />
+        <figcaption>
+          The highlighted row expands in place. Choosing what to pick up needs the next action far
+          more than it needs a percentage.
+        </figcaption>
+      </figure>
+
+      <h2>Progress you can't fake</h2>
+
+      <p>
+        A hand-ticked checklist rots. You tick three boxes in week one, never open it again, and the
+        percentage becomes a lie that is worse than no number. So every item that <em>can</em> be a
+        predicate the app evaluates on open is one:
+      </p>
+
+      <pre><code>{`[[projects."orbital-sim".checks]]
+name  = "eval harness green"
+type  = "cmd"                       # passes on exit 0
+value = "pytest -q tests/test_eval.py"
+
+[[projects."orbital-sim".checks]]
+name  = "baseline run"
+type  = "path"                      # file exists
+value = "results/baseline.json"
+
+[[projects."orbital-sim".checks]]
+name  = "picked the reward shaping"
+type  = "manual"                    # nothing can measure this one
+done  = false`}</code></pre>
+
+      <p>
+        Five types: <code>path</code>, <code>git_tag</code>, <code>cmd</code>, <code>gh_pr</code>,
+        and <code>manual</code> for the rest. Progress is passing divided by total, recomputed every
+        time, so it cannot drift. A project with no checks shows a dash, never 0%.
+      </p>
+
+      <p>
+        The upstream benefit is the real one: it forces you to say what done looks like. "Writeup"
+        is not a check. "<code>writeup.md</code> exists and is over 800 words" is.
+      </p>
+
+      <figure class={styles.figure}>
+        <img src={detail.src} alt="The detail screen for one project: a large percentage, the full check list with ticks and unresolved circles, a week of commits and sessions as heatmaps, recent commits, and recent session titles." />
+        <figcaption>
+          One project up close. Cheap checks run on open; the ones that shell out or hit the network
+          are cached, and marked as unresolved until you run them.
+        </figcaption>
+      </figure>
+
+      <h2>The rest of it</h2>
+
+      <ul>
+        <li>
+          Sends <code>cd &lt;path&gt; &amp;&amp; claude --resume &lt;id&gt;</code> to the tmux pane next door,
+          and refuses rather than typing it into a program already running there.
+        </li>
+        <li>
+          Shows which projects have a session running, and which of those have finished and are
+          waiting on you. Useful during a long agent run.
+        </li>
+        <li>
+          Rolls the week or the month up per project, from commit messages and the titles Claude
+          writes for its own sessions. Nothing is summarised by a model.
+        </li>
+        <li>
+          Repairs sessions that lost their project. Claude Code names each session directory after
+          the absolute path you launched from, so moving a project silently breaks
+          <code>--resume</code>. There is no built-in repair, and everything that mutates is a dry
+          run until you pass <code>--go</code>.
+        </li>
+      </ul>
+
+      <h2>Try it</h2>
+
+      <pre><code>{`uv tool install git+https://github.com/StanKarz/mission-control
+mc init          # writes a starter config
+mc doctor        # finds every directory with Claude sessions`}</code></pre>
+
+      <p>
+        Requires Python 3.12 or newer. tmux is optional and only the launcher needs it. The code,
+        a longer guide and the gotchas are
+        <a href={repo} target="_blank" rel="noopener noreferrer">on GitHub</a>.
+      </p>
+    </div>
+  </article>
+
+  <ImageZoom />
+</BaseLayout>

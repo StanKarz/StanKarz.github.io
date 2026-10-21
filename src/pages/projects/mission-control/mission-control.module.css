@@ -1,0 +1,58 @@
+.page {
+  position: relative;
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.kicker a {
+  color: inherit;
+}
+
+.title {
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-3xl);
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.lede {
+  margin-top: var(--space-md);
+  color: var(--color-text);
+}
+
+.meta {
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.header {
+  margin-bottom: var(--space-2xl);
+}
+
+/* The screenshots are dark terminals whatever the page theme is, so they get a
+   surround of their own rather than sitting straight on the cream background. */
+.figure {
+  margin: var(--space-2xl) 0;
+}
+
+.figure img {
+  display: block;
+  width: 100%;
+  /* Cancels .prose img's top margin: the figure already owns the spacing. */
+  margin-top: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: #16161e;
+}
+
+.figure figcaption {
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
