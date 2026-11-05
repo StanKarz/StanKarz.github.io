@@ -1,49 +1,151 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
+import photoMeta from '../data/photo-meta.json';
+import readingData from '../data/reading.json';
+import { latestReadingHref } from '../lib/reading';
+import type { ReadingEntry } from '../types/components';
 
-// Folder-driven gallery: every image in src/assets/photography shows up here.
-// Curate by adding or removing files, no code changes needed. The script below
-// shuffles them on each visit and lays them out as a moving wall.
+interface PhotoMeta {
+  place?: string;
+  raf?: string;
+  camera?: string;
+  sim?: string;
+  lens?: string;
+  shutter?: string;
+  aperture?: string;
+  iso?: string;
+}
+
+// Folder-driven: every image in src/assets/photography lands on a roll by its own shape, so curating
+// still means adding or removing files. photo-meta.json only adds labels, and a photo missing from
+// it just prints its frame number.
 const modules = import.meta.glob<{ default: ImageMetadata }>(
   '../assets/photography/*.{jpg,jpeg,png,webp}',
   { eager: true },
 );
-const photos = Object.entries(modules)
+const allPhotos = Object.entries(modules)
   .sort(([a], [b]) => a.localeCompare(b))
-  .map(([, mod]) => mod.default);
+  .map(([path, mod]) => {
+    const name = path.split('/').pop()!;
+    const meta: PhotoMeta = (photoMeta as Record<string, PhotoMeta>)[name] ?? {};
+    return { name, image: mod.default, meta, ratio: mod.default.width / mod.default.height };
+  });
+type Photo = (typeof allPhotos)[number];
+
+const GOLDEN_RATIO = 0.618034;
+
+/** Order a roll so neighbouring frames come from different places wherever the mix allows it. */
+function spreadByPlace(photos: Photo[]): Photo[] {
+  const groups = new Map<string, Photo[]>();
+  for (const photo of photos) {
+    const key = photo.meta.place || photo.name;
+    groups.set(key, [...(groups.get(key) ?? []), photo]);
+  }
+  // Each place's frames sit at equal intervals along the roll, so a place with many frames can't clump
+  // at the end. A different offset per place stops the places with few frames landing on the same spot.
+  return [...groups.values()]
+    .flatMap((group, index) => {
+      const offset = (index * GOLDEN_RATIO) % 1;
+      return group.map((photo, i) => ({ photo, at: (i + offset) / group.length }));
+    })
+    .sort((x, y) => x.at - y.at)
+    .map(({ photo }) => photo);
+}
+
+/** The true shooting data where it is known, otherwise just the place. */
+function edgePrint({ raf, camera, sim, lens, aperture, shutter, iso, place }: PhotoMeta): string {
+  if (!raf && !camera) return (place ?? '').toUpperCase();
+  const lensName = lens?.split('mm')[0];
+  return [raf, camera, sim, lensName && `${lensName}MM`, aperture && `F${parseFloat(aperture)}`, shutter, iso && `ISO${iso}`]
+    .filter(Boolean)
+    .join('  ');
+}
+
+// Wide frames sit across the strip, as on cine film. Upright frames sit along it, as on stills film.
+const rolls = [
+  { id: 'A', photos: spreadByPlace(allPhotos.filter((p) => p.ratio >= 1)), widthVar: '--a' },
+  { id: 'B', photos: spreadByPlace(allPhotos.filter((p) => p.ratio < 1)), widthVar: '--b' },
+];
+const lightboxOrder = rolls.flatMap((roll) => roll.photos.map((p) => p.name));
+const readingHref = latestReadingHref(readingData as ReadingEntry[]);
 ---
 
 <BaseLayout
   title="Photography"
   description="A few frames from wherever I've been carrying a camera."
+  bare
 >
-  <section class="photography">
-    <h1 class="heading">Photography</h1>
-    <p class="intro">A few frames from wherever I've been carrying a camera.</p>
-    <!-- Without JavaScript this stays a plain two-column grid. -->
-    <div class="gallery" id="gallery">
+  <div class="film" id="film">
+    <nav class="rail" aria-label="Site">
+      <a href="/" class="rail-name">Stan Karzhev</a>
+      <div class="rail-links">
+        <a href="/blog/">blog</a>
+        <a href="/projects/">projects</a>
+        <a href={readingHref}>reading</a>
+        <a href="/contact/">contact</a>
+      </div>
+      <div class="rail-counters" aria-hidden="true">
+        <span data-counter="A"></span>
+        <span data-counter="B"></span>
+      </div>
+    </nav>
+
+    <h1 class="visually-hidden">Photography</h1>
+
+    <!-- Without JavaScript or WebGL, or with reduced motion, this is two plain columns that scroll. -->
+    <div class="stage">
+      <canvas aria-hidden="true"></canvas>
       {
-        photos.map((photo) => (
-          <button
-            type="button"
-            class="thumb"
-            aria-label="Enlarge photo"
-            style={`--ratio: ${photo.width / photo.height}`}
-          >
-            <Image
-              src={photo}
-              alt=""
-              widths={[400, 800, 1600]}
-              sizes="(max-width: 600px) 60vw, 420px"
-              class="photo"
-              loading="lazy"
-            />
-          </button>
+        rolls.map((roll) => (
+          <section class={`roll roll-${roll.id.toLowerCase()}`} data-roll={roll.id} aria-label={`Roll ${roll.id}`}>
+            <div class="track">
+              <div class="leader">
+                <span class="leader-letter">{roll.id}</span>
+                {roll.id === 'A' ? (
+                  <p class="leader-note">A few frames from wherever I've been carrying a camera.</p>
+                ) : (
+                  <p class="leader-note">No film was used.</p>
+                )}
+                <span class="leader-count">{roll.photos.length} EXP</span>
+              </div>
+              {roll.photos.map((photo, i) => {
+                const number = String(i + 1).padStart(2, '0');
+                return (
+                  <button
+                    type="button"
+                    class="frame"
+                    data-index={lightboxOrder.indexOf(photo.name)}
+                    data-place={photo.meta.place || ''}
+                    data-label={`${roll.id}${number}`}
+                    aria-label={`Enlarge frame ${roll.id}${number}${photo.meta.place ? `, ${photo.meta.place}` : ''}`}
+                    style={`--ratio: ${photo.ratio}`}
+                  >
+                    <Image
+                      src={photo.image}
+                      alt=""
+                      widths={[640, 1280, 1920]}
+                      sizes={roll.id === 'A' ? '60vw' : '38vw'}
+                      class="shot"
+                      loading="lazy"
+                    />
+                    <span class="edge">{edgePrint(photo.meta)}</span>
+                    <span class="mark">&#9656;{number}</span>
+                    <span class="mark mark-half">&#9656;{number}A</span>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
         ))
       }
     </div>
-  </section>
+
+    <div class="loupe" aria-hidden="true">
+      <span class="loupe-place"></span>
+      <span class="loupe-frame"></span>
+    </div>
+  </div>
 
   <div
     class="lightbox"
@@ -62,134 +164,52 @@ const photos = Object.entries(modules)
 </BaseLayout>
 
 <script>
-  /** Pixels per second each row drifts; uneven so the rows never line up. */
-  const ROW_SPEEDS = [26, 34, 30];
+  import { canRunFilm, largestSource, startFilm } from '../lib/film-rolls';
 
-  function shuffle<T>(items: T[]): T[] {
-    const out = [...items];
-    for (let i = out.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [out[i], out[j]] = [out[j], out[i]];
-    }
-    return out;
-  }
+  let stopFilm: (() => void) | null = null;
 
-  /** Deal photos to the row that's currently shortest, so every row loops at a similar length. */
-  function dealIntoRows(thumbs: HTMLElement[], rowCount: number): HTMLElement[][] {
-    const rows: HTMLElement[][] = Array.from({ length: rowCount }, () => []);
-    const lengths = new Array(rowCount).fill(0);
-    for (const thumb of thumbs) {
-      const i = lengths.indexOf(Math.min(...lengths));
-      rows[i].push(thumb);
-      lengths[i] += parseFloat(thumb.style.getPropertyValue('--ratio')) || 1;
-    }
-    return rows;
-  }
-
-  // Astro emits a srcset; pull the widest rendition for the enlarged view.
-  function largestSrc(img: HTMLImageElement): string {
-    const srcset = img.getAttribute('srcset');
-    if (!srcset) return img.currentSrc || img.src;
-    let best = img.src;
-    let bestW = 0;
-    for (const part of srcset.split(',')) {
-      const [url, descriptor] = part.trim().split(/\s+/);
-      const w = parseInt(descriptor, 10);
-      if (w > bestW) {
-        bestW = w;
-        best = url;
-      }
-    }
-    return best;
-  }
-
-  /** A visual copy for the loop: hidden from screen readers and skipped by Tab. */
-  function cloneQuiet(thumb: HTMLElement): HTMLElement {
-    const copy = thumb.cloneNode(true) as HTMLElement;
-    copy.setAttribute('aria-hidden', 'true');
-    copy.tabIndex = -1;
-    return copy;
-  }
-
-  /** Swap the grid for drifting rows. Returns the photos in their shuffled order. */
-  function buildWall(gallery: HTMLElement): HTMLElement[] {
-    const thumbs = shuffle([...gallery.querySelectorAll<HTMLElement>('.thumb')]);
-    const rowCount = window.matchMedia('(max-width: 600px)').matches ? 2 : 3;
-    const wall = document.createElement('div');
-    wall.className = 'wall';
-
-    dealIntoRows(thumbs, rowCount).forEach((rowThumbs, i) => {
-      const row = document.createElement('div');
-      row.className = 'row';
-      const track = document.createElement('div');
-      track.className = i % 2 ? 'track rightward' : 'track';
-      track.append(...rowThumbs);
-      row.append(track);
-      wall.append(row);
-    });
-
-    gallery.replaceWith(wall);
-
-    // Each track holds its photos twice and slides by exactly one copy, so the loop has no seam.
-    // A short row is repeated first so that one copy is always wider than the screen.
-    wall.querySelectorAll<HTMLElement>('.track').forEach((track, i) => {
-      const originals = [...track.children] as HTMLElement[];
-      const perCopy = track.scrollWidth;
-      let copyWidth = perCopy;
-      while (perCopy > 0 && copyWidth < wall.clientWidth * 1.2) {
-        originals.forEach((t) => track.append(cloneQuiet(t)));
-        copyWidth += perCopy;
-      }
-      [...track.children].forEach((t) => track.append(cloneQuiet(t as HTMLElement)));
-      track.style.setProperty('--duration', `${copyWidth / ROW_SPEEDS[i % ROW_SPEEDS.length]}s`);
-    });
-
-    wall.classList.add('ready');
-    return thumbs;
-  }
-
-  function initGallery() {
-    const gallery = document.getElementById('gallery');
-    const lightbox = document.getElementById('lightbox');
-    if (!gallery || !lightbox) return;
+  function initLightbox(film: HTMLElement, lightbox: HTMLElement) {
     const lightboxImg = lightbox.querySelector<HTMLImageElement>('.lightbox-img')!;
     const counter = lightbox.querySelector<HTMLElement>('.lightbox-count')!;
-
-    // The lightbox steps through the shuffled order, the same order the wall shows.
-    const order = buildWall(gallery);
-    const sources = order.map((t) => largestSrc(t.querySelector('img')!));
+    const originals = [...film.querySelectorAll<HTMLElement>('.frame')].sort(
+      (a, b) => Number(a.dataset.index) - Number(b.dataset.index),
+    );
+    // Read now, because startFilm takes the sources off the hidden images.
+    const slides = originals.map((frame) => ({
+      src: largestSource(frame.querySelector('img')!),
+      caption: [frame.dataset.label, frame.dataset.place].filter(Boolean).join('  '),
+    }));
     let current = 0;
     let opener: HTMLElement | null = null;
 
     function show(i: number) {
-      current = (i + sources.length) % sources.length;
-      lightboxImg.src = sources[current];
-      counter.textContent = `${current + 1} / ${sources.length}`;
+      current = (i + slides.length) % slides.length;
+      lightboxImg.src = slides[current].src;
+      counter.textContent = slides[current].caption;
     }
 
     function open(i: number, from: HTMLElement, byKeyboard: boolean) {
-      // Hand focus back on close only to keyboard users; for a mouse it would hold the wall paused.
       opener = byKeyboard ? from : null;
       show(i);
-      lightbox!.hidden = false;
+      lightbox.hidden = false;
       document.body.style.overflow = 'hidden';
       document.documentElement.classList.add('lightbox-open');
-      lightbox!.querySelector<HTMLElement>('.lightbox-close')!.focus();
+      lightbox.querySelector<HTMLElement>('.lightbox-close')!.focus();
     }
 
     function close() {
-      lightbox!.hidden = true;
+      lightbox.hidden = true;
       lightboxImg.src = '';
       document.body.style.overflow = '';
       document.documentElement.classList.remove('lightbox-open');
       opener?.focus({ preventScroll: true });
     }
 
-    // Copies share an image with their original, so look each one up by its source.
-    document.querySelectorAll<HTMLElement>('.wall .thumb').forEach((thumb) => {
-      const src = largestSrc(thumb.querySelector('img')!);
+    // Delegated, so the loop's copies of each frame work without their own listeners.
+    film.addEventListener('click', (e) => {
+      const frame = (e.target as Element).closest<HTMLElement>('.frame');
       // A click from Enter or Space reports no mouse presses (detail 0).
-      thumb.addEventListener('click', (e) => open(sources.indexOf(src), thumb, e.detail === 0));
+      if (frame) open(Number(frame.dataset.index), frame, e.detail === 0);
     });
 
     lightbox.addEventListener('click', (e) => {
@@ -199,7 +219,6 @@ const photos = Object.entries(modules)
       else if (target !== lightboxImg) close();
     });
 
-    // Swipe left or right on a phone to step through.
     let touchX: number | null = null;
     lightbox.addEventListener('touchstart', (e) => (touchX = e.touches[0].clientX), { passive: true });
     lightbox.addEventListener('touchend', (e) => {
@@ -209,7 +228,6 @@ const photos = Object.entries(modules)
       touchX = null;
     });
 
-    // Focus sits inside the lightbox while it's open, so its own key handler is enough.
     lightbox.onkeydown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') close();
       else if (e.key === 'ArrowRight') show(current + 1);
@@ -217,153 +235,331 @@ const photos = Object.entries(modules)
     };
   }
 
-  document.addEventListener('astro:page-load', initGallery);
+  document.addEventListener('astro:page-load', () => {
+    const film = document.getElementById('film');
+    const lightbox = document.getElementById('lightbox');
+    if (!film || !lightbox) return;
+    initLightbox(film, lightbox);
+    if (canRunFilm()) stopFilm = startFilm(film);
+  });
+
+  document.addEventListener('astro:before-swap', () => {
+    stopFilm?.();
+    stopFilm = null;
+  });
 </script>
 
 <style>
-  .photography {
-    max-width: var(--max-width);
+  .film {
+    --rail: 46px;
+    --gutter: 14px;
+    --rebate: 34px;
+    /* Read by the script: the perforations scale from it. */
+    --rebate-px: 34;
+    --frame-gap: 10px;
+    --ink: #e8e0d4;
+    --amber: #e07c3e;
+    --film-page: #0a0807;
+    --film-base: #17120d;
+    /* Roll B is sized so an upright frame fits the screen; Roll A takes the rest, within reason. */
+    --b: min(38vw, 58vh);
+    --a: min(calc(100vw - var(--rail) - var(--b) - 3 * var(--gutter)), 132vh);
+    min-height: 100dvh;
+    background: var(--film-page);
+    color: var(--ink);
   }
 
-  .heading {
-    font-family: var(--font-serif);
-    font-size: var(--font-size-2xl);
-    font-weight: 600;
-    line-height: var(--line-height-heading);
-    letter-spacing: var(--letter-spacing-tight);
-    margin-bottom: var(--space-md);
+  :global(html:has(.film)) {
+    background: #0a0807;
   }
 
-  .intro {
-    line-height: var(--line-height-body);
-    margin-bottom: var(--space-xl);
+  :global(html.film-live),
+  :global(html.film-live body) {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
   }
 
-  /* The no-JavaScript fallback: CSS-columns masonry keeps each photo's own aspect ratio. */
-  .gallery {
-    column-count: 2;
-    column-gap: var(--space-md);
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
-  .gallery .thumb {
-    width: 100%;
-    margin: 0 0 var(--space-md);
-    break-inside: avoid;
-  }
-
-  .gallery .photo {
-    width: 100%;
-    height: auto;
-  }
-
-  .thumb {
-    display: block;
-    padding: 0;
-    border: 0;
-    background: none;
-    cursor: zoom-in;
-  }
-
-  .photo {
-    display: block;
-    border-radius: 2px;
-  }
-
-  :global(.wall) {
-    --row-height: 13rem;
-    --gap: var(--space-sm);
+  /* Rail */
+  .rail {
+    position: fixed;
+    z-index: 3;
+    inset: 0 auto 0 0;
     display: flex;
     flex-direction: column;
-    gap: var(--gap);
-    /* Room above and below for a hovered photo to grow into. */
+    align-items: center;
+    justify-content: space-between;
+    width: var(--rail);
     padding-block: var(--space-md);
-    opacity: 0;
-    transition: opacity 0.4s ease;
+    background: #0f0c0a;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
   }
 
-  :global(.wall.ready) {
+  .rail a {
+    color: var(--ink);
+    text-decoration: none;
+    opacity: 0.72;
+    transition: opacity 0.2s ease, color 0.2s ease;
+  }
+
+  .rail a:hover,
+  .rail a:focus-visible {
+    color: var(--amber);
     opacity: 1;
   }
 
-  /* Clip sideways only, so a hovered photo can grow past the top and bottom of its row. */
-  :global(.wall .row) {
-    overflow-x: clip;
-  }
-
-  :global(.wall .row:has(.thumb:hover)),
-  :global(.wall .row:has(.thumb:focus-visible)) {
-    position: relative;
-    z-index: 1;
-  }
-
-  :global(.wall .track) {
+  .rail-name,
+  .rail-links,
+  .rail-counters {
     display: flex;
-    width: max-content;
-    animation: drift var(--duration, 120s) linear infinite;
+    gap: 1.1rem;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
   }
 
-  :global(.wall .track.rightward) {
-    animation-direction: reverse;
+  .rail .rail-name {
+    font-weight: 700;
+    opacity: 1;
   }
 
-  /* Hovering or focusing any photo stops the whole wall, and the lightbox does too. */
-  :global(.wall:has(.thumb:hover) .track),
-  :global(.wall:has(.thumb:focus-visible) .track),
-  :global(.lightbox-open .wall .track) {
-    animation-play-state: paused;
+  .rail-counters {
+    min-height: 9em;
+    color: var(--amber);
+    white-space: nowrap;
   }
 
-  :global(.wall .thumb) {
+  /* Rolls */
+  .stage {
     position: relative;
-    flex: none;
-    height: var(--row-height);
-    aspect-ratio: var(--ratio);
-    margin-right: var(--gap);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--gutter);
+    margin-left: var(--rail);
+    padding-inline: var(--gutter);
   }
 
-  :global(.wall .photo) {
+  canvas {
+    display: none;
+  }
+
+  .roll {
+    flex: none;
+    min-width: 0;
+  }
+
+  .roll-a {
+    width: var(--a);
+  }
+
+  .roll-b {
+    width: var(--b);
+  }
+
+  .track {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--film-base);
+  }
+
+  .leader {
+    position: relative;
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: var(--space-sm);
+    height: 42vh;
+    padding: var(--space-lg) calc(var(--rebate) + var(--space-md));
+    font-family: var(--font-mono);
+  }
+
+  .leader-letter {
+    color: var(--amber);
+    font-size: clamp(3rem, 9vh, 6rem);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .leader-note {
+    max-width: 30ch;
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    line-height: 1.4;
+  }
+
+  .leader-count {
+    color: var(--amber);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+  }
+
+  .frame {
+    position: relative;
+    display: block;
+    width: 100%;
+    flex: none;
+    padding: 0 var(--rebate);
+    margin-bottom: var(--frame-gap);
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: zoom-in;
+    font: inherit;
+    text-align: left;
+  }
+
+  .frame:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: -4px;
+  }
+
+  .shot {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: var(--ratio);
+    object-fit: cover;
+  }
+
+  /* Edge print: the outer lane of the rebate, reading up the strip like the real thing. */
+  .edge,
+  .mark {
+    position: absolute;
+    color: var(--amber);
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    line-height: 1;
+    white-space: pre;
+    writing-mode: vertical-rl;
+    opacity: 0.9;
+    pointer-events: none;
+  }
+
+  .edge {
+    top: 8px;
+    left: 2px;
+    max-height: calc(100% - 16px);
+    overflow: hidden;
+    transform: rotate(180deg);
+  }
+
+  .mark {
+    top: 8px;
+    right: 2px;
+  }
+
+  .mark-half {
+    top: 50%;
+    opacity: 0.55;
+  }
+
+  /* The plain fallback draws its own perforations, as there's no canvas to do it. */
+  .film:not(.live) .frame,
+  .film:not(.live) .leader {
+    background-color: var(--film-base);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='30'%3E%3Crect y='6' width='14' height='18' rx='3' fill='%230a0807'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='30'%3E%3Crect y='6' width='14' height='18' rx='3' fill='%230a0807'/%3E%3C/svg%3E");
+    background-position: 15px 0, calc(100% - 15px) 0;
+    background-repeat: repeat-y;
+  }
+
+  /* Live: the page stops scrolling, the canvas paints the film and the tracks carry the labels. */
+  .film.live .stage {
+    position: fixed;
+    inset: 0 0 0 var(--rail);
+    margin: 0;
+    overflow: clip;
+    touch-action: none;
+  }
+
+  .film.live canvas {
+    position: absolute;
+    inset: 0;
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    background: var(--color-bg-raised);
   }
 
-  :global(.wall .thumb:hover),
-  :global(.wall .thumb:focus-visible) {
-    z-index: 1;
-    transform: scale(1.08);
-    box-shadow: 0 14px 30px -10px rgb(0 0 0 / 0.6);
+  .film.live .roll {
+    position: relative;
+    height: 100%;
+    overflow: clip;
   }
 
-  :global(.wall .thumb:focus-visible) {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 3px;
+  .film.live .track {
+    background: none;
+    will-change: transform;
   }
 
-  @keyframes drift {
-    to {
-      transform: translateX(-50%);
-    }
+  .film.live .shot {
+    opacity: 0;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    /* No drift: each row scrolls sideways by hand instead. */
-    :global(.wall .row) {
-      overflow-x: auto;
-      scrollbar-width: thin;
-    }
-
-    :global(.wall .track) {
-      animation: none;
-    }
-
-    :global(.wall .thumb:hover),
-    :global(.wall .thumb:focus-visible) {
-      transform: none;
-    }
+  /* Loupe: the label that follows the cursor */
+  .loupe {
+    position: fixed;
+    z-index: 4;
+    top: 0;
+    left: 0;
+    display: none;
+    pointer-events: none;
   }
 
+  .film.live .loupe {
+    display: block;
+  }
+
+  .loupe-place,
+  .loupe-frame {
+    position: absolute;
+    left: 18px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.18s ease;
+    text-shadow: 0 1px 12px rgb(0 0 0 / 0.75);
+  }
+
+  .loupe-place {
+    top: 10px;
+    color: #fff;
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .loupe-frame {
+    top: 38px;
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+  }
+
+  .loupe-place:empty + .loupe-frame {
+    top: 12px;
+  }
+
+  .loupe:global(.visible) span {
+    opacity: 1;
+  }
+
+  /* Lightbox */
   .lightbox[hidden] {
     display: none;
   }
@@ -376,7 +572,7 @@ const photos = Object.entries(modules)
     align-items: center;
     justify-content: center;
     padding: var(--space-xl) 4rem;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.92);
     cursor: zoom-out;
   }
 
@@ -431,9 +627,11 @@ const photos = Object.entries(modules)
     bottom: var(--space-md);
     left: 50%;
     transform: translateX(-50%);
+    color: #e07c3e;
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
-    color: rgb(255 255 255 / 0.7);
+    letter-spacing: 0.1em;
+    white-space: pre;
   }
 
   .lightbox-close:focus-visible,
@@ -442,24 +640,71 @@ const photos = Object.entries(modules)
     outline-offset: 2px;
   }
 
-  @media (max-width: 600px) {
-    .heading {
-      font-size: var(--font-size-xl);
+  @media (max-width: 700px) {
+    .film {
+      --rail: 0px;
+      --gutter: 6px;
+      --rebate: 15px;
+      --rebate-px: 15;
+      --frame-gap: 6px;
+      --bar: 40px;
+      --b: 40vw;
+      --a: calc(100vw - var(--b) - 3 * var(--gutter));
     }
 
-    .gallery {
-      column-count: 1;
+    .rail {
+      inset: 0 0 auto 0;
+      flex-direction: row;
+      width: auto;
+      height: var(--bar);
+      padding: 0 var(--space-sm);
     }
 
-    :global(.wall) {
-      --row-height: 10rem;
+    .rail-name,
+    .rail-links {
+      writing-mode: horizontal-tb;
+      transform: none;
+    }
+
+    .rail-links {
+      gap: 0.7rem;
+    }
+
+    .rail-counters {
+      display: none;
+    }
+
+    .stage {
+      padding-top: var(--bar);
+    }
+
+    .film.live .stage {
+      inset: var(--bar) 0 0 0;
+      padding-top: 0;
+    }
+
+    .leader {
+      padding: var(--space-md) calc(var(--rebate) + var(--space-xs));
+    }
+
+    .leader-note {
+      font-size: 0.85rem;
+    }
+
+    .edge,
+    .mark {
+      display: none;
+    }
+
+    .film:not(.live) .frame,
+    .film:not(.live) .leader {
+      background-image: none;
     }
 
     .lightbox {
       padding: var(--space-lg) var(--space-sm);
     }
 
-    /* Swipe instead of tapping small arrows. */
     .lightbox-nav {
       display: none;
     }
