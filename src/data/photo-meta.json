@@ -1,9 +1,9 @@
 {
   "1571E00B-723F-499C-8686-1AD2A3850AF9_1_105_c.jpeg": {
-    "place": "New York"
+    "place": "Brooklyn Bridge"
   },
   "16646B9A-A8AA-4B5A-979A-2BB8DCE4ACCF_1_105_c.jpeg": {
-    "place": "New York",
+    "place": "Times Square",
     "raf": "DSCF1259",
     "camera": "X-E5",
     "sim": "Classic Negative",
@@ -16,7 +16,7 @@
     "place": "Paris"
   },
   "2782C569-F375-49B6-90A1-FDC0DD88FD83_1_105_c.jpeg": {
-    "place": "New York",
+    "place": "Times Square",
     "raf": "DSCF1322",
     "camera": "X-E5",
     "sim": "Classic Negative",
@@ -26,7 +26,7 @@
     "iso": "500"
   },
   "30712BF1-E0DB-45A3-A230-63444C034943_1_105_c.jpeg": {
-    "place": "New York",
+    "place": "Financial District",
     "raf": "DSCF0546",
     "camera": "X-E5",
     "sim": "CLASSIC NEG",
@@ -36,7 +36,7 @@
     "iso": "500"
   },
   "49616A4A-3F35-4E0F-AD98-01293431CF76_1_105_c.jpeg": {
-    "place": "New York",
+    "place": "The Oculus",
     "raf": "DSCF0477",
     "camera": "X-E5",
     "sim": "Classic Negative",
@@ -46,7 +46,7 @@
     "iso": "500"
   },
   "551D3F88-6F1E-4C11-BED9-82A90B9CAE51_1_105_c.jpeg": {
-    "place": "New York",
+    "place": "Times Square",
     "raf": "DSCF1290",
     "camera": "X-E5",
     "sim": "Classic Negative",
@@ -56,7 +56,7 @@
     "iso": "51200"
   },
   "67222267-1657-4BB2-95D9-7ED466D33411_1_105_c.jpeg": {
-    "place": "New York",
+    "place": "Fulton Street",
     "raf": "DSCF1253",
     "camera": "X-E5",
     "sim": "Classic Negative",
@@ -66,7 +66,7 @@
     "iso": "500"
   },
   "7064231F-A530-4B5E-8A46-A5F53864AC0B.jpeg": {
-    "place": "New York",
+    "place": "Brooklyn Bridge",
     "raf": "DSCF1025",
     "camera": "X-E5",
     "sim": "Classic Chrome",
@@ -86,10 +86,10 @@
     "iso": "500"
   },
   "A063A68C-11A6-4C48-9FF7-D2AC8D1A82E6_4_5005_c.jpeg": {
-    "place": "Boston"
+    "place": "Fenway Park"
   },
   "ADC45087-08D8-4A39-A4A6-95E693D28CDF_1_105_c.jpeg": {
-    "place": "New York",
+    "place": "West Village",
     "raf": "DSCF0607",
     "camera": "X-E5",
     "sim": "Classic Chrome",
@@ -99,7 +99,7 @@
     "iso": "500"
   },
   "B142C811-9043-4F62-9632-A69B7806769F_1_105_c.jpeg": {
-    "place": "New York",
+    "place": "Brooklyn Heights",
     "raf": "DSCF1200",
     "camera": "X-E5",
     "sim": "Classic Negative",
@@ -109,16 +109,16 @@
     "iso": "500"
   },
   "C6D4A484-837B-40F5-9E2E-C1A7ECB3BFAC_1_105_c.jpeg": {
-    "place": "New York"
+    "place": "DUMBO"
   },
   "CAB65F85-4B43-4CF8-93A6-FDF15FDED45E.jpeg": {
     "place": "Paris"
   },
   "D42A99CC-E95B-49CF-A7F4-C22553AE2FAB_1_105_c.jpeg": {
-    "place": "New York"
+    "place": "Central Park"
   },
   "DEC264FF-FD8C-4267-843D-B7AD4784E1D5_1_105_c.jpeg": {
-    "place": "New York",
+    "place": "Brooklyn Bridge",
     "raf": "DSCF1018",
     "camera": "X-E5",
     "sim": "Classic Chrome",
@@ -128,10 +128,10 @@
     "iso": "500"
   },
   "DF3CF169-5EEB-4599-AA03-8BE362381833_4_5005_c.jpeg": {
-    "place": "New York"
+    "place": "Central Park"
   },
   "EC07C9F3-0EBE-4FB2-9427-30CAD27C7552_1_105_c.jpeg": {
-    "place": "New York",
+    "place": "Central Park",
     "raf": "DSCF1105",
     "camera": "X-E5",
     "sim": "Classic Chrome",
@@ -141,10 +141,10 @@
     "iso": "500"
   },
   "F9CAAF6A-7B5F-43BE-9CC7-EA4D2C9CC0AC_1_105_c.jpeg": {
-    "place": "New York"
+    "place": "Times Square"
   },
   "FBBB74F0-3419-4032-9962-F6C98A164DAC_1_105_c.jpeg": {
-    "place": "New York",
+    "place": "The Oculus",
     "raf": "DSCF0479",
     "camera": "X-E5",
     "sim": "Classic Negative",
@@ -154,7 +154,7 @@
     "iso": "500"
   },
   "beach-sunset.jpg": {
-    "place": "Cape Verde"
+    "place": "Santa Monica Beach"
   },
   "boston-diner.jpg": {
     "place": "Boston",
@@ -167,7 +167,7 @@
     "iso": "1600"
   },
   "boston-mikes-pastry.jpg": {
-    "place": "Boston",
+    "place": "Mike's Pastry",
     "raf": "DSCF0734",
     "camera": "X-E5",
     "sim": "Classic Negative",
@@ -177,7 +177,7 @@
     "iso": "4000"
   },
   "boston-takeaway.jpg": {
-    "place": "Boston",
+    "place": "Mike's Pastry",
     "raf": "DSCF0739",
     "camera": "X-E5",
     "sim": "Classic Negative",
@@ -303,7 +303,7 @@
     "iso": "500"
   },
   "nyc-one-way.jpg": {
-    "place": "New York",
+    "place": "West Village",
     "raf": "DSCF0608",
     "camera": "X-E5",
     "sim": "Classic Chrome",
@@ -370,7 +370,7 @@
     "place": "Paris"
   },
   "red-sox-win.jpeg": {
-    "place": "Boston",
+    "place": "Fenway Park",
     "raf": "DSCF0928",
     "camera": "X-E5",
     "sim": "CLASSIC NEG",
@@ -380,7 +380,7 @@
     "iso": "500"
   },
   "red-sox.jpeg": {
-    "place": "Boston"
+    "place": "Fenway Park"
   },
   "red-truck-nyc.jpeg": {
     "place": "New York",
@@ -393,19 +393,19 @@
     "iso": "3200"
   },
   "roman-forum.jpeg": {
-    "place": "Rome"
+    "place": "Roman Forum"
   },
   "rome-bus.jpeg": {
     "place": "Rome"
   },
   "rome-colosseum.jpg": {
-    "place": "Rome"
+    "place": "Colosseum"
   },
   "rome-pantheon.jpg": {
-    "place": "Rome"
+    "place": "Pantheon"
   },
   "rome-ruins.jpeg": {
-    "place": "Rome"
+    "place": "Roman Forum"
   },
   "rome-street.jpeg": {
     "place": "Rome"
