@@ -1,5 +1,95 @@
 [
   {
+    "url": "https://www.slopmanifesto.com/",
+    "title": "More resources",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-11-14",
+    "thoughts": "Solid propositions",
+    "rating": 4
+  },
+  {
+    "url": "https://borretti.me/article/we-wont-just-hang-out",
+    "title": "We Won’t “Just Hang Out”",
+    "author": "Fernando Borretti",
+    "publishedDate": "2026-10-27",
+    "addedDate": "2026-11-09",
+    "thoughts": "On one end of the AI doomer spectrum",
+    "rating": 3
+  },
+  {
+    "url": "https://www.disneyanimation.com/process/?",
+    "title": "FilmmakingProcess",
+    "author": null,
+    "publishedDate": null,
+    "addedDate": "2026-11-01",
+    "thoughts": "beautifully made",
+    "rating": 5
+  },
+  {
+    "url": "https://www.grubstreet.com/article/chocolate-hersheys-reeses-conspiracy.html",
+    "title": "Is Chocolate Still Chocolate?",
+    "author": "Rachel Handler",
+    "publishedDate": "2026-10-19",
+    "addedDate": "2026-11-01",
+    "thoughts": "A rollercoater of events",
+    "rating": 5
+  },
+  {
+    "url": "https://oioannou.com/blog/ai-promised-less-work/",
+    "title": "AI Promised Less Work. I Have Never Worked More.",
+    "author": "Orestis Ioannou",
+    "publishedDate": "2026-10-27",
+    "addedDate": "2026-10-30",
+    "thoughts": "The greatest lie ever told",
+    "rating": 3
+  },
+  {
+    "url": "https://felixrieseberg.com/hunger-beats-tenure-advice-for-junior-engineers/",
+    "title": "Hunger beats tenure: Advice for junior engineers",
+    "author": "Felix Rieseberg",
+    "publishedDate": "2026-10-27",
+    "addedDate": "2026-10-30",
+    "thoughts": "Your lack of experience is your strength",
+    "rating": 4
+  },
+  {
+    "url": "https://sive.rs/htl23",
+    "title": "Create.",
+    "author": "Derek Sivers",
+    "publishedDate": "2021-12-23",
+    "addedDate": "2026-10-28",
+    "thoughts": "A timely reminder",
+    "rating": 4
+  },
+  {
+    "url": "https://thisismypersonalblog.com/posts/2026-09-25-getting-out-of-the-way/",
+    "title": "The arm",
+    "author": "2026 Rob Bercik · September 25",
+    "publishedDate": null,
+    "addedDate": "2026-10-26",
+    "thoughts": "Note to self: Need to add safety mechanism for torque \nto avoid damage to robots",
+    "rating": 4
+  },
+  {
+    "url": "https://scotthelme.co.uk/passkeys-are-not-a-trap/",
+    "title": "Passkeys Are Not a Trap",
+    "author": "Scott Helme",
+    "publishedDate": "2026-10-14",
+    "addedDate": "2026-10-22",
+    "thoughts": "That clears it up",
+    "rating": 4
+  },
+  {
+    "url": "https://a16z.com/private-markets-new-public-markets/",
+    "title": "Private Markets Are The New High-Growth Public Markets",
+    "author": "David George",
+    "publishedDate": "2025-09-02",
+    "addedDate": "2026-10-22",
+    "thoughts": "YIKES not vey encouraging",
+    "rating": 4
+  },
+  {
     "url": "https://godobject.dev/blog/linkedin-larpmaxxing/",
     "title": "LinkedIn Larpmaxxing",
     "author": "Pranav Desai",
