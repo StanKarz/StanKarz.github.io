@@ -1,0 +1,71 @@
+---
+// The data-flow diagram on /projects/mission-control/. Inline rather than an
+// <img> so it takes the site's colour tokens and follows the theme toggle; the
+// repo's docs/architecture.svg is the same drawing with its own palette.
+import styles from './MissionControlDiagram.module.css';
+---
+
+<div class={styles.scroll}>
+<svg
+  class={styles.diagram}
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 900 460"
+  role="img"
+  aria-labelledby="mcd-title mcd-desc"
+>
+  <title id="mcd-title">How mission control's data flows</title>
+  <desc id="mcd-desc">Three sources feed mc: progress.toml, written by you, holds intent; Claude Code's transcripts hold activity; git log holds commits. mc derives every view from them on open. Its only writes are config edits back to progress.toml, session directories moved by fix, mv and retire with --go, and keystrokes sent to a tmux pane, which it also asks which panes are running Claude.</desc>
+  <defs><marker id="mcd-head-read" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class={styles['head-read']}/></marker><marker id="mcd-head-write" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class={styles['head-write']}/></marker></defs>
+  <text x="20" y="14" class={styles['section']}>inputs</text>
+  <rect x="20" y="20" width="270" height="108" rx="6" class={`${styles['box']} ${styles['source']}`}/>
+  <text x="36" y="44" class={styles['kicker']}>intent</text>
+  <text x="36" y="66" class={styles['title']}>progress.toml</text>
+  <text x="36" y="90" class={styles['body']}>projects, phase, checks</text>
+  <text x="36" y="110" class={styles['body']}>by you, mc add, /init-project</text>
+  <rect x="315" y="20" width="270" height="108" rx="6" class={`${styles['box']} ${styles['source']}`}/>
+  <text x="331" y="44" class={styles['kicker']}>activity</text>
+  <text x="331" y="66" class={styles['title']}>~/.claude/projects/*.jsonl</text>
+  <text x="331" y="90" class={styles['body']}>sessions, titles, edits, cwd</text>
+  <text x="331" y="110" class={styles['body']}>by Claude Code, every turn</text>
+  <rect x="610" y="20" width="270" height="108" rx="6" class={`${styles['box']} ${styles['source']}`}/>
+  <text x="626" y="44" class={styles['kicker']}>commits</text>
+  <text x="626" y="66" class={styles['title']}>git log</text>
+  <text x="626" y="90" class={styles['body']}>subjects, dates, files</text>
+  <text x="626" y="110" class={styles['body']}>one repo per project</text>
+  <rect x="20" y="190" width="860" height="72" rx="6" class={`${styles['box']} ${styles['core']}`}/>
+  <text x="42" y="235" class={styles['core-name']}>mc</text>
+  <text x="94" y="222" class={styles['core-line']}>derives every view on open</text>
+  <text x="94" y="242" class={styles['body']}>and keeps no copy of the activity it reads</text>
+  <text x="860" y="234" text-anchor="end" class={styles['tag']}>Python · Textual · tomlkit</text>
+  <rect x="20" y="322" width="270" height="100" rx="6" class={`${styles['box']} ${styles['output']}`}/>
+  <text x="36" y="352" class={styles['title']}>roster · detail</text>
+  <text x="36" y="376" class={styles['body']}>percentages from checks,</text>
+  <text x="36" y="396" class={styles['body']}>live state, next check</text>
+  <rect x="315" y="322" width="270" height="100" rx="6" class={`${styles['box']} ${styles['output']}`}/>
+  <text x="331" y="352" class={styles['title']}>mc week · month</text>
+  <text x="331" y="376" class={styles['body']}>commit subjects and</text>
+  <text x="331" y="396" class={styles['body']}>session titles, per project</text>
+  <rect x="610" y="322" width="270" height="100" rx="6" class={`${styles['box']} ${styles['output']}`}/>
+  <text x="626" y="352" class={styles['title']}>tmux</text>
+  <text x="626" y="376" class={styles['body']}>in: which panes run Claude</text>
+  <text x="626" y="396" class={styles['body']}>out: cd … &amp;&amp; claude --resume</text>
+  <text x="20" y="316" class={styles['section']}>outputs</text>
+  <line x1="110" y1="131" x2="110" y2="187" marker-end="url(#mcd-head-read)" class={`${styles['arrow']} ${styles['read']}`}/>
+  <line x1="200" y1="187" x2="200" y2="131" marker-end="url(#mcd-head-write)" class={`${styles['arrow']} ${styles['write']}`}/>
+  <text x="210" y="163.0" class={`${styles['label']} ${styles['write']}`}>status, ticks, add</text>
+  <line x1="405" y1="131" x2="405" y2="187" marker-end="url(#mcd-head-read)" class={`${styles['arrow']} ${styles['read']}`}/>
+  <line x1="495" y1="187" x2="495" y2="131" marker-end="url(#mcd-head-write)" class={`${styles['arrow']} ${styles['write']}`}/>
+  <text x="505" y="163.0" class={`${styles['label']} ${styles['write']}`}>fix · mv · retire --go</text>
+  <line x1="745" y1="131" x2="745" y2="187" marker-end="url(#mcd-head-read)" class={`${styles['arrow']} ${styles['read']}`}/>
+  <line x1="155" y1="265" x2="155" y2="319" marker-end="url(#mcd-head-read)" class={`${styles['arrow']} ${styles['read']}`}/>
+  <line x1="450" y1="265" x2="450" y2="319" marker-end="url(#mcd-head-read)" class={`${styles['arrow']} ${styles['read']}`}/>
+  <line x1="700" y1="319" x2="700" y2="265" marker-end="url(#mcd-head-read)" class={`${styles['arrow']} ${styles['read']}`}/>
+  <text x="690" y="296.0" text-anchor="end" class={`${styles['label']} ${styles['read']}`}>list-panes</text>
+  <line x1="790" y1="265" x2="790" y2="319" marker-end="url(#mcd-head-write)" class={`${styles['arrow']} ${styles['write']}`}/>
+  <text x="800" y="296.0" class={`${styles['label']} ${styles['write']}`}>send-keys</text>
+  <line x1="20" y1="446" x2="56" y2="446" marker-end="url(#mcd-head-read)" class={`${styles['arrow']} ${styles['read']}`}/>
+  <text x="66" y="450" class={styles['legend']}>reads and renders</text>
+  <line x1="250" y1="446" x2="286" y2="446" marker-end="url(#mcd-head-write)" class={`${styles['arrow']} ${styles['write']}`}/>
+  <text x="296" y="450" class={styles['legend']}>writes: config edits, session moves, keystrokes</text>
+</svg>
+</div>
