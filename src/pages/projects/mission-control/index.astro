@@ -88,6 +88,13 @@ done  = false`}</code></pre>
         is not a check. "<code>writeup.md</code> exists and is over 800 words" is.
       </p>
 
+      <p>
+        Checks cover one phase at a time, so the percentage says how far through the current one you
+        are. When a phase ends, <code>mc phase</code> records which checks it met and clears them, and
+        the detail screen keeps a line for the phase before. Leave them in and a project in its fourth
+        phase reads 80% on the strength of the first three.
+      </p>
+
       <figure class={styles.figure}>
         <img src={detail.src} alt="The detail screen for one project: a large percentage, the full check list with ticks and unresolved circles, a week of commits and sessions as heatmaps, recent commits, and recent session titles." />
         <figcaption>
@@ -152,7 +159,7 @@ done  = false`}</code></pre>
 
       <pre><code>{`uv tool install git+https://github.com/StanKarz/mission-control
 mc init            # writes a starter config
-mc install-skill   # makes /init-project available inside Claude Code
+mc install-skill   # makes /init-project and /next-phase available inside Claude Code
 mc doctor          # finds every directory with Claude sessions`}</code></pre>
 
       <p>
@@ -162,7 +169,7 @@ mc doctor          # finds every directory with Claude sessions`}</code></pre>
       </p>
 
       <p>
-        121 tests, weighted towards where a bug is silent and expensive: slug encoding, the checks
+        136 tests, weighted towards where a bug is silent and expensive: slug encoding, the checks
         engine, period arithmetic, tmux target resolution. New behaviour worth trusting gets
         verified by breaking it on purpose and confirming a test fails, which has caught a test
         that asserted more than the code guaranteed more than once.
